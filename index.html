@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mandarin Street Corner (中文街角)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-in">
+      <div class="brand">
+        <div class="brand-logo">🏮</div>
+        <h1>Mandarin Street Corner <span class="hz">(中文街角)</span></h1>
+      </div>
+
+      <div class="hdr-right">
+        <div class="chip chip-money" id="money-chip" title="Your money"><span>💰</span><span id="money-val" class="num">¥0</span></div>
+        <div class="chip chip-xp" title="Experience"><span>⭐</span><span id="xp-val" class="num">0 XP</span></div>
+        <nav class="seg dark">
+          <button id="tab-stage" class="on" data-click="tab" data-arg="stage">🗺️ Stage</button>
+          <button id="tab-notebook" data-click="tab" data-arg="notebook">📒 <span id="vocab-count" class="num">0</span> Words</button>
+        </nav>
+      </div>
+
+      <div class="hdr-mid">
+        <div class="seg" id="tier-seg">
+          <button data-click="tier" data-arg="1">Pinyin</button>
+          <button data-click="tier" data-arg="2">Hybrid</button>
+          <button data-click="tier" data-arg="3">Hanzi</button>
+        </div>
+        <div class="voice">
+          <select id="voice-select" aria-label="Chinese voice"><option>Loading voices…</option></select>
+          <button id="rate-btn" class="num" data-click="rate" title="Speech speed">0.85×</button>
+          <button data-click="test-voice">Test</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <section id="view-stage" class="stage-layout">
+      <div class="card stage-card">
+        <h2 class="stage-title">☕ Café &amp; Station Corner</h2>
+        <div id="pills" class="pills"></div>
+        <div class="board-wrap"><div id="board" class="board"></div></div>
+        <div class="dpad">
+          <button data-click="move" data-arg="-1,0" aria-label="Left">◀</button>
+          <button data-click="move" data-arg="0,-1" aria-label="Up">▲</button>
+          <button data-click="move" data-arg="0,1" aria-label="Down">▼</button>
+          <button data-click="move" data-arg="1,0" aria-label="Right">▶</button>
+          <button class="act" data-click="interact">Talk</button>
+        </div>
+      </div>
+      <div id="panel" class="card side-panel"></div>
+    </section>
+
+    <section id="view-notebook" class="hidden">
+      <div class="nb-layout">
+        <div class="card nb-card">
+          <div class="nb-top">
+            <div>
+              <h2>📒 My Vocabulary (<span id="nb-total" class="num">0</span>)</h2>
+              <div class="sub">New words you meet are added automatically. Tap a card to hear it and open its details.</div>
+            </div>
+            <div class="search">
+              <input id="vocab-search" class="field" type="search" placeholder="Search English, pinyin, hanzi…" />
+              <button class="btn btn-ghost btn-sm" data-click="clear-search">Reset</button>
+            </div>
+          </div>
+          <div id="cats" class="cats"></div>
+          <div id="vgrid" class="vgrid"></div>
+        </div>
+        <aside id="word-pane" class="word-pane"></aside>
+      </div>
+    </section>
+  </main>
+
+  <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
+  <div id="toasts" aria-live="polite">
+    <div id="onboard" role="status"><div class="grow"><b id="onboard-title"></b><span id="onboard-body"></span></div><button data-click="close-onboard" aria-label="Close">✕</button></div>
+  </div>
+
+  <!-- DATA: edit these files to change content -->
+  <script src="data/dictionary.js"></script>
+  <script src="data/characters.js"></script>
+  <script src="data/world.js"></script>
+  <script src="data/menu.js"></script>
+  <script src="data/quests.js"></script>
+  <script src="data/ui-text.js"></script>
+  <!-- CORE -->
+  <script src="js/core/util.js"></script>
+  <script src="js/core/dictionary.js"></script>
+  <script src="js/core/pinyin.js"></script>
+  <script src="js/core/state.js"></script>
+  <script src="js/core/speech.js"></script>
+  <!-- UI -->
+  <script src="js/ui/toast.js"></script>
+  <script src="js/ui/gestures.js"></script>
+  <script src="js/ui/text.js"></script>
+  <!-- GAME -->
+  <script src="js/game/economy.js"></script>
+  <script src="js/game/stage.js"></script>
+  <script src="js/game/barista.js"></script>
+  <script src="js/game/quizzes.js"></script>
+  <!-- SCREENS -->
+  <script src="js/ui/panel.js"></script>
+  <script src="js/ui/notebook.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -40,6 +40,7 @@
     const t = e.target;
     if (t && ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName)) return;
     if (document.getElementById('view-stage').classList.contains('hidden')) return;
+    if (MSC.writer && MSC.writer.isOpen()) return;                 // the tray owns the keyboard while it is open
     const k = e.key.toLowerCase();
     const dir = { arrowup: [0, -1], w: [0, -1], arrowdown: [0, 1], s: [0, 1], arrowleft: [-1, 0], a: [-1, 0], arrowright: [1, 0], d: [1, 0] }[k];
     if (dir) { e.preventDefault(); MSC.stage.move(dir[0], dir[1]); }

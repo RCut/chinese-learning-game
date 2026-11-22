@@ -26,6 +26,7 @@
       { id: 'menu', title: 'Café Menu', subtitle: 'See what’s on today and what it costs' },
       { id: 'barista', title: 'Barista Lin', subtitle: 'Order and pay for your lunch' },
       { id: 'signpost', title: 'Signpost', subtitle: 'Find your way around the corner' },
+      { id: 'wang', title: 'Master Wang', subtitle: 'Learn to write characters' },
       { id: 'cart', title: 'Fruit Stall', subtitle: 'Buy some fruit for later' },
       { id: 'passerby', title: 'Lost Traveler', subtitle: 'Someone looks lost — help them out' },
     ],

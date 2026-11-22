@@ -12,7 +12,7 @@
 (function (MSC) {
   const U = MSC.util, D = MSC.dict, S = MSC.state, B = MSC.barista, QZ = MSC.quizzes, UI = MSC.ui;
   const QD = MSC.data.quests, UT = MSC.data.ui;
-  const P = (MSC.panel = {});
+  const P = (MSC.panel = { screens: {} });
   const panelEl = () => document.getElementById('panel');
   const HINT_LABEL = ['💡 Hint', '💡 More', '👁 Answer'];
 
@@ -24,6 +24,7 @@
       <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 Quest</button></div>
     </div>`;
 
+  P.head = head;
   const hintBtn = (level, solved, arg) =>
     `<button type="button" class="btn btn-hint ${solved || level >= 3 ? 'invisible' : ''}" style="min-width:104px" data-click="hint" data-arg="${arg}">${HINT_LABEL[Math.min(level, 2)]}</button>`;
 
@@ -174,7 +175,7 @@
     const top = resetScroll ? 0 : el.scrollTop;
     const before = S.discoverCount;
     const a = S.active;
-    el.innerHTML = a === 'barista' ? renderBarista() : a && QZ.has(a) ? renderQuiz(a) : renderWelcome();
+    el.innerHTML = a === 'barista' ? renderBarista() : a && QZ.has(a) ? renderQuiz(a) : a && P.screens[a] ? P.screens[a]() : renderWelcome();
     el.scrollTop = top;
     if (S.discoverCount > before && a) MSC.toast.onboarding();
     if (toFeedback) P.revealFeedback();

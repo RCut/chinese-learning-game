@@ -27,6 +27,7 @@
     quizzes: {},
     inputMode: 'tiles',
     mic: { recording: false, transcript: '', msg: '', unavailable: false },
+    writing: { tutorialDone: false, mastered: {}, best: {}, rules: [], offer: null, lesson: null },   // Master Wang (see js/game/writing.js)
     selectedWord: null,    // notebook detail pane
     category: 'All',
   };
@@ -40,6 +41,7 @@
         if (!saved) return;
         S.xp = Number(saved.xp) || 0;
         S.tipSeen = !!saved.tipSeen;
+        if (saved.writing && typeof saved.writing === 'object') Object.assign(S.writing, saved.writing);
         (saved.words || []).forEach((h) => {
           if (MSC.dict.get(h) && !S.vocabSet.has(h)) { S.vocab.push(h); S.vocabSet.add(h); }
         });
@@ -48,7 +50,7 @@
     save() {
       try {
         const starters = new Set(MSC.dict.all().filter((e) => e.starter).map((e) => e.hanzi));
-        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, words: S.vocab.filter((h) => !starters.has(h)) }));
+        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)) }));
       } catch (e) { /* storage unavailable: progress simply isn't kept */ }
     },
   };

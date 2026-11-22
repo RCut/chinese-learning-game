@@ -161,6 +161,37 @@
     { hanzi: '有一点', pinyin: 'yǒu yīdiǎn', pinyinNum: 'you3 yi1 dian3', english: 'a little, somewhat (before adjectives)', pos: 'phrase', category: 'Everyday Phrases' },
     { hanzi: '在哪里', pinyin: 'zài nǎlǐ', pinyinNum: 'zai4 na3 li3', english: 'where is…?', pos: 'phrase', category: 'Everyday Phrases', related: ['请问'], note: 'Put the place first: 火车站在哪里？' },
 
+    // ───────────── Writing (Master Wang's stall) ─────────────
+    { hanzi: '写', pinyin: 'xiě', pinyinNum: 'xie3', english: 'to write', pos: 'verb', category: 'Verbs', related: ['写字', '教'] },
+    { hanzi: '写字', pinyin: 'xiězì', pinyinNum: 'xie3 zi4', english: 'to write characters / handwriting', pos: 'phrase', category: 'Language & Learning', related: ['教', '字'] },
+    { hanzi: '字', pinyin: 'zì', pinyinNum: 'zi4', english: 'character / written word', pos: 'noun', category: 'Language & Learning', related: ['写', '数字'] },
+    { hanzi: '教', pinyin: 'jiāo', pinyinNum: 'jiao1', english: 'to teach', pos: 'verb', category: 'Verbs', related: ['写', '师傅'] },
+    { hanzi: '选', pinyin: 'xuǎn', pinyinNum: 'xuan3', english: 'to choose', pos: 'verb', category: 'Verbs' },
+    { hanzi: '会', pinyin: 'huì', pinyinNum: 'hui4', english: 'can / to know how to', pos: 'verb', category: 'Verbs', related: ['可以', '写'], note: '会 is about a learned skill: 我会写字 = "I can write (I know how)". 可以 is about permission.' },
+    { hanzi: '王', pinyin: 'Wáng', pinyinNum: 'wang2', english: 'Wang (a surname)', pos: 'name', category: 'Pronouns & People', related: ['师傅'] },
+    { hanzi: '师傅', pinyin: 'shīfu', pinyinNum: 'shi1 fu5', english: 'master / skilled worker (polite address)', pos: 'noun', category: 'Pronouns & People', related: ['王', '老板'], note: 'A respectful way to address a craftsman, driver or chef: 王师傅 = "Master Wang".' },
+    { hanzi: '横', pinyin: 'héng', pinyinNum: 'heng2', english: 'horizontal stroke', pos: 'noun', category: 'Language & Learning', related: ['竖', '先横后竖'] },
+    { hanzi: '竖', pinyin: 'shù', pinyinNum: 'shu4', english: 'vertical stroke', pos: 'noun', category: 'Language & Learning', related: ['横', '先横后竖'] },
+    { hanzi: '后', pinyin: 'hòu', pinyinNum: 'hou4', english: 'after / behind', pos: 'adv', category: 'Time & Adjectives', related: ['后面', '先'] },
+    { hanzi: '先横后竖', pinyin: 'xiān héng hòu shù', pinyinNum: 'xian1 heng2 hou4 shu4', english: 'horizontal first, then vertical (stroke-order rule)', pos: 'phrase', category: 'Language & Learning', related: ['横', '竖', '写字'], note: 'Master Wang’s favourite rule: in a crossing like 十, write the horizontal stroke before the vertical one.' },
+    { hanzi: '中文', pinyin: 'zhōngwén', pinyinNum: 'zhong1 wen2', english: 'Chinese (language)', pos: 'noun', category: 'Language & Learning', related: ['说', '写字'] },
+
+    // ───────────── Basic characters taught at Master Wang's stall ─────────────
+    { hanzi: '入', pinyin: 'rù', pinyinNum: 'ru4', english: 'to enter', pos: 'verb', category: 'Verbs', note: 'Easy to mix up with 人 (person): in 入 the long stroke is on the right.' },
+    { hanzi: '口', pinyin: 'kǒu', pinyinNum: 'kou3', english: 'mouth', pos: 'noun', category: 'Body & Nature', related: ['喝', '吃'] },
+    { hanzi: '大', pinyin: 'dà', pinyinNum: 'da4', english: 'big', pos: 'adj', category: 'Time & Adjectives', related: ['小'] },
+    { hanzi: '小', pinyin: 'xiǎo', pinyinNum: 'xiao3', english: 'small', pos: 'adj', category: 'Time & Adjectives', related: ['大'] },
+    { hanzi: '中', pinyin: 'zhōng', pinyinNum: 'zhong1', english: 'middle / in', pos: 'noun', category: 'Directions & Places', related: ['中文'] },
+    { hanzi: '上', pinyin: 'shàng', pinyinNum: 'shang4', english: 'up / above / on', pos: 'direction', category: 'Directions & Places', related: ['下'] },
+    { hanzi: '下', pinyin: 'xià', pinyinNum: 'xia4', english: 'down / below / under', pos: 'direction', category: 'Directions & Places', related: ['上'] },
+    { hanzi: '日', pinyin: 'rì', pinyinNum: 'ri4', english: 'sun / day', pos: 'noun', category: 'Time & Adjectives', related: ['月', '今天'], note: 'Easy to mix up with 目 (eye): 日 is a box with one line inside.' },
+    { hanzi: '月', pinyin: 'yuè', pinyinNum: 'yue4', english: 'moon / month', pos: 'noun', category: 'Time & Adjectives', related: ['日'] },
+    { hanzi: '木', pinyin: 'mù', pinyinNum: 'mu4', english: 'tree / wood', pos: 'noun', category: 'Body & Nature' },
+    { hanzi: '山', pinyin: 'shān', pinyinNum: 'shan1', english: 'mountain', pos: 'noun', category: 'Body & Nature' },
+    { hanzi: '火', pinyin: 'huǒ', pinyinNum: 'huo3', english: 'fire', pos: 'noun', category: 'Body & Nature', related: ['火车', '水'] },
+    { hanzi: '目', pinyin: 'mù', pinyinNum: 'mu4', english: 'eye (formal)', pos: 'noun', category: 'Body & Nature', related: ['看'], note: 'Easy to mix up with 日 (sun): 目 has two lines inside the box.' },
+    { hanzi: '女', pinyin: 'nǚ', pinyinNum: 'nv3', english: 'woman / female', pos: 'noun', category: 'Pronouns & People', related: ['好'] },
+
     // ───────────── Particles & Connectors ─────────────
     { hanzi: '的', pinyin: 'de', pinyinNum: 'de5', english: 'possessive / modifier particle', pos: 'particle', category: 'Particles & Connectors' },
     { hanzi: '了', pinyin: 'le', pinyinNum: 'le5', english: 'particle: change or completion', pos: 'particle', category: 'Particles & Connectors' },

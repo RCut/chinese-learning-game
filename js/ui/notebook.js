@@ -7,6 +7,7 @@
   const U = MSC.util, D = MSC.dict, S = MSC.state, UI = MSC.ui;
   const NB = (MSC.notebook = {});
   let query = '';
+  const CAN_WRITE = 'Can write';
 
   const chip = (hanzi, extraClass) => {
     const e = D.get(hanzi);
@@ -15,9 +16,15 @@
       <span class="hz">${U.esc(hanzi)}</span><small>${U.esc(e.english)}</small></button>`;
   };
 
-  NB.renderPane = () => {
+  let paneKey = '';
+  NB.renderPane = (force) => {
     const pane = document.getElementById('word-pane');
     const entry = S.selectedWord && D.get(S.selectedWord);
+    // Re-render only when the content would change, so typing in search never restarts the stroke animation or moves the pane.
+    const key = `${S.selectedWord}|${entry && MSC.howto.has(entry.hanzi) ? MSC.howto.signature() : ''}|${S.displayMode}`;
+    if (!force && key === paneKey) return;
+    paneKey = key;
+    MSC.howto.unmount();
     if (!entry) { pane.classList.remove('open'); pane.innerHTML = '<div class="wp-empty">Select a word to see its characters and related words.</div>'; return; }
     const chars = D.breakdown(entry);
     const charsHtml = entry.hanzi.length > 1
@@ -35,29 +42,34 @@
         <button class="say-btn" style="margin-right:36px" data-say="${U.esc(entry.hanzi)}" aria-label="Play">🔊</button>
       </div>
       ${entry.note ? `<div class="box amber box-sm" style="margin-top:12px">${UI.richText(entry.note)}</div>` : ''}
+      ${MSC.howto.html(entry)}
       ${charsHtml ? `<div class="wp-sec"><h4>${entry.hanzi.length > 1 ? 'Characters' : 'Character'}</h4>${charsHtml}</div>` : ''}
       ${groups ? `<div class="wp-sec"><h4>Related</h4>${groups}</div>` : ''}`;
     pane.classList.add('open');
+    MSC.howto.mount(pane);
   };
 
-  NB.render = () => {
-    const cats = ['All', ...new Set(S.vocab.map((h) => D.get(h).category))];
+  NB.render = (forcePane) => {
+    const writable = S.vocab.filter((h) => MSC.howto.has(h)).length;
+    if (S.category === CAN_WRITE && !writable) S.category = 'All';
+    const cats = ['All', ...new Set(S.vocab.map((h) => D.get(h).category)), ...(writable ? [CAN_WRITE] : [])];
     document.getElementById('cats').innerHTML = cats.map((c) =>
-      `<button class="cat ${S.category === c ? 'on' : ''}" data-click="cat" data-arg="${U.esc(c)}">${U.esc(c)}</button>`).join('');
+      `<button class="cat ${S.category === c ? 'on' : ''}" data-click="cat" data-arg="${U.esc(c)}">${c === CAN_WRITE ? `✍ ${CAN_WRITE} <span class="num">${writable}</span>` : U.esc(c)}</button>`).join('');
     const q = query.trim().toLowerCase();
     const list = S.vocab.map((h) => D.get(h)).filter((e) =>
-      (S.category === 'All' || e.category === S.category) &&
+      (S.category === 'All' || (S.category === CAN_WRITE ? MSC.howto.has(e.hanzi) : e.category === S.category)) &&
       (!q || e.english.toLowerCase().includes(q) || e.pinyin.toLowerCase().includes(q) || e.pinyinNum.includes(q) || e.hanzi.includes(q)));
     document.getElementById('vgrid').innerHTML = list.map((e) => {
       const isNew = S.fresh.has(e.hanzi);
       return `<div class="vcard ${isNew ? 'new' : ''} ${S.selectedWord === e.hanzi ? 'sel' : ''}" ${UI.interactAttrs(e.hanzi, '', '', 'open-word', e.hanzi)}>
         <div class="row between" style="align-items:flex-start"><div>${UI.wordLabel(e.hanzi, false)}</div>
-          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}<span class="tag">${U.esc(e.pos)}</span></div></div>
+          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}${MSC.howto.has(e.hanzi) ? '<span class="tag write" title="You can write this">✍</span>' : ''}<span class="tag">${U.esc(e.pos)}</span></div></div>
         <div style="font-weight:700;font-size:13px">${U.esc(e.english)}</div></div>`;
     }).join('') || '<div class="wp-empty" style="grid-column:1/-1">No words match.</div>';
-    NB.renderPane();
+    NB.renderPane(forcePane === true);
   };
 
+  MSC.on('writing-changed', () => NB.render(true));
   MSC.actions['open-word'] = (hanzi) => { S.selectedWord = hanzi; NB.render(); };
   MSC.actions['close-pane'] = () => { S.selectedWord = null; NB.render(); };
   MSC.actions.cat = (c) => { S.category = c; NB.render(); };

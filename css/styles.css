@@ -366,8 +366,9 @@ body.writer-open #onboard { display: none !important; }
 @media (max-width: 899px) { body.writer-open #toasts { top: 8px; } }
 
 /* ───────── dismissing popups ───────── */
-.toast-x { position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.16); color: inherit; font-size: 12px; line-height: 1; }
-.toast-x:hover { background: rgba(255,255,255,.3); }
+.toast-x { position: absolute; top: 5px; right: 5px; width: 28px; height: 28px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.28); border: 1px solid rgba(255,255,255,.45); color: #fff; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer; }
+.toast-x:hover { background: rgba(255,255,255,.5); }
+.toast-x:focus-visible { outline: 2px solid #fcd34d; outline-offset: 1px; }
 .toast.act .toast-x, .toast.plain .toast-x { color: #fff; }
 .toasts-clear { order: -2; display: none; pointer-events: auto; padding: 5px 12px; border-radius: 999px; background: rgba(28,25,23,.9); color: #fff; font-size: 11px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
 .toasts-clear.show { display: inline-flex; }

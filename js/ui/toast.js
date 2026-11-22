@@ -81,7 +81,7 @@
     const el = document.createElement('div');
     el.className = `toast ${kind || ''}`;
     el.setAttribute('role', 'status');
-    el.innerHTML = `<div class="toast-body">${html}</div><button type="button" class="toast-x" aria-label="Dismiss">✕</button>`;
+    el.innerHTML = `<div class="toast-body">${html}</div><button type="button" class="toast-x" aria-label="Dismiss" title="Dismiss">✕</button>`;
     box().appendChild(el);
     while (visible().length > MAX_VISIBLE) remove(visible()[0]);
     el.querySelector('.toast-x').addEventListener('click', (e) => { e.stopPropagation(); remove(el); });

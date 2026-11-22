@@ -107,6 +107,8 @@ texts.forEach(([where, text]) => {
 });
 MSC.data.ui.quest.forEach((q) => { if (/[㐀-鿿]/.test(q.text)) errors.push(`quest step "${q.text}" must not contain Chinese`); });
 
+try { const st = require('./stamp-assets.js').stale(); if (st.length) errors.push(`index.html asset stamps are out of date for: ${st.join(', ')} — run: node tools/stamp-assets.js`); } catch (e) { warn.push(`could not check asset stamps: ${e.message}`); }
+
 warn.forEach((w) => console.log(`warning: ${w}`));
 if (errors.length) { errors.forEach((e) => console.error(`ERROR: ${e}`)); process.exit(1); }
 console.log(`OK — ${MSC.data.dictionary.length} words, ${Object.keys(MSC.data.characters).length} characters, ${texts.length} Chinese strings checked.`);

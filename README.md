@@ -34,11 +34,14 @@ js/main.js            start-up and header controls
 
 tools/check-data.js   validates all data files
 tools/build-strokes.js  regenerates data/strokes.js from the hanzi-writer-data package
+tools/stamp-assets.js   stamps index.html asset URLs with a content hash (cache-busting) — run after editing css/, js/ or data/
 tests/                stroke matcher, validator and browser tests (see "Tests")
 licenses/             Arphic Public License (covers the stroke data) — see THIRD_PARTY_NOTICES.md
 ```
 
-**After editing anything in `data/`, run `node tools/check-data.js`.** It catches duplicate
+**After editing anything in `data/`, run `node tools/check-data.js`.** After editing anything in `css/`, `js/` or `data/`, also run
+`node tools/stamp-assets.js` — it stamps the asset URLs in `index.html` with a content hash so browsers never serve a stale
+copy (the validator fails if a stamp is out of date). It catches duplicate
 words, wrong syllable counts, broken `related` links, and Chinese in dialogue that isn't in the
 dictionary (dialogue pinyin is generated from the dictionary, so a word must exist there).
 

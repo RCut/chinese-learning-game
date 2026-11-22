@@ -30,6 +30,22 @@ MSC.data.dictionary.forEach((e) => {
   (e.related || []).forEach((r) => { if (!seen.has(r) && !MSC.data.dictionary.some((x) => x.hanzi === r)) errors.push(`${e.hanzi}: related word "${r}" is not in the dictionary`); });
 });
 
+// ── related / exclude hygiene ──
+MSC.data.dictionary.forEach((e) => {
+  const rel = e.related || [], exc = e.exclude || [];
+  if (rel.includes(e.hanzi)) errors.push(`${e.hanzi}: lists itself as related`);
+  if (new Set(rel).size !== rel.length) errors.push(`${e.hanzi}: related has duplicates`);
+  rel.filter((r) => exc.includes(r)).forEach((r) => errors.push(`${e.hanzi}: "${r}" is both related and excluded`));
+  exc.forEach((x) => { if (!MSC.dict.get(x)) errors.push(`${e.hanzi}: excluded word "${x}" is not in the dictionary`); });
+  if (rel.length > 6) warn.push(`${e.hanzi}: ${rel.length} curated related words — keep only the ones genuinely used together`);
+  rel.forEach((r) => {                                  // a link should usually work both ways (or be found automatically)
+    const other = MSC.dict.get(r);
+    if (!other) return;
+    const back = MSC.dict.related(other, 99).some((g) => g.items.some((i) => i.hanzi === e.hanzi));
+    if (!back) warn.push(`${e.hanzi} → ${r} is one-way (${r} doesn't list ${e.hanzi}); fine if intended`);
+  });
+});
+
 // ── characters ──
 const used = new Set();
 MSC.data.dictionary.forEach((e) => [...e.hanzi].forEach((c) => used.add(c)));

@@ -9,8 +9,11 @@
  *   pos        Part of speech. Use 'phrase' for set expressions — phrases are listed first in "Related".
  *   category   Notebook filter group.
  *   starter    true = in the notebook from the start (the HSK 1 starter deck).
- *   related    Optional curated list of hanzi that are often used together with this word.
- *              Phrases that contain the word, sub-words and compounds are found automatically.
+ *   related    Curated hanzi that really belong with this word: collocations (喝 → 咖啡), measure-word pairs,
+ *              near-synonyms and opposites (热/冰, 二/两, 但是/可是). May include the word's own character
+ *              (看看 → 看). Don't add words that are merely in the same topic.
+ *   exclude    Hanzi the AUTOMATIC lists must not show for this word because the meaning is lost in the compound
+ *              (在 ↛ 现在, 水 ↛ 水果). Phrases / compounds containing the word are otherwise found automatically.
  *   note       Optional usage note shown in the word pane.
  *
  * Character components (radicals) live in data/characters.js.
@@ -20,38 +23,38 @@
   MSC.data = MSC.data || {};
   MSC.data.dictionary = [
     // ───────────── Pronouns & People ─────────────
-    { hanzi: '我', pinyin: 'wǒ', pinyinNum: 'wo3', english: 'I / me', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['我们', '你'] },
-    { hanzi: '你', pinyin: 'nǐ', pinyinNum: 'ni3', english: 'you', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['我', '他'] },
-    { hanzi: '他', pinyin: 'tā', pinyinNum: 'ta1', english: 'he / him', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['我', '你'] },
-    { hanzi: '我们', pinyin: 'wǒmen', pinyinNum: 'wo3 men5', english: 'we / us', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['你', '他'] },
+    { hanzi: '我', pinyin: 'wǒ', pinyinNum: 'wo3', english: 'I / me', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['你'] },
+    { hanzi: '你', pinyin: 'nǐ', pinyinNum: 'ni3', english: 'you', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['我'] },
+    { hanzi: '他', pinyin: 'tā', pinyinNum: 'ta1', english: 'he / him', pos: 'pronoun', category: 'Pronouns & People', starter: true },
+    { hanzi: '我们', pinyin: 'wǒmen', pinyinNum: 'wo3 men5', english: 'we / us', pos: 'pronoun', category: 'Pronouns & People', starter: true },
     { hanzi: '老板', pinyin: 'lǎobǎn', pinyinNum: 'lao3 ban3', english: 'boss / shop owner', pos: 'noun', category: 'Pronouns & People', starter: true, related: ['林', '店'] },
-    { hanzi: '路人', pinyin: 'lùrén', pinyinNum: 'lu4 ren2', english: 'passer-by', pos: 'noun', category: 'Pronouns & People', starter: true },
-    { hanzi: '谁', pinyin: 'shéi', pinyinNum: 'shei2', english: 'who', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['什么', '哪里'] },
-    { hanzi: '什么', pinyin: 'shénme', pinyinNum: 'shen2 me5', english: 'what', pos: 'pronoun', category: 'Pronouns & People', related: ['谁', '哪里'] },
-    { hanzi: '这', pinyin: 'zhè', pinyinNum: 'zhe4', english: 'this', pos: 'pronoun', category: 'Pronouns & People', related: ['这里', '这个'] },
+    { hanzi: '路人', pinyin: 'lùrén', pinyinNum: 'lu4 ren2', english: 'passer-by', pos: 'noun', category: 'Pronouns & People', starter: true, related: ['请问'] },
+    { hanzi: '谁', pinyin: 'shéi', pinyinNum: 'shei2', english: 'who', pos: 'pronoun', category: 'Pronouns & People', starter: true, related: ['什么'] },
+    { hanzi: '什么', pinyin: 'shénme', pinyinNum: 'shen2 me5', english: 'what', pos: 'pronoun', category: 'Pronouns & People', related: ['谁'] },
+    { hanzi: '这', pinyin: 'zhè', pinyinNum: 'zhe4', english: 'this', pos: 'pronoun', category: 'Pronouns & People' },
     { hanzi: '这个', pinyin: 'zhège', pinyinNum: 'zhe4 ge5', english: 'this one', pos: 'pronoun', category: 'Pronouns & People', related: ['多少钱'] },
     { hanzi: '人', pinyin: 'rén', pinyinNum: 'ren2', english: 'person', pos: 'noun', category: 'Pronouns & People' },
     { hanzi: '林', pinyin: 'Lín', pinyinNum: 'lin2', english: 'Lin (a surname)', pos: 'name', category: 'Pronouns & People', related: ['老板'] },
 
     // ───────────── Verbs ─────────────
-    { hanzi: '是', pinyin: 'shì', pinyinNum: 'shi4', english: 'to be (am / is / are)', pos: 'verb', category: 'Verbs', starter: true, related: ['不'] },
-    { hanzi: '要', pinyin: 'yào', pinyinNum: 'yao4', english: 'to want / would like', pos: 'verb', category: 'Verbs', starter: true, related: ['想', '不'], note: '我要… is the most direct way to order something.' },
-    { hanzi: '想', pinyin: 'xiǎng', pinyinNum: 'xiang3', english: 'to want to / to think', pos: 'verb', category: 'Verbs', starter: true, related: ['要', '喜欢'] },
-    { hanzi: '喝', pinyin: 'hē', pinyinNum: 'he1', english: 'to drink', pos: 'verb', category: 'Verbs', starter: true, related: ['咖啡', '茶', '水', '饮料'] },
-    { hanzi: '吃', pinyin: 'chī', pinyinNum: 'chi1', english: 'to eat', pos: 'verb', category: 'Verbs', starter: true, related: ['米饭', '包子', '喝'] },
+    { hanzi: '是', pinyin: 'shì', pinyinNum: 'shi4', english: 'to be (am / is / are)', pos: 'verb', category: 'Verbs', starter: true, related: ['不'], exclude: ['还是', '但是', '可是'] },
+    { hanzi: '要', pinyin: 'yào', pinyinNum: 'yao4', english: 'to want / would like', pos: 'verb', category: 'Verbs', starter: true, related: ['想'], note: '我要… is the most direct way to order something.' },
+    { hanzi: '想', pinyin: 'xiǎng', pinyinNum: 'xiang3', english: 'to want to / to think', pos: 'verb', category: 'Verbs', starter: true, related: ['要'] },
+    { hanzi: '喝', pinyin: 'hē', pinyinNum: 'he1', english: 'to drink', pos: 'verb', category: 'Verbs', starter: true, related: ['咖啡', '茶', '水', '饮料', '口'] },
+    { hanzi: '吃', pinyin: 'chī', pinyinNum: 'chi1', english: 'to eat', pos: 'verb', category: 'Verbs', starter: true, related: ['米饭', '包子', '喝', '口'] },
     { hanzi: '买', pinyin: 'mǎi', pinyinNum: 'mai3', english: 'to buy', pos: 'verb', category: 'Verbs', starter: true, related: ['多少钱', '钱', '块'] },
     { hanzi: '去', pinyin: 'qù', pinyinNum: 'qu4', english: 'to go', pos: 'verb', category: 'Verbs', starter: true, related: ['来', '哪里'] },
-    { hanzi: '在', pinyin: 'zài', pinyinNum: 'zai4', english: 'to be at / in', pos: 'verb', category: 'Verbs', starter: true, related: ['哪里', '这里', '前面'], note: 'Place + 在 + location: 咖啡店在前面.' },
-    { hanzi: '喜欢', pinyin: 'xǐhuan', pinyinNum: 'xi3 huan5', english: 'to like', pos: 'verb', category: 'Verbs', starter: true, related: ['想', '要'] },
+    { hanzi: '在', pinyin: 'zài', pinyinNum: 'zai4', english: 'to be at / in', pos: 'verb', category: 'Verbs', starter: true, related: ['哪里', '这里', '前面'], exclude: ['现在'], note: 'Place + 在 + location: 咖啡店在前面.' },
+    { hanzi: '喜欢', pinyin: 'xǐhuan', pinyinNum: 'xi3 huan5', english: 'to like', pos: 'verb', category: 'Verbs', starter: true, related: ['吃', '喝'] },
     { hanzi: '有', pinyin: 'yǒu', pinyinNum: 'you3', english: 'to have / there is', pos: 'verb', category: 'Verbs', related: ['没'] },
-    { hanzi: '看', pinyin: 'kàn', pinyinNum: 'kan4', english: 'to look / to read / to watch', pos: 'verb', category: 'Verbs', related: ['看看', '菜单'] },
-    { hanzi: '看看', pinyin: 'kànkan', pinyinNum: 'kan4 kan5', english: 'to have a look', pos: 'verb', category: 'Verbs', related: ['菜单'], note: 'Doubling a verb (看 → 看看) makes it brief and casual: "take a quick look".' },
-    { hanzi: '想想', pinyin: 'xiǎngxiang', pinyinNum: 'xiang3 xiang5', english: 'to think it over', pos: 'verb', category: 'Verbs', note: 'Doubled verb, like 看看: "have a think".' },
+    { hanzi: '看', pinyin: 'kàn', pinyinNum: 'kan4', english: 'to look / to read / to watch', pos: 'verb', category: 'Verbs', related: ['看看', '菜单', '目'] },
+    { hanzi: '看看', pinyin: 'kànkan', pinyinNum: 'kan4 kan5', english: 'to have a look', pos: 'verb', category: 'Verbs', related: ['看', '菜单'], note: 'Doubling a verb (看 → 看看) makes it brief and casual: "take a quick look".' },
+    { hanzi: '想想', pinyin: 'xiǎngxiang', pinyinNum: 'xiang3 xiang5', english: 'to think it over', pos: 'verb', category: 'Verbs', related: ['想', '看看'], note: 'Doubled verb, like 看看: "have a think".' },
     { hanzi: '说', pinyin: 'shuō', pinyinNum: 'shuo1', english: 'to say / to speak', pos: 'verb', category: 'Verbs', related: ['听'] },
     { hanzi: '听', pinyin: 'tīng', pinyinNum: 'ting1', english: 'to listen / to hear', pos: 'verb', category: 'Verbs', related: ['说', '清楚'] },
-    { hanzi: '听懂', pinyin: 'tīngdǒng', pinyinNum: 'ting1 dong3', english: 'to understand (by listening)', pos: 'verb', category: 'Verbs', related: ['清楚'] },
+    { hanzi: '听懂', pinyin: 'tīngdǒng', pinyinNum: 'ting1 dong3', english: 'to understand (by listening)', pos: 'verb', category: 'Verbs', related: ['听', '清楚'] },
     { hanzi: '找', pinyin: 'zhǎo', pinyinNum: 'zhao3', english: 'to look for', pos: 'verb', category: 'Verbs' },
-    { hanzi: '找到', pinyin: 'zhǎodào', pinyinNum: 'zhao3 dao4', english: 'to find', pos: 'verb', category: 'Verbs', related: ['在哪里'] },
+    { hanzi: '找到', pinyin: 'zhǎodào', pinyinNum: 'zhao3 dao4', english: 'to find', pos: 'verb', category: 'Verbs', related: ['找'] },
     { hanzi: '给', pinyin: 'gěi', pinyinNum: 'gei3', english: 'to give / for', pos: 'verb', category: 'Verbs', related: ['你'] },
     { hanzi: '来', pinyin: 'lái', pinyinNum: 'lai2', english: 'to come', pos: 'verb', category: 'Verbs', related: ['去', '欢迎'] },
     { hanzi: '试', pinyin: 'shì', pinyinNum: 'shi4', english: 'to try', pos: 'verb', category: 'Verbs', related: ['再', '次'] },
@@ -59,13 +62,13 @@
     { hanzi: '请', pinyin: 'qǐng', pinyinNum: 'qing3', english: 'please / to invite', pos: 'verb', category: 'Verbs' },
     { hanzi: '欢迎', pinyin: 'huānyíng', pinyinNum: 'huan1 ying2', english: 'to welcome', pos: 'verb', category: 'Verbs', related: ['来'] },
     { hanzi: '点', pinyin: 'diǎn', pinyinNum: 'dian3', english: 'a little; to order (food)', pos: 'verb', category: 'Verbs', related: ['菜单'] },
-    { hanzi: '可以', pinyin: 'kěyǐ', pinyinNum: 'ke3 yi3', english: 'can / may', pos: 'verb', category: 'Verbs', related: ['想', '要'] },
+    { hanzi: '可以', pinyin: 'kěyǐ', pinyinNum: 'ke3 yi3', english: 'can / may', pos: 'verb', category: 'Verbs', related: ['会'] },
     { hanzi: '握', pinyin: 'wò', pinyinNum: 'wo4', english: 'to grasp / to hold', pos: 'verb', category: 'Verbs', note: 'Sounds like 我 (wǒ) but with a 4th tone.' },
 
     // ───────────── Food & Drink ─────────────
     { hanzi: '咖啡', pinyin: 'kāfēi', pinyinNum: 'ka1 fei1', english: 'coffee', pos: 'noun', category: 'Food & Drink', starter: true, related: ['杯', '喝', '冰', '热'] },
     { hanzi: '茶', pinyin: 'chá', pinyinNum: 'cha2', english: 'tea', pos: 'noun', category: 'Food & Drink', starter: true, related: ['杯', '喝', '热'] },
-    { hanzi: '水', pinyin: 'shuǐ', pinyinNum: 'shui3', english: 'water', pos: 'noun', category: 'Food & Drink', starter: true, related: ['杯', '喝'] },
+    { hanzi: '水', pinyin: 'shuǐ', pinyinNum: 'shui3', english: 'water', pos: 'noun', category: 'Food & Drink', starter: true, related: ['杯', '喝', '火'], exclude: ['水果', '水果摊'] },
     { hanzi: '牛奶', pinyin: 'niúnǎi', pinyinNum: 'niu2 nai3', english: 'milk', pos: 'noun', category: 'Food & Drink', starter: true, related: ['杯', '喝'] },
     { hanzi: '牛肉面', pinyin: 'niúròumiàn', pinyinNum: 'niu2 rou4 mian4', english: 'beef noodles', pos: 'noun', category: 'Food & Drink', starter: true, related: ['碗', '吃'] },
     { hanzi: '苹果', pinyin: 'píngguǒ', pinyinNum: 'ping2 guo3', english: 'apple', pos: 'noun', category: 'Food & Drink', starter: true, related: ['个', '水果', '买'] },
@@ -84,7 +87,7 @@
     { hanzi: '菜', pinyin: 'cài', pinyinNum: 'cai4', english: 'dish / vegetable', pos: 'noun', category: 'Food & Drink' },
 
     // ───────────── Numbers & Measures ─────────────
-    { hanzi: '一', pinyin: 'yī', pinyinNum: 'yi1', english: 'one', pos: 'number', category: 'Numbers & Measures', starter: true, related: ['两', '二'], note: 'Often said yí or yì depending on the next tone (一共 yígòng, 一点 yìdiǎn).' },
+    { hanzi: '一', pinyin: 'yī', pinyinNum: 'yi1', english: 'one', pos: 'number', category: 'Numbers & Measures', starter: true, exclude: ['一样'], note: 'Often said yí or yì depending on the next tone (一共 yígòng, 一点 yìdiǎn).' },
     { hanzi: '二', pinyin: 'èr', pinyinNum: 'er4', english: 'two (when counting)', pos: 'number', category: 'Numbers & Measures', starter: true, related: ['两'], note: 'Before a measure word use 两, not 二.' },
     { hanzi: '两', pinyin: 'liǎng', pinyinNum: 'liang3', english: 'two (before measure words)', pos: 'number', category: 'Numbers & Measures', starter: true, related: ['二', '个', '杯', '碗'] },
     { hanzi: '三', pinyin: 'sān', pinyinNum: 'san1', english: 'three', pos: 'number', category: 'Numbers & Measures', starter: true },
@@ -96,9 +99,9 @@
     { hanzi: '九', pinyin: 'jiǔ', pinyinNum: 'jiu3', english: 'nine', pos: 'number', category: 'Numbers & Measures' },
     { hanzi: '十', pinyin: 'shí', pinyinNum: 'shi2', english: 'ten', pos: 'number', category: 'Numbers & Measures', starter: true },
     { hanzi: '万', pinyin: 'wàn', pinyinNum: 'wan4', english: 'ten thousand', pos: 'number', category: 'Numbers & Measures', note: 'Sounds like 碗 (wǎn) but with a 4th tone.' },
-    { hanzi: '个', pinyin: 'gè', pinyinNum: 'ge4', english: 'general measure word', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['两', '苹果', '包子'], note: 'Often toneless (ge) in speech.' },
-    { hanzi: '杯', pinyin: 'bēi', pinyinNum: 'bei1', english: 'cup / glass (measure word)', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['咖啡', '茶', '牛奶', '水'] },
-    { hanzi: '碗', pinyin: 'wǎn', pinyinNum: 'wan3', english: 'bowl (measure word)', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['米饭', '牛肉面'] },
+    { hanzi: '个', pinyin: 'gè', pinyinNum: 'ge4', english: 'general measure word', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['两', '苹果', '包子', '量词'], note: 'Often toneless (ge) in speech.' },
+    { hanzi: '杯', pinyin: 'bēi', pinyinNum: 'bei1', english: 'cup / glass (measure word)', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['咖啡', '茶', '牛奶', '水', '量词'] },
+    { hanzi: '碗', pinyin: 'wǎn', pinyinNum: 'wan3', english: 'bowl (measure word)', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['米饭', '牛肉面', '量词'] },
     { hanzi: '块', pinyin: 'kuài', pinyinNum: 'kuai4', english: 'yuan (spoken unit of money)', pos: 'measure', category: 'Numbers & Measures', starter: true, related: ['钱', '多少钱'] },
     { hanzi: '次', pinyin: 'cì', pinyinNum: 'ci4', english: 'time(s) — measure for occurrences', pos: 'measure', category: 'Numbers & Measures', related: ['遍'] },
     { hanzi: '遍', pinyin: 'biàn', pinyinNum: 'bian4', english: 'time(s) — once through, start to finish', pos: 'measure', category: 'Numbers & Measures', related: ['次'] },
@@ -107,7 +110,7 @@
     { hanzi: '一共', pinyin: 'yīgòng', pinyinNum: 'yi1 gong4', english: 'altogether / in total', pos: 'adv', category: 'Numbers & Measures', related: ['多少钱', '块'] },
     { hanzi: '一点', pinyin: 'yīdiǎn', pinyinNum: 'yi1 dian3', english: 'a little', pos: 'adv', category: 'Numbers & Measures' },
     { hanzi: '第', pinyin: 'dì', pinyinNum: 'di4', english: 'ordinal prefix (第三 = third)', pos: 'prefix', category: 'Numbers & Measures' },
-    { hanzi: '数字', pinyin: 'shùzì', pinyinNum: 'shu4 zi4', english: 'number / digit', pos: 'noun', category: 'Numbers & Measures' },
+    { hanzi: '数字', pinyin: 'shùzì', pinyinNum: 'shu4 zi4', english: 'number / digit', pos: 'noun', category: 'Numbers & Measures', related: ['字'] },
     { hanzi: '钱', pinyin: 'qián', pinyinNum: 'qian2', english: 'money', pos: 'noun', category: 'Numbers & Measures', related: ['块', '买'] },
 
     // ───────────── Directions & Places ─────────────
@@ -134,23 +137,23 @@
     { hanzi: '方向', pinyin: 'fāngxiàng', pinyinNum: 'fang1 xiang4', english: 'direction', pos: 'noun', category: 'Directions & Places', related: ['左边', '右边', '前面'] },
 
     // ───────────── Time & Adjectives ─────────────
-    { hanzi: '今天', pinyin: 'jīntiān', pinyinNum: 'jin1 tian1', english: 'today', pos: 'time', category: 'Time & Adjectives', starter: true, related: ['现在'] },
+    { hanzi: '今天', pinyin: 'jīntiān', pinyinNum: 'jin1 tian1', english: 'today', pos: 'time', category: 'Time & Adjectives', starter: true, related: ['现在', '日'] },
     { hanzi: '现在', pinyin: 'xiànzài', pinyinNum: 'xian4 zai4', english: 'now', pos: 'time', category: 'Time & Adjectives', starter: true, related: ['今天'] },
     { hanzi: '热', pinyin: 'rè', pinyinNum: 're4', english: 'hot', pos: 'adj', category: 'Time & Adjectives', starter: true, related: ['冰', '茶', '咖啡'] },
     { hanzi: '冰', pinyin: 'bīng', pinyinNum: 'bing1', english: 'ice / iced', pos: 'adj', category: 'Time & Adjectives', starter: true, related: ['热', '咖啡', '水'] },
-    { hanzi: '好吃', pinyin: 'hǎochī', pinyinNum: 'hao3 chi1', english: 'delicious', pos: 'adj', category: 'Time & Adjectives', starter: true },
-    { hanzi: '好', pinyin: 'hǎo', pinyinNum: 'hao3', english: 'good / well', pos: 'adj', category: 'Time & Adjectives', related: ['对'] },
+    { hanzi: '好吃', pinyin: 'hǎochī', pinyinNum: 'hao3 chi1', english: 'delicious', pos: 'adj', category: 'Time & Adjectives', starter: true, related: ['好', '吃'] },
+    { hanzi: '好', pinyin: 'hǎo', pinyinNum: 'hao3', english: 'good / well', pos: 'adj', category: 'Time & Adjectives', related: ['对', '女'], exclude: ['不好意思'] },
     { hanzi: '对', pinyin: 'duì', pinyinNum: 'dui4', english: 'right / correct', pos: 'adj', category: 'Time & Adjectives', related: ['不', '好的'] },
     { hanzi: '一样', pinyin: 'yīyàng', pinyinNum: 'yi1 yang4', english: 'the same', pos: 'adj', category: 'Time & Adjectives' },
     { hanzi: '清楚', pinyin: 'qīngchu', pinyinNum: 'qing1 chu5', english: 'clear', pos: 'adj', category: 'Time & Adjectives', related: ['听'] },
-    { hanzi: '多', pinyin: 'duō', pinyinNum: 'duo1', english: 'many / much', pos: 'adj', category: 'Time & Adjectives', related: ['太'] },
+    { hanzi: '多', pinyin: 'duō', pinyinNum: 'duo1', english: 'many / much', pos: 'adj', category: 'Time & Adjectives', related: ['太'], exclude: ['差不多'] },
     { hanzi: '够', pinyin: 'gòu', pinyinNum: 'gou4', english: 'enough', pos: 'adj', category: 'Time & Adjectives', related: ['钱'] },
 
     // ───────────── Everyday Phrases ─────────────
     { hanzi: '你好', pinyin: 'nǐ hǎo', pinyinNum: 'ni3 hao3', english: 'hello', pos: 'phrase', category: 'Everyday Phrases', related: ['再见'] },
     { hanzi: '谢谢', pinyin: 'xièxie', pinyinNum: 'xie4 xie5', english: 'thank you', pos: 'phrase', category: 'Everyday Phrases', starter: true, related: ['再见'] },
     { hanzi: '多少钱', pinyin: 'duōshao qián', pinyinNum: 'duo1 shao5 qian2', english: 'how much (does it cost)?', pos: 'phrase', category: 'Everyday Phrases', starter: true, related: ['一共', '块', '买'] },
-    { hanzi: '请问', pinyin: 'qǐngwèn', pinyinNum: 'qing3 wen4', english: 'excuse me, may I ask…', pos: 'phrase', category: 'Everyday Phrases', starter: true, related: ['哪里', '不好意思'] },
+    { hanzi: '请问', pinyin: 'qǐngwèn', pinyinNum: 'qing3 wen4', english: 'excuse me, may I ask…', pos: 'phrase', category: 'Everyday Phrases', starter: true, related: ['哪里', '不好意思', '问题'] },
     { hanzi: '欢迎光临', pinyin: 'huānyíng guānglín', pinyinNum: 'huan1 ying2 guang1 lin2', english: 'welcome! (said by shop staff)', pos: 'phrase', category: 'Everyday Phrases', related: ['你好'] },
     { hanzi: '好的', pinyin: 'hǎo de', pinyinNum: 'hao3 de5', english: 'OK / sure', pos: 'phrase', category: 'Everyday Phrases', related: ['对'] },
     { hanzi: '太好了', pinyin: 'tài hǎo le', pinyinNum: 'tai4 hao3 le5', english: 'great! / wonderful!', pos: 'phrase', category: 'Everyday Phrases', related: ['太棒了'] },
@@ -174,7 +177,7 @@
     { hanzi: '竖', pinyin: 'shù', pinyinNum: 'shu4', english: 'vertical stroke', pos: 'noun', category: 'Language & Learning', related: ['横', '先横后竖'] },
     { hanzi: '后', pinyin: 'hòu', pinyinNum: 'hou4', english: 'after / behind', pos: 'adv', category: 'Time & Adjectives', related: ['后面', '先'] },
     { hanzi: '先横后竖', pinyin: 'xiān héng hòu shù', pinyinNum: 'xian1 heng2 hou4 shu4', english: 'horizontal first, then vertical (stroke-order rule)', pos: 'phrase', category: 'Language & Learning', related: ['横', '竖', '写字'], note: 'Master Wang’s favourite rule: in a crossing like 十, write the horizontal stroke before the vertical one.' },
-    { hanzi: '中文', pinyin: 'zhōngwén', pinyinNum: 'zhong1 wen2', english: 'Chinese (language)', pos: 'noun', category: 'Language & Learning', related: ['说', '写字'] },
+    { hanzi: '中文', pinyin: 'zhōngwén', pinyinNum: 'zhong1 wen2', english: 'Chinese (language)', pos: 'noun', category: 'Language & Learning', related: ['说', '写字', '中'] },
 
     // ───────────── Basic characters taught at Master Wang's stall ─────────────
     { hanzi: '入', pinyin: 'rù', pinyinNum: 'ru4', english: 'to enter', pos: 'verb', category: 'Verbs', note: 'Easy to mix up with 人 (person): in 入 the long stroke is on the right.' },
@@ -188,7 +191,7 @@
     { hanzi: '月', pinyin: 'yuè', pinyinNum: 'yue4', english: 'moon / month', pos: 'noun', category: 'Time & Adjectives', related: ['日'] },
     { hanzi: '木', pinyin: 'mù', pinyinNum: 'mu4', english: 'tree / wood', pos: 'noun', category: 'Body & Nature' },
     { hanzi: '山', pinyin: 'shān', pinyinNum: 'shan1', english: 'mountain', pos: 'noun', category: 'Body & Nature' },
-    { hanzi: '火', pinyin: 'huǒ', pinyinNum: 'huo3', english: 'fire', pos: 'noun', category: 'Body & Nature', related: ['火车', '水'] },
+    { hanzi: '火', pinyin: 'huǒ', pinyinNum: 'huo3', english: 'fire', pos: 'noun', category: 'Body & Nature', related: ['水'], exclude: ['火车', '火车站'] },
     { hanzi: '目', pinyin: 'mù', pinyinNum: 'mu4', english: 'eye (formal)', pos: 'noun', category: 'Body & Nature', related: ['看'], note: 'Easy to mix up with 日 (sun): 目 has two lines inside the box.' },
     { hanzi: '女', pinyin: 'nǚ', pinyinNum: 'nv3', english: 'woman / female', pos: 'noun', category: 'Pronouns & People', related: ['好'] },
 
@@ -200,10 +203,10 @@
     { hanzi: '哦', pinyin: 'o', pinyinNum: 'o5', english: 'particle: friendly, softening tone', pos: 'particle', category: 'Particles & Connectors' },
     { hanzi: '哈哈', pinyin: 'hāhā', pinyinNum: 'ha1 ha1', english: 'haha', pos: 'interjection', category: 'Particles & Connectors' },
     { hanzi: '们', pinyin: 'men', pinyinNum: 'men5', english: 'plural suffix (for people)', pos: 'suffix', category: 'Particles & Connectors' },
-    { hanzi: '不', pinyin: 'bù', pinyinNum: 'bu4', english: 'not / no', pos: 'adv', category: 'Particles & Connectors', related: ['没'], note: 'Becomes bú before a 4th tone: 不是 búshì, 不对 búduì.' },
+    { hanzi: '不', pinyin: 'bù', pinyinNum: 'bu4', english: 'not / no', pos: 'adv', category: 'Particles & Connectors', related: ['没'], exclude: ['不过'], note: 'Becomes bú before a 4th tone: 不是 búshì, 不对 búduì.' },
     { hanzi: '没', pinyin: 'méi', pinyinNum: 'mei2', english: 'not (did not / have not)', pos: 'adv', category: 'Particles & Connectors', related: ['不', '有'] },
     { hanzi: '还是', pinyin: 'háishi', pinyinNum: 'hai2 shi5', english: 'or (in questions)', pos: 'conj', category: 'Particles & Connectors', related: ['和', '或'], note: 'Use 还是 for "or" in questions; 和 means "and".' },
-    { hanzi: '和', pinyin: 'hé', pinyinNum: 'he2', english: 'and (between nouns)', pos: 'conj', category: 'Particles & Connectors', related: ['还是'] },
+    { hanzi: '和', pinyin: 'hé', pinyinNum: 'he2', english: 'and (between nouns)', pos: 'conj', category: 'Particles & Connectors', related: ['还是', '或'] },
     { hanzi: '或', pinyin: 'huò', pinyinNum: 'huo4', english: 'or (in statements)', pos: 'conj', category: 'Particles & Connectors', related: ['还是', '和'] },
     { hanzi: '但是', pinyin: 'dànshì', pinyinNum: 'dan4 shi4', english: 'but', pos: 'conj', category: 'Particles & Connectors', related: ['可是', '不过'] },
     { hanzi: '可是', pinyin: 'kěshì', pinyinNum: 'ke3 shi4', english: 'but', pos: 'conj', category: 'Particles & Connectors', related: ['但是', '不过'] },

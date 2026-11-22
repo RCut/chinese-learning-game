@@ -35,8 +35,9 @@
     const groups = D.related(entry).map((g) =>
       `<div class="group-t">${g.title}</div><div class="chip-list">${g.items.map((i) => chip(i.hanzi)).join('')}</div>`).join('');
     pane.innerHTML = `
+      <div class="pane-handle" data-pane-drag><i></i></div>
       <button class="pane-close" data-click="close-pane" aria-label="Close">✕</button>
-      <div class="row" style="align-items:flex-start;gap:12px">
+      <div class="row" data-pane-drag style="align-items:flex-start;gap:12px">
         <div class="grow"><div class="wp-hz hz">${U.esc(entry.hanzi)}</div><div class="wp-py">${U.esc(entry.pinyin)}</div>
           <div style="font-weight:700;margin-top:2px">${U.esc(entry.english)}</div><div class="sub">${U.esc(entry.pos)} · ${U.esc(entry.category)}</div></div>
         <button class="say-btn" style="margin-right:36px" data-say="${U.esc(entry.hanzi)}" aria-label="Play">🔊</button>
@@ -70,6 +71,29 @@
   };
 
   MSC.on('writing-changed', () => NB.render(true));
+
+  // On phones the details are a bottom sheet: swipe it down (from the handle or the title) to close it.
+  (() => {
+    const pane = document.getElementById('word-pane');
+    let y0 = null;
+    const sheet = () => window.matchMedia('(max-width: 1023px)').matches;
+    pane.addEventListener('pointerdown', (e) => {
+      const h = e.target.closest('[data-pane-drag]');
+      if (!sheet() || !h || e.target.closest('button')) return;
+      y0 = e.clientY; pane.style.transition = 'none';
+      try { h.setPointerCapture(e.pointerId); } catch (err) { /* fine */ }
+    });
+    pane.addEventListener('pointermove', (e) => { if (y0 !== null) pane.style.transform = `translateY(${Math.max(0, e.clientY - y0)}px)`; });
+    const end = (e) => {
+      if (y0 === null) return;
+      const dy = e.clientY - y0; y0 = null;
+      pane.style.transition = '';
+      pane.style.transform = '';
+      if (e.type !== 'pointercancel' && dy > 90) { S.selectedWord = null; NB.render(true); }
+    };
+    pane.addEventListener('pointerup', end);
+    pane.addEventListener('pointercancel', end);
+  })();
   MSC.actions['open-word'] = (hanzi) => { S.selectedWord = hanzi; NB.render(); };
   MSC.actions['close-pane'] = () => { S.selectedWord = null; NB.render(); };
   MSC.actions.cat = (c) => { S.category = c; NB.render(); };

@@ -46,8 +46,11 @@ dictionary (dialogue pinyin is generated from the dictionary, so a word must exi
 
 - **Add a word:** one line in `data/dictionary.js` (+ its characters in `data/characters.js`).
   `starter: true` puts it in the notebook from the start; otherwise it is learned when first seen.
-- **Related words:** automatic (phrases that contain it, parts, words it appears in) plus the optional
-  curated `related: [...]` list on the entry — keep that list to words genuinely used together.
+- **Related words:** the details panel lists, in this order, (1) set *phrases* that contain the word, (2) the entry's
+  curated `related: [...]` — collocations (喝 → 咖啡), measure-word pairs, near-synonyms and opposites (热/冰, 二/两) —
+  (3) shorter words it is built from (火车站 → 火车), (4) longer words that contain it. Capped at 8. If a compound
+  has lost the meaning of a part (在 ↛ 现在, 水 ↛ 水果) add it to that word's `exclude: [...]`. The validator rejects
+  dead links, self-links and duplicates, and warns about one-way links.
 - **Add a menu item / price range:** `data/menu.js`. Orders, accepted answers, tiles and the
   grammar hint are all derived from it.
 - **Change a line of dialogue or a hint:** `data/quests.js`.
@@ -59,6 +62,8 @@ dictionary (dialogue pinyin is generated from the dictionary, so a word must exi
 - **Money:** one wallet (header chip). Paying Barista Lin or the fruit stall deducts from it; tips add to it.
   Each new café order is built from what you can actually afford; if you can't afford anything, Lin says so.
 - **Audio:** tap a word to hear it, hold for the meaning, 🔊 for the whole sentence.
+- **Popups:** every toast has a ✕ and can be swiped away (hold one to keep reading); "Clear all" appears when two or more
+  stack up. The first-time tip swipes away too, and the notebook's phone bottom sheet closes with a swipe down.
 
 ## Master Wang — learning to write (王师傅)
 
@@ -92,6 +97,8 @@ Wang's stall is on the street from the first minute (no quest needed).
 node tools/check-data.js                 # data validator
 node tests/stroke-match.test.js          # stroke matcher against all 42 characters (clean + shaky input)
 node tests/validator.test.js             # proves the validator flags each content problem
+node tests/related.test.js               # the "related words" panel only shows genuinely related words
+node tests/e2e-popups.js                 # browser: every popup dismisses with ✕ or a swipe (desktop + phone)
 node tests/e2e-writing.js                # browser: tutorial, a full lesson, wall, notebook (needs playwright)
 node tests/e2e-writing-rules.js          # browser: feedback, hints, review, practice, offers, phone touch
 ```

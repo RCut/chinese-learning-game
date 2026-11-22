@@ -173,23 +173,24 @@
   };
 
   /**
-   * Related words, most useful first:
-   *   1. phrases that contain this word
-   *   2. curated "often used with" words
-   *   3. words it is built from (multi-character sub-words)
-   *   4. words that contain it
-   * The word's own characters are never repeated here (they are listed under "Characters").
+   * Related words, most useful first (the whole panel is capped at `limit`, so phrases always win the slots):
+   *   1. Phrases      — set phrases that contain this word (你好, 太好了)
+   *   2. Used with    — curated: collocations, measure-word pairs, near-synonyms and opposites (data: `related`)
+   *   3. Built from   — shorter words a longer word is made of (火车站 → 火车)
+   *   4. Part of      — longer words that contain it (牛 → 牛奶)
+   * Anything in the entry's `exclude` list is skipped by the automatic groups (meaning lost in the compound).
    */
   D.related = (entry, limit = 8) => {
-    const used = new Set([entry.hanzi, ...entry.hanzi]);
+    const h = entry.hanzi;
+    const used = new Set([h, ...(entry.exclude || [])]);
+    let room = limit;
     const take = (list) => {
       const out = [];
       list.forEach((e) => {
-        if (e && !used.has(e.hanzi) && out.length < limit) { used.add(e.hanzi); out.push(e); }
+        if (e && room > 0 && !used.has(e.hanzi)) { used.add(e.hanzi); out.push(e); room--; }
       });
       return out;
     };
-    const h = entry.hanzi;
     const containing = entries.filter((e) => e.hanzi !== h && e.hanzi.includes(h));
     const phrases = take(containing.filter((e) => e.pos === 'phrase'));
     const curated = take((entry.related || []).map((r) => byHanzi.get(r)));
@@ -197,12 +198,12 @@
       ? take(entries.filter((e) => e.hanzi.length > 1 && e.hanzi.length < h.length && h.includes(e.hanzi))
         .sort((a, b) => h.indexOf(a.hanzi) - h.indexOf(b.hanzi)))
       : [];
-    const usedIn = take(containing.filter((e) => e.pos !== 'phrase').sort((a, b) => a.hanzi.length - b.hanzi.length));
+    const partOf = take(containing.filter((e) => e.pos !== 'phrase').sort((a, b) => a.hanzi.length - b.hanzi.length));
     return [
       { id: 'phrases', title: 'Phrases', items: phrases },
-      { id: 'with', title: 'Often used with', items: curated },
+      { id: 'with', title: 'Used with', items: curated },
       { id: 'parts', title: 'Built from', items: builtFrom },
-      { id: 'in', title: 'Part of', items: usedIn },
+      { id: 'in', title: 'Part of', items: partOf },
     ].filter((g) => g.items.length);
   };
 

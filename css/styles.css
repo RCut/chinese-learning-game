@@ -255,8 +255,8 @@ button:disabled { cursor: default; }
 #tooltip { position: fixed; z-index: 60; max-width: 270px; padding: 8px 14px; border-radius: 16px; background: rgba(28,25,23,.95); color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.3); border: 1px solid #44403c; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity .1s; }
 #tooltip.show { opacity: 1; visibility: visible; }
 #tooltip .tz { font-size: 13px; font-weight: 700; color: #fcd34d; } #tooltip .te { font-size: 12px; color: #f5f5f4; margin-top: 2px; }
-#toasts { position: fixed; top: 74px; right: 12px; z-index: 55; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; pointer-events: none; max-width: min(340px, calc(100vw - 24px)); }
-.toast { padding: 9px 14px; border-radius: 12px; background: #1c1917; color: #fff; font-size: 12px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.25); animation: toast-in .2s ease; transition: opacity .5s ease, transform .5s ease; line-height: 1.45; }
+#toasts { position: fixed; top: calc(var(--hdr, 56px) + 8px); right: 12px; z-index: 55; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; pointer-events: none; max-width: min(340px, calc(100vw - 24px)); }
+.toast { position: relative; pointer-events: auto; touch-action: pan-y; user-select: none; -webkit-user-select: none; padding: 9px 36px 9px 14px; border-radius: 12px; background: #1c1917; color: #fff; font-size: 12px; font-weight: 600; box-shadow: 0 8px 24px rgba(0,0,0,.25); animation: toast-in .2s ease; transition: opacity .5s ease, transform .5s ease; line-height: 1.45; }
 .toast.vocab { background: #064e3b; }
 .toast.out { opacity: 0; transform: translateY(-6px); }
 .toast .wl-line { display: block; } .toast .wl-line b { font-size: 14px; }
@@ -364,3 +364,24 @@ button:disabled { cursor: default; }
 /* while writing, nothing may sit on top of the board and swallow strokes */
 body.writer-open #onboard { display: none !important; }
 @media (max-width: 899px) { body.writer-open #toasts { top: 8px; } }
+
+/* ───────── dismissing popups ───────── */
+.toast-x { position: absolute; top: 5px; right: 5px; width: 26px; height: 26px; border-radius: 999px; display: grid; place-items: center; background: rgba(255,255,255,.16); color: inherit; font-size: 12px; line-height: 1; }
+.toast-x:hover { background: rgba(255,255,255,.3); }
+.toast.act .toast-x, .toast.plain .toast-x { color: #fff; }
+.toasts-clear { order: -2; display: none; pointer-events: auto; padding: 5px 12px; border-radius: 999px; background: rgba(28,25,23,.9); color: #fff; font-size: 11px; font-weight: 700; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
+.toasts-clear.show { display: inline-flex; }
+#onboard { order: -1; touch-action: pan-y; }
+/* on phones popups are smaller so a stack never takes over the screen */
+@media (max-width: 640px) {
+  #toasts { top: calc(var(--hdr, 56px) + 6px); right: 8px; gap: 6px; max-width: min(290px, calc(100vw - 16px)); }
+  .toast { padding: 7px 34px 7px 11px; font-size: 11.5px; line-height: 1.4; }
+  .toast .wl-line b { font-size: 13px; }
+  #onboard { padding: 10px 12px; font-size: 12.5px; }
+}
+
+/* notebook bottom sheet: drag handle (phones only) */
+.pane-handle { display: grid; place-items: center; height: 20px; margin: -8px 0 6px; }
+.pane-handle i { width: 40px; height: 4px; border-radius: 4px; background: #d6d3d1; }
+[data-pane-drag] { touch-action: none; }
+@media (min-width: 1024px) { .pane-handle { display: none; } [data-pane-drag] { touch-action: auto; } }

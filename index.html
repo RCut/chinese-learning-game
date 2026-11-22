@@ -79,6 +79,9 @@
     </section>
   </main>
 
+  <div id="writer-backdrop" class="writer-backdrop"></div>
+  <section id="writer" class="writer" role="dialog" aria-modal="true" aria-label="Writing practice"></section>
+
   <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
   <div id="toasts" aria-live="polite">
     <div id="onboard" role="status"><div class="grow"><b id="onboard-title"></b><span id="onboard-body"></span></div><button data-click="close-onboard" aria-label="Close">✕</button></div>
@@ -91,23 +94,31 @@
   <script src="data/menu.js"></script>
   <script src="data/quests.js"></script>
   <script src="data/ui-text.js"></script>
+  <script src="data/writing.js"></script>
+  <script src="data/strokes.js"></script>
   <!-- CORE -->
   <script src="js/core/util.js"></script>
   <script src="js/core/dictionary.js"></script>
   <script src="js/core/pinyin.js"></script>
+  <script src="js/core/stroke-match.js"></script>
   <script src="js/core/state.js"></script>
   <script src="js/core/speech.js"></script>
   <!-- UI -->
   <script src="js/ui/toast.js"></script>
   <script src="js/ui/gestures.js"></script>
   <script src="js/ui/text.js"></script>
+  <script src="js/ui/stroke-board.js"></script>
   <!-- GAME -->
   <script src="js/game/economy.js"></script>
   <script src="js/game/stage.js"></script>
   <script src="js/game/barista.js"></script>
   <script src="js/game/quizzes.js"></script>
+  <script src="js/game/writing.js"></script>
   <!-- SCREENS -->
   <script src="js/ui/panel.js"></script>
+  <script src="js/ui/writer.js"></script>
+  <script src="js/ui/wang-panel.js"></script>
+  <script src="js/ui/howto.js"></script>
   <script src="js/ui/notebook.js"></script>
   <script src="js/main.js"></script>
 </body>

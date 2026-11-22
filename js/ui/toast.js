@@ -6,7 +6,10 @@
   let pending = [];
   let timer = null;
 
+  // While the writing tray is open nothing may cover the board: toasts wait and appear when it closes.
+  let held = [];
   function push(html, kind, ms) {
+    if (document.body.classList.contains('writer-open') && kind !== 'tip') { held.push([html, kind, ms]); return; }
     const box = document.getElementById('toasts');
     const el = document.createElement('div');
     el.className = `toast ${kind || ''}`;
@@ -15,6 +18,9 @@
     while (box.querySelectorAll('.toast').length > 3) box.querySelector('.toast').remove();
     setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 550); }, ms);
   }
+
+  /** A toast that may contain buttons (e.g. tappable characters). */
+  T.html = (html, kind, ms) => push(html, kind || 'act', ms || 8000);
 
   T.show = (text, ms) => push(U.esc(text), 'plain', ms || READ_MS.plain);
 
@@ -30,6 +36,8 @@
       push(`✨ ${list.length === 1 ? 'New word' : `${list.length} new words`} added to your notebook${shown}${more}`, 'vocab', READ_MS.vocab + (Math.min(list.length, 3) - 1) * 800);
     }, 200);
   };
+
+  MSC.on('writer-closed', () => { const list = held; held = []; list.forEach(([h, k, m]) => push(h, k, m)); });
 
   T.onboarding = () => {
     const MSCs = MSC.state;

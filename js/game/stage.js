@@ -47,7 +47,23 @@
     playerEl.style.setProperty('--x', S.player.x);
     playerEl.style.setProperty('--y', S.player.y);
     playerEl.classList.toggle('near', !!ST.adjacent());
+    fitLabels();
   };
+
+  /** Name tags are wider than their cell. Slide any tag that would stick out of the board back inside (never clipped). */
+  function fitLabels() {
+    const board = document.getElementById('board');
+    if (!board) return;
+    const b = board.getBoundingClientRect();
+    const labels = [...board.querySelectorAll('.entity-label')];
+    labels.forEach((l) => { l.style.transform = ''; });                     // measure at the natural position
+    labels.forEach((l) => {
+      const r = l.getBoundingClientRect();
+      const shift = r.right > b.right - 3 ? b.right - 3 - r.right : r.left < b.left + 3 ? b.left + 3 - r.left : 0;
+      if (shift) l.style.transform = `translateX(${Math.round(shift)}px)`;
+    });
+  }
+  window.addEventListener('resize', fitLabels);
 
   ST.walkable = (x, y) => {
     if (x < 0 || x >= W.cols || y < 0 || y >= W.rows) return false;
@@ -66,6 +82,7 @@
   ST.activate = (id, speak) => {
     const changed = S.active !== id;
     S.active = id;
+    if (changed && id) MSC.emit('enter', id);        // e.g. Xiao Li starts a new conversation
     ST.refresh();
     if (changed || speak) MSC.panel.render(changed);
     if (speak && id) MSC.speech.say(entityById(id).hanzi);

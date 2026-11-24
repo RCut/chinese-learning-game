@@ -57,6 +57,7 @@
       { id: 'menu', name: 'Café Menu', hanzi: '菜单', emoji: '📋', x: 2, y: 2, stand: { x: 2, y: 3 }, badge: 'badge-stone', pill: 'pill-stone' },
       { id: 'signpost', name: 'Signpost', hanzi: '路牌', emoji: '🪧', x: 2, y: 5, stand: { x: 3, y: 5 }, badge: 'badge-green', pill: 'pill-stone' },
       { id: 'wang', name: 'Master Wang', hanzi: '王师傅', emoji: '🖌️', x: 4, y: 5, stand: { x: 5, y: 5 }, badge: 'badge-ink', pill: 'pill-ink' },
+      { id: 'friend', name: 'Xiao Li', hanzi: '小李', emoji: '🙋', x: 11, y: 4, stand: { x: 10, y: 4 }, badge: 'badge-teal', pill: 'pill-teal' },
       { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 9, y: 5, stand: { x: 8, y: 5 }, badge: 'badge-rose', pill: 'pill-stone' },
       { id: 'passerby', name: 'Traveler', hanzi: '路人', emoji: '🧳', x: 6, y: 6, stand: { x: 6, y: 5 }, badge: 'badge-sky', pill: 'pill-sky' },
     ],

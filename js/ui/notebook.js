@@ -8,6 +8,7 @@
   const NB = (MSC.notebook = {});
   let query = '';
   const CAN_WRITE = 'Can write';
+  const HSK = 'HSK 1–2';
 
   const chip = (hanzi, extraClass) => {
     const e = D.get(hanzi);
@@ -53,18 +54,21 @@
   NB.render = (forcePane) => {
     const writable = S.vocab.filter((h) => MSC.howto.has(h)).length;
     if (S.category === CAN_WRITE && !writable) S.category = 'All';
-    const cats = ['All', ...new Set(S.vocab.map((h) => D.get(h).category)), ...(writable ? [CAN_WRITE] : [])];
+    const hskAll = D.all().filter((e) => e.hsk), hskKnown = hskAll.filter((e) => S.vocabSet.has(e.hanzi)).length;
+    const prog = document.getElementById('hsk-progress');
+    if (prog) prog.innerHTML = `HSK 1–2 words discovered: <b class="num">${hskKnown}</b> / ${hskAll.length}<div class="hsk-bar"><i style="width:${Math.round((100 * hskKnown) / hskAll.length)}%"></i></div>`;
+    const cats = ['All', ...(hskKnown ? [HSK] : []), ...new Set(S.vocab.map((h) => D.get(h).category)), ...(writable ? [CAN_WRITE] : [])];
     document.getElementById('cats').innerHTML = cats.map((c) =>
-      `<button class="cat ${S.category === c ? 'on' : ''}" data-click="cat" data-arg="${U.esc(c)}">${c === CAN_WRITE ? `✍ ${CAN_WRITE} <span class="num">${writable}</span>` : U.esc(c)}</button>`).join('');
+      `<button class="cat ${S.category === c ? 'on' : ''}" data-click="cat" data-arg="${U.esc(c)}">${c === CAN_WRITE ? `✍ ${CAN_WRITE} <span class="num">${writable}</span>` : c === HSK ? `${HSK} <span class="num">${hskKnown}</span>` : U.esc(c)}</button>`).join('');
     const q = query.trim().toLowerCase();
     const list = S.vocab.map((h) => D.get(h)).filter((e) =>
-      (S.category === 'All' || (S.category === CAN_WRITE ? MSC.howto.has(e.hanzi) : e.category === S.category)) &&
+      (S.category === 'All' || (S.category === CAN_WRITE ? MSC.howto.has(e.hanzi) : S.category === HSK ? !!e.hsk : e.category === S.category)) &&
       (!q || e.english.toLowerCase().includes(q) || e.pinyin.toLowerCase().includes(q) || e.pinyinNum.includes(q) || e.hanzi.includes(q)));
     document.getElementById('vgrid').innerHTML = list.map((e) => {
       const isNew = S.fresh.has(e.hanzi);
       return `<div class="vcard ${isNew ? 'new' : ''} ${S.selectedWord === e.hanzi ? 'sel' : ''}" ${UI.interactAttrs(e.hanzi, '', '', 'open-word', e.hanzi)}>
         <div class="row between" style="align-items:flex-start"><div>${UI.wordLabel(e.hanzi, false)}</div>
-          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}${MSC.howto.has(e.hanzi) ? '<span class="tag write" title="You can write this">✍</span>' : ''}<span class="tag">${U.esc(e.pos)}</span></div></div>
+          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}${e.hsk ? `<span class="tag hsk" title="HSK level ${e.hsk}">HSK${e.hsk}</span>` : ''}${MSC.howto.has(e.hanzi) ? '<span class="tag write" title="You can write this">✍</span>' : ''}<span class="tag">${U.esc(e.pos)}</span></div></div>
         <div style="font-weight:700;font-size:13px">${U.esc(e.english)}</div></div>`;
     }).join('') || '<div class="wp-empty" style="grid-column:1/-1">No words match.</div>';
     NB.renderPane(forcePane === true);

@@ -12,7 +12,7 @@ const vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {} };
 vm.createContext(ctx);
-['data/dictionary.js', 'data/characters.js', 'data/world.js', 'data/menu.js', 'data/quests.js', 'data/ui-text.js', 'data/writing.js', 'data/strokes.js', 'js/core/util.js', 'js/core/dictionary.js']
+['data/dictionary.js', 'data/characters.js', 'data/world.js', 'data/menu.js', 'data/quests.js', 'data/ui-text.js', 'data/writing.js', 'data/strokes.js', 'data/chat.js', 'js/core/pattern.js', 'js/core/util.js', 'js/core/dictionary.js']
   .forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f }));
 const MSC = ctx.window.MSC;
 const errors = [];
@@ -88,11 +88,107 @@ Object.keys(MSC.data.characters).forEach((c) => { if (!used.has(c)) warn.push(`c
   W.rules.forEach((r) => { if (!r.title || !r.tip) errors.push(`writing rule ${r.id}: needs title and tip`); });
 })();
 
+// ── HSK 1–2 target: 200 words, and every character of them can be learned at Master Wang's ──
+(function checkHsk() {
+  const hsk = MSC.data.dictionary.filter((e) => e.hsk);
+  hsk.forEach((e) => { if (![1, 2].includes(e.hsk)) errors.push(`${e.hanzi}: hsk must be 1 or 2`); });
+  if (hsk.length < 200) errors.push(`only ${hsk.length} HSK 1–2 words; the target is 200`);
+  const taught = new Set([...MSC.data.writing.tutorial, ...MSC.data.writing.pool].map((c) => c.char));
+  hsk.forEach((e) => [...e.hanzi].forEach((c) => { if (!taught.has(c)) errors.push(`HSK word ${e.hanzi}: character ${c} cannot be learned at Master Wang (add it to data/writing.js)`); }));
+  console.log(`HSK 1–2: ${hsk.length} words (${hsk.filter((e) => e.hsk === 1).length} at level 1, ${hsk.filter((e) => e.hsk === 2).length} at level 2)`);
+})();
+
+// ── chat (Xiao Li) ──
+const chatCoverage = (function checkChat() {
+  const C = MSC.data.chat, PT = MSC.pattern, D = MSC.dict;
+  const hasZh = (t) => /[㐀-鿿]/.test(t || '');
+  const covered = new Set();
+  const seg = (where, text) => {
+    D.segment(text).forEach((t) => {
+      if (t.kind === 'unknown') errors.push(`chat ${where}: "${t.hanzi}" is not in the dictionary (in "${text}")`);
+      else if (t.kind === 'word') covered.add(t.hanzi);
+      else if (t.kind === 'number') t.parts.forEach((p) => covered.add(p));
+    });
+  };
+  if (!C.dialogues || C.dialogues.length < 5) errors.push(`chat needs at least 5 dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
+  const syls = (text) => D.syllables(text);
+  C.dialogues.forEach((d) => {
+    const id = `chat ${d.id}`;
+    const nodes = d.nodes || {};
+    if (!nodes[d.start]) { errors.push(`${id}: start node "${d.start}" does not exist`); return; }
+    // graph: next ids exist, everything reachable, everything can reach an ending, and the dialogue really branches
+    let branching = 0, ends = 0;
+    Object.entries(nodes).forEach(([nid, n]) => {
+      const w = `${id}.${nid}`;
+      if (n.end) {
+        ends++;
+        if (!n.npc) errors.push(`${w}: an ending needs Xiao Li's closing line (npc)`);
+        if (n.replies && n.replies.length) errors.push(`${w}: an ending must not have replies`);
+        return;
+      }
+      if (!n.goal || hasZh(n.goal)) errors.push(`${w}: goal is required and must be English only`);
+      if (!n.tip) errors.push(`${w}: tip is required (it is the first Hint)`);
+      if (!n.replies || !n.replies.length) { errors.push(`${w}: needs at least one reply`); return; }
+      if (n.replies.length > 1) branching++;
+      if (nid !== d.start && !n.npc) errors.push(`${w}: only the start node may leave out Xiao Li's line`);
+      n.replies.forEach((r, i) => {
+        if (!nodes[r.next]) errors.push(`${w}.replies[${i}]: next "${r.next}" does not exist`);
+        if (!r.say || !r.say.length) errors.push(`${w}.replies[${i}]: no accepted answers (say)`);
+        if (!r.en) errors.push(`${w}.replies[${i}]: en (the English meaning) is required`);
+        if (n.replies.length > 1 && !r.label) errors.push(`${w}.replies[${i}]: a branch needs a label`);
+      });
+    });
+    if (!branching) errors.push(`${id}: never branches (no node with two or more replies)`);
+    if (!ends) errors.push(`${id}: has no ending`);
+    const reach = new Set([d.start]);
+    for (let grow = true; grow;) { grow = false; [...reach].forEach((nid) => ((nodes[nid] || {}).replies || []).forEach((r) => { if (nodes[r.next] && !reach.has(r.next)) { reach.add(r.next); grow = true; } })); }
+    Object.keys(nodes).forEach((nid) => { if (!reach.has(nid)) errors.push(`${id}.${nid}: unreachable`); });
+    const canEnd = (nid, seen = new Set()) => { const n = nodes[nid]; if (!n || seen.has(nid)) return false; if (n.end) return true; seen.add(nid); return (n.replies || []).some((r) => canEnd(r.next, seen)); };
+    Object.keys(nodes).forEach((nid) => { if (!canEnd(nid)) errors.push(`${id}.${nid}: cannot reach an ending`); });
+
+    // every random slot combination must produce valid, segmentable, unambiguous text
+    const names = Object.keys(d.slots || {});
+    let combos = [{}];
+    names.forEach((nm) => { combos = combos.flatMap((c) => d.slots[nm].map((v) => ({ ...c, [nm]: v.hanzi, [`${nm}.en`]: v.en }))); });
+    combos.forEach((vars) => {
+      Object.entries(nodes).forEach(([nid, n]) => {
+        const w = `${id}.${nid}`;
+        const left = (t) => PT.fill(t, vars).match(/\{[\w.]+\}/);
+        if (n.npc) { const z = PT.fill(n.npc.hanzi, vars); if (left(n.npc.hanzi)) errors.push(`${w}: unknown placeholder in npc line`); seg(`${w} npc`, z); if (!n.npc.english) errors.push(`${w}: npc.english is required`); }
+        if (n.end) return;
+        const seen = new Map();
+        (n.replies || []).forEach((r, ri) => (r.say || []).forEach((pat) => {
+          const filled = PT.fill(pat, vars);
+          if (/\{[\w.]+\}/.test(filled)) errors.push(`${w}: unknown placeholder in "${pat}"`);
+          PT.expand(filled).forEach((v) => {
+            seg(`${w} reply`, v);
+            const key = (syls(v) || []).join(' ');
+            if (!key) errors.push(`${w}: "${v}" has no Chinese`);
+            else if (seen.has(key) && seen.get(key) !== ri) errors.push(`${w}: "${v}" is accepted by two different branches`);
+            seen.set(key, ri);
+          });
+        }));
+        if (/\{[\w.]+\}/.test(PT.fill(n.goal || '', vars))) errors.push(`${w}: unknown placeholder in goal`);
+      });
+    });
+  });
+  const hsk = MSC.data.dictionary.filter((e) => e.hsk);
+  const hit = hsk.filter((e) => covered.has(e.hanzi));
+  console.log(`Chat: ${C.dialogues.length} dialogues use ${hit.length} of ${hsk.length} HSK words (${Math.round((100 * hit.length) / hsk.length)}%)`);
+  if (process.env.SHOW_UNCOVERED) console.log('uncovered HSK words: ' + hsk.filter((e) => !covered.has(e.hanzi)).map((e) => e.hanzi).join(' '));
+  return { hit: hit.length, total: hsk.length, missing: hsk.filter((e) => !covered.has(e.hanzi)).map((e) => e.hanzi) };
+})();
+
 // ── all Chinese text in the other data files must be segmentable ──
 function walk(node, trail, out) {
   if (typeof node === 'string') { if (/[㐀-鿿]/.test(node)) out.push([trail, node]); }
   else if (Array.isArray(node)) node.forEach((v, i) => walk(v, `${trail}[${i}]`, out));
-  else if (node && typeof node === 'object') Object.entries(node).forEach(([k, v]) => { if (k !== 'english' && k !== 'text') walk(v, `${trail}.${k}`, out); });
+  else if (node && typeof node === 'object') Object.entries(node).forEach(([k, v]) => {
+    if (k === 'english' || k === 'text') return;
+    // Wang's mnemonics, tips and meanings are plain text (never run through the word-tapping renderer): only his dialogue lines are checked
+    if (trail.startsWith('writing') && ['mnemonic', 'tips', 'tip', 'meaning', 'example', 'char', 'confusable', 'word'].includes(k)) return;
+    walk(v, `${trail}.${k}`, out);
+  });
 }
 const writingChars = new Set([...MSC.data.writing.tutorial, ...MSC.data.writing.pool].map((c) => c.char));  // characters Wang teaches may appear on their own in his text
 const texts = [];

@@ -17,19 +17,22 @@ data/                 ← CONTENT. Edit these; no game code needed.
   quests.js           all dialogue, objectives, hints and reactions
   ui-text.js          quest tracker, destinations, first-time tip
   writing.js          Master Wang: the pool of characters (linked word, tier, mnemonic, stroke tips), rules, dialogue
+  chat.js             Xiao Li: the branching conversations (patterns for every accepted answer, random slots)
   strokes.js          GENERATED stroke-order data for those characters (tools/build-strokes.js)
 
 js/core/              pure logic, no DOM
   util.js             helpers, tone-mark conversion, number → hanzi
   stroke-match.js     compares a drawn stroke with the reference stroke (order / direction / shape)
+  pattern.js          answer patterns for the chat: (optional)  [a|b]  {slot}
   dictionary.js       lookup, sentence segmentation, generated pinyin, character breakdown, related words
   pinyin.js           parses typed pinyin ("wo3", "wǒyào", "kafei", hanzi) and compares it
   state.js            shared state, progress saving, vocabulary discovery
   speech.js           text-to-speech
 js/ui/                toast.js · gestures.js (tap / hold / 🔊) · text.js (sentence rendering) · panel.js · notebook.js
-                      stroke-board.js (SVG writing canvas) · writer.js (the writing tray) · wang-panel.js · howto.js
+                      stroke-board.js (SVG writing canvas) · writer.js (the writing tray) · wang-panel.js · howto.js · chat-panel.js
 js/game/              economy.js (wallet, prices) · stage.js (board) · barista.js (orders) · quizzes.js
                       writing.js (Master Wang's lessons, mastery, review — no DOM)
+                      chat.js (Xiao Li's conversations: random start, matching, branching — no DOM)
 js/main.js            start-up and header controls
 
 tools/check-data.js   validates all data files
@@ -99,6 +102,37 @@ node tests/stroke-match.test.js          # stroke matcher against all 42 charact
 node tests/validator.test.js             # proves the validator flags each content problem
 node tests/related.test.js               # the "related words" panel only shows genuinely related words
 node tests/e2e-popups.js                 # browser: every popup dismisses with ✕ or a swipe (desktop + phone)
+node tests/chat.test.js                  # chat engine: plays every path of every conversation (3,000+ paths)
+node tests/e2e-chat.js                   # browser: talking to Xiao Li — tiles, typing, hints, branching, a new chat each visit
 node tests/e2e-writing.js                # browser: tutorial, a full lesson, wall, notebook (needs playwright)
 node tests/e2e-writing-rules.js          # browser: feedback, hints, review, practice, offers, phone touch
 ```
+
+## Vocabulary: 200 HSK 1–2 words
+
+`data/dictionary.js` holds every word. Entries with `hsk: 1` or `hsk: 2` are the **200 HSK 1–2 words** the game teaches
+(135 + 65; the notebook counts your progress towards them and can filter by them). Entries without `hsk` are helpers
+(names, stroke terms, extra phrases). The levels follow the classic HSK 2.0 lists as best recalled — spot-check before
+relying on them for exam prep.
+
+The validator enforces the target: at least 200 HSK words, and **every character of every HSK word can be learned at
+Master Wang's** (`data/writing.js` has 235 characters, tiered by stroke count). To add a word: add it to the dictionary
+with `hsk`, make sure each of its characters has an entry in `data/characters.js` and in the Wang pool, and rebuild the
+stroke data (see "Adding characters").
+
+## Xiao Li (小李) — conversation practice
+
+Walk up to Xiao Li (right side of the street, or the **Xiao Li** button) and a **new random conversation** starts —
+never the same one twice in a row. There are **24 branching conversations** (some start with Xiao Li, some with you),
+covering all 200 HSK words: meeting people, family, hobbies, weather and plans, food, time, shopping, directions, feelings,
+phone calls, home, daily routine, polite address, asking questions, handwriting…
+
+- **You build, you don't pick.** There are no answer buttons. Each turn has an English *goal* ("Say that you have an older
+  brother"), and you assemble the Chinese from word tiles (extra distractor words are mixed in) or type pinyin/hanzi.
+  Several phrasings are accepted; which one you choose — and sometimes *what* you choose to say — decides how the
+  conversation branches. Random slots (a hobby, a name, the weather) make the same conversation differ between visits.
+- **Hints on demand:** 💡 Hint → the pattern to use → the words you need, word by word → example answers. A wrong answer opens
+  the next level by itself, never the answer. Tone slips are called out ("right words, tones are a little different").
+- **Adding a conversation:** copy one in `data/chat.js`. Replies are *patterns*: `(是，)我是学生` (optional part),
+  `我[想|要]喝茶` (alternatives), `{drink}` (random slot). The validator checks that every word exists in the dictionary,
+  every path ends, every conversation really branches, no answer is accepted by two different branches, and goals are English-only.

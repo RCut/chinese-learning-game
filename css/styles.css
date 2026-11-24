@@ -385,3 +385,19 @@ body.writer-open #onboard { display: none !important; }
 .pane-handle i { width: 40px; height: 4px; border-radius: 4px; background: #d6d3d1; }
 [data-pane-drag] { touch-action: none; }
 @media (min-width: 1024px) { .pane-handle { display: none; } [data-pane-drag] { touch-action: auto; } }
+
+/* ───────── Chat with Xiao Li ───────── */
+.badge-teal { background: #0f766e; }
+.pill.pill-teal { background: #ccfbf1; color: #134e4a; }
+.chat-log { display: flex; flex-direction: column; gap: 8px; }
+.chat-line { display: flex; }
+.chat-line.me { justify-content: flex-end; }
+.bubble { max-width: 92%; padding: 8px 12px; border-radius: 16px; border: 1px solid var(--line); }
+.bubble.npc { background: var(--parch); border-bottom-left-radius: 4px; }
+.bubble.me { background: #fff7ed; border-color: #fed7aa; border-bottom-right-radius: 4px; }
+.tile-btn.used { opacity: .3; pointer-events: none; }
+
+/* ───────── HSK progress (notebook) ───────── */
+.hsk-bar { height: 6px; border-radius: 999px; background: #e7e5e4; overflow: hidden; margin-top: 4px; max-width: 260px; }
+.hsk-bar i { display: block; height: 100%; background: #10b981; border-radius: 999px; transition: width .3s ease; }
+.tag.hsk { background: #e0f2fe; border-color: #bae6fd; color: #075985; }

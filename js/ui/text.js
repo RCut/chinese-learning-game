@@ -43,7 +43,7 @@
   /** Single-word label (tiles) following the display mode. */
   UI.wordLabel = (hanzi, compact) => {
     const e = D.get(hanzi);
-    const py = e ? e.pinyin : '';
+    const py = e ? e.pinyin : D.segment(hanzi).map(D.tokenPinyin).join('');       // numbers like 二十 are not dictionary words
     const tier = S.displayMode;
     if (tier === 1) return `<span class="wl wl-only-py">${U.esc(py)}</span>`;
     if (tier === 3) return `<span class="wl ${compact ? 'compact' : ''}"><span class="wl-hz hz">${U.esc(hanzi)}</span></span>`;

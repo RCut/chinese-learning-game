@@ -40,8 +40,12 @@ expectError('missing tier', () => edit('data/writing.js', (s) => s.replace("{ ch
 
 expectError('stroke tip pointing to a stroke the character does not have', () => edit('data/writing.js', (s) => s.replace("{ char: '口', pinyin: 'kǒu', meaning: 'mouth', word: '口', tier: 1, rules: ['cb'],", "{ char: '口', pinyin: 'kǒu', meaning: 'mouth', word: '口', tier: 1, rules: ['cb'], tips: { 9: 'x' },")), /口: stroke tip points to stroke 10, but 口 has 3 strokes/);
 
-expectError('tier with fewer than 4 characters (could not fill a lesson)', () => edit('data/writing.js', (s) => ['我', '你', '是'].reduce((acc, c) =>
-  acc.replace(new RegExp(`(char: '${c}',[^}]*?)tier: 3`), '$1tier: 2'), s)), /tier 3 has 3 characters; it needs at least 4/);
+expectError('tier with fewer than 4 characters (could not fill a lesson)', () => edit('data/writing.js', (s) =>
+  s.replace(/(char: '(.)'[^\n]*?)tier: 3/g, (m, pre, ch) => (['我', '你', '是'].includes(ch) ? m : `${pre}tier: 2`))), /tier 3 has 3 characters; it needs at least 4/);
+
+expectError('HSK word whose character cannot be learned at Master Wang', () => edit('data/writing.js', (s) => s.replace(/\n\s*\{ char: '爸',[^\n]*\},/, '')), /HSK word 爸爸: character 爸 cannot be learned at Master Wang/);
+
+expectError('fewer than 200 HSK words', () => edit('data/dictionary.js', (s) => s.replace("{ hanzi: '爸爸', pinyin: 'bàba', pinyinNum: 'ba4 ba5', english: 'dad', pos: 'noun', category: 'Family & Friends', hsk: 1,", "{ hanzi: '爸爸', pinyin: 'bàba', pinyinNum: 'ba4 ba5', english: 'dad', pos: 'noun', category: 'Family & Friends',")), /only 199 HSK 1–2 words/);
 
 if (fails) { console.log(`${fails} FAILED`); process.exit(1); }
 console.log('validator: every content problem in the ticket is flagged');

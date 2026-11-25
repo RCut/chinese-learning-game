@@ -78,26 +78,28 @@ Vanilla JS, no dependencies, no build step. All code hangs off one global, `wind
 
 ```
 index.html              page shell; loads data, then js/core → ui/game → main (order matters)
-css/styles.css          shared styling · css/stage-<place>.css  per-place tiles and scenery
+css/styles.css          styling
+vendor/                 phaser.min.js (Phaser 3, MIT — see PHASER_LICENSE.md)
 
 data/                   CONTENT — edit these, no game code needed
   dictionary.js         every word: hanzi, pinyin, pinyinNum, english, pos, category, hsk, related, exclude, note
   characters.js         per-character meaning + components
   vocab/<place>.js      extra words/characters per place (same formats; pushed into the dictionary)
   world.js              shared stage settings (fade time, tile letters); format documented in its header
-  stages/<place>.js     one place: map, scenery, objects (simple words), people, doors
+  stages/<place>.js     one place: map, signs, objects (simple words), people, doors
+  art/<place>.js        the pixel art: that place's objects, doors, ground tiles (art/shared.js: people, shared tiles)
   chat.js · chats/      conversations: Xiao Li · other NPCs (market.js = shopkeeper)
   menu.js · quests.js · ui-text.js   café menu/prices, quest dialogue and hints, interface text
   writing.js · strokes.js            Wang's pool, rules and dialogue · GENERATED stroke data
 
-js/core/                pure logic (no DOM): util, dictionary (segmentation, related words), pinyin, pattern, stroke-match,
+js/core/                pure logic (no DOM): art (pixel-art toolkit), util, dictionary (segmentation, related words), pinyin, pattern, stroke-match,
                         state (state, saving, word discovery), speech (TTS), sfx (synthesised arrival sounds)
 js/game/                game logic: stage (places, walking, doors, fade), barista, quizzes, economy, chat, writing (lessons, mastery)
-js/ui/                  rendering and input: panel, text (sentences), gestures, log (notification log), notebook, chat-panel, wang-panel, writer
+js/ui/                  rendering and input: board (Phaser renderer), panel, text (sentences), gestures, log (notification log), notebook, chat-panel, wang-panel, writer
                         (writing tray), stroke-board (SVG canvas), howto, recognizer (speech input)
 js/main.js              start-up, header controls, keyboard
 
-tools/                  check-data.js (validator) · build-strokes.js · data-files.js (file list shared with the tests)
+tools/                  check-data.js (validator) · build-strokes.js · art-sheet.js (renders all art to a PNG) · data-files.js
 tests/                  node and browser tests
 licenses/               Arphic Public License (stroke data) — see THIRD_PARTY_NOTICES.md
 ```
@@ -109,8 +111,10 @@ licenses/               Arphic Public License (stroke data) — see THIRD_PARTY_
   written by hand, so every Chinese word used anywhere must exist in the dictionary.
 - **Related words** (word pane): set phrases containing the word → its curated `related` → shorter words it is built from → longer
   words containing it, capped at 8. `exclude` hides compounds that lost the part's meaning (在 ↛ 现在).
-- **Stages:** the board is rebuilt per place from `data/stages`; sizes come from `cols/rows` via CSS variables, label sizes scale with
-  the tile size, and name tags are kept inside the board and nudged apart. Doors fade (`W.fadeMs`) and call `MSC.sfx`.
+- **Stages and art:** each place is a tile map in `data/stages`, drawn by Phaser (`js/ui/board.js`, canvas renderer) from pixel art
+  generated in code (`js/core/art.js`: a painter with shapes and an automatic outline; `data/art/*.js`). Art is 16px, drawn at 3×.
+  Name tags and signs stay HTML on top (crisp Chinese, tooltips, the pinyin toggle); panel portraits are the same sprites as images.
+  Name tags are kept inside the board and nudged apart. Doors fade (`W.fadeMs`) and call `MSC.sfx`.
   A door's `arrive` is optional: left out, you appear beside that place's door back.
 - **Chat engine:** answers are patterns — `(optional)`, `[a|b]`, `{slot}` — expanded to every accepted phrasing and compared by
   pinyin syllables; the tile bank is the needed words plus 3 distractors. Each NPC registers `MSC.data.chats[id]`. Speech uses
@@ -128,7 +132,7 @@ characters, Chinese text that isn't in the dictionary, stage maps (shape, reacha
 |---|---|
 | Add a word | One line in `data/dictionary.js` (or `data/vocab/<place>.js`) + its characters in `characters.js`. `starter: true` = in the notebook from the start; `hsk: 1\|2` counts it towards HSK progress |
 | Add a simple object | One entry in a stage's `objects` (`id, x, y, emoji, hanzi, text?, note?`); `hanzi` must be a dictionary word |
-| Pick an emoji | Stage emoji must be Emoji 11 or older (newer ones show blank boxes on many devices) — the validator enforces it. Anything on a board that looks like a thing must be an `objects` entry with its word; only shop-sign text and texture (road dashes, zebra stripes) may be scenery |
+| Draw a picture | Everything on a board is pixel art drawn in code — no emoji, no image files (they look different on every device). Add `MSC.art.draw('<object id>', (g, c) => …)` in `data/art/<place>.js` (see the header of `js/core/art.js`), preview with `node tools/art-sheet.js out.png <place>`. Anything on a board that looks like a thing must be an `objects` entry with its word; only Chinese shop-sign text and texture (road dashes, zebra stripes) may be scenery |
 | Add a place | New file in `data/stages/` + `<script>` tag in `index.html` + a door from the street and one back |
 | Add a conversation | Copy one in `data/chat.js` or `data/chats/`; a new talkable NPC also needs a person with the same id on a stage |
 | Change café items or prices | `data/menu.js` (orders, answers, tiles and hints are derived from it) |
@@ -147,6 +151,7 @@ node tests/validator.test.js      # proves the validator flags each content prob
 node tests/related.test.js        # related words are genuinely related
 node tests/chat.test.js           # plays every path of every conversation, for every NPC
 # browser tests (need playwright)
+node tests/e2e-board.js           # the Phaser canvas: every place drawn from the art, no emoji, no missing art, the player moves
 node tests/e2e-stages.js          # doors, 0.5 s fade, sounds, buttons per place, every object teaches its word, labels, phone
 node tests/e2e-chat.js            # talking to Xiao Li and the shopkeeper: tiles, typing, hints, branching
 node tests/e2e-speak.js           # speech input (mocked recogniser)

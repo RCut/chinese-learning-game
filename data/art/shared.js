@@ -93,6 +93,7 @@
 
   // A — striped awning (red & cream, scalloped)
   A.tile('A', [(g) => {
+    g.rect(0, 0, 16, 16, '#b9ae9b');                                    // shade under the scallops, so the tile is fully painted
     for (let x = 0; x < 16; x++) g.vline(x, 0, 12, (x >> 2) % 2 ? '#f6ecd0' : '#c8472f');
     for (let x = 0; x < 16; x++) { const s = (x >> 2) % 2 ? '#f6ecd0' : '#c8472f'; g.vline(x, 12, (x % 4 === 0 || x % 4 === 3) ? 2 : 3, s); }
     g.hline(0, 0, 16, '#8f2f1c').hline(0, 11, 16, 'rgba(0,0,0,.18)');

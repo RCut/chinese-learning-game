@@ -69,10 +69,12 @@
       const ch = text[i];
       if (!U.isHanzi(ch)) { buf += ch; i++; continue; }
       flush();
-      let dictLen = 0;
-      for (let L = Math.min(maxLen, text.length - i); L >= 1; L--) {
-        if (byHanzi.has(text.substr(i, L))) { dictLen = L; break; }
-      }
+      const longestAt = (j) => { for (let L = Math.min(maxLen, text.length - j); L >= 1; L--) if (byHanzi.has(text.substr(j, L))) return L; return 0; };
+      let dictLen = longestAt(i);
+      // Look one word ahead: if the longest word leaves a lone character (有时|间) but one character less lets a longer word
+      // follow (有|时间, 有|时候), take the shorter one.
+      if (dictLen >= 2 && i + dictLen < text.length && U.isHanzi(text[i + dictLen]) && longestAt(i + dictLen) <= 1
+          && byHanzi.has(text.substr(i, dictLen - 1)) && longestAt(i + dictLen - 1) >= 2) dictLen -= 1;
       const numMatch = NUM_RE.exec(text.slice(i));
       const numLen = numMatch ? numMatch[0].length : 0;
       if (numLen > dictLen && (numLen >= 2)) {

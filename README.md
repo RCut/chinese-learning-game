@@ -103,6 +103,7 @@ node tests/validator.test.js             # proves the validator flags each conte
 node tests/related.test.js               # the "related words" panel only shows genuinely related words
 node tests/e2e-popups.js                 # browser: every popup dismisses with ✕ or a swipe (desktop + phone)
 node tests/chat.test.js                  # chat engine: plays every path of every conversation (3,000+ paths)
+node tests/e2e-speak.js                  # browser: speech input (mocked recogniser) shows what was heard as a tappable line
 node tests/e2e-chat.js                   # browser: talking to Xiao Li — tiles, typing, hints, branching, a new chat each visit
 node tests/e2e-writing.js                # browser: tutorial, a full lesson, wall, notebook (needs playwright)
 node tests/e2e-writing-rules.js          # browser: feedback, hints, review, practice, offers, phone touch
@@ -128,7 +129,7 @@ covering all 200 HSK words: meeting people, family, hobbies, weather and plans, 
 phone calls, home, daily routine, polite address, asking questions, handwriting…
 
 - **You build, you don't pick.** There are no answer buttons. Each turn has an English *goal* ("Say that you have an older
-  brother"), and you assemble the Chinese from word tiles (extra distractor words are mixed in) or type pinyin/hanzi.
+  brother"), and you assemble the Chinese from word tiles (extra distractor words are mixed in) or type pinyin/hanzi, or 🎙️ **speak** (browser speech recognition): what was heard is shown like Xiao Li's own lines — tappable words, pinyin per the display toggle, an English gloss — and right words in any tones are accepted.
   Several phrasings are accepted; which one you choose — and sometimes *what* you choose to say — decides how the
   conversation branches. Random slots (a hobby, a name, the weather) make the same conversation differ between visits.
 - **Hints on demand:** 💡 Hint → the pattern to use → the words you need, word by word → example answers. A wrong answer opens

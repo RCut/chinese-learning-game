@@ -101,7 +101,7 @@
     const msg = S.mic.msg ? `<div class="box amber box-sm">${U.esc(S.mic.msg)}</div>` : '';
     const fallback = S.mic.unavailable
       ? `<button class="btn btn-soft-green btn-block ${st.hint >= 3 ? '' : 'off'}" data-click="shadow">✓ I said it aloud${st.hint >= 3 ? '' : ' (open the answer with Hint first)'}</button>` : '';
-    return `<div id="live" class="mic-box">${S.mic.transcript ? `Heard: “${U.esc(S.mic.transcript)}”` : 'Say your answer in Mandarin.'}</div>${msg}${fallback}`;
+    return `${UI.heardBox(S.mic.transcript)}${msg}${fallback}`;
   }
 
   function renderBarista() {
@@ -245,37 +245,29 @@
   A.shadow = () => { const step = B.step(); S.mic.transcript = step.targetHanzi; baristaSubmit(MSC.pinyin.parse(step.targetHanzi)); };
 
   // — speech recognition (Speak mode) —
-  let rec = null;
   A.mic = () => {
-    if (S.mic.recording && rec) { try { rec.stop(); } catch (e) { /* already stopped */ } return; }
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { S.mic.unavailable = true; S.mic.msg = 'Speech recognition isn’t supported in this browser.'; P.render(false); return; }
-    try {
-      rec = new SR(); rec.lang = 'zh-CN'; rec.interimResults = true; rec.maxAlternatives = 3;
-      S.mic.recording = true; S.mic.transcript = ''; S.mic.msg = '';
-      rec.onresult = (ev) => {
-        let fin = '', interim = '';
-        for (let i = ev.resultIndex; i < ev.results.length; i++) (ev.results[i].isFinal ? (fin += ev.results[i][0].transcript) : (interim += ev.results[i][0].transcript));
-        const live = document.getElementById('live');
-        if (interim && live) live.textContent = `Hearing: “${interim}”`;
-        if (fin) {
-          S.mic.transcript = fin; S.mic.recording = false;
-          const heard = MSC.pinyin.parse(fin), step = B.step();
-          const same = step.accepted.find((alt) => MSC.pinyin.sameBases(alt, heard));   // recognisers rarely get tones right
-          baristaSubmit(same || heard);
-        }
-      };
-      rec.onerror = (err) => {
+    if (S.mic.recording && MSC.recognizer.active()) { MSC.recognizer.stop(); return; }
+    S.mic.recording = true; S.mic.transcript = ''; S.mic.msg = '';
+    const started = MSC.recognizer.start({
+      onInterim: (t) => { const live = document.getElementById('live'); if (live) live.textContent = `Hearing: “${t}”`; },
+      onFinal: (fin) => {
+        S.mic.transcript = fin; S.mic.recording = false;
+        const heard = MSC.pinyin.parse(fin), step = B.step();
+        const same = step.accepted.find((alt) => MSC.pinyin.sameBases(alt, heard));   // recognisers rarely get tones right
+        baristaSubmit(same || heard);
+      },
+      onError: (code) => {
         S.mic.recording = false;
-        const code = err && err.error;
-        if (['not-allowed', 'service-not-allowed', 'audio-capture'].includes(code)) { S.mic.unavailable = true; S.mic.msg = 'Microphone access is blocked here.'; }
+        if (code === 'unsupported') { S.mic.unavailable = true; S.mic.msg = 'Speech recognition isn’t supported in this browser.'; }
+        else if (['not-allowed', 'service-not-allowed', 'audio-capture'].includes(code)) { S.mic.unavailable = true; S.mic.msg = 'Microphone access is blocked here.'; }
+        else if (code === 'start-failed') { S.mic.unavailable = true; S.mic.msg = 'The microphone couldn’t start here.'; }
         else if (code !== 'aborted') S.mic.msg = `Mic problem (${code}). Try again.`;
         P.render(false);
-      };
-      rec.onend = () => { S.mic.recording = false; rec = null; P.render(false); };
-      rec.start();
-      P.render(false);
-    } catch (e) { S.mic.recording = false; S.mic.unavailable = true; S.mic.msg = 'The microphone couldn’t start here.'; P.render(false); }
+      },
+      onEnd: () => { S.mic.recording = false; P.render(false); },
+    });
+    P.render(false);
+    return started;
   };
 
   // — Object encounters —

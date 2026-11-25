@@ -24,7 +24,7 @@
     const n = S.chat.dlg.nodes[id], vars = S.chat.vars;
     const node = {
       id, end: !!n.end, npc: fillLine(n.npc, vars), goal: n.goal ? PT.fill(n.goal, vars) : '', tip: n.tip || '',
-      replies: [], tiles: [], st: { tray: [], recall: '', attempts: 0, hint: 0, reaction: null },
+      replies: [], tiles: [], st: { tray: [], recall: '', heard: '', attempts: 0, hint: 0, reaction: null },
     };
     if (n.end) return node;
     n.replies.forEach((r) => {
@@ -76,6 +76,14 @@
       }
     }
     return { tonesOff: cur.replies.some((r) => r.syls.some((s) => P.sameBases(s, user))) };
+  };
+
+  /** Spoken answers: recognisers rarely get tones right, so right words in any tones are accepted (typed answers still flag tones). */
+  CH.matchSpoken = (cur, user) => {
+    const m = CH.match(cur, user);
+    if (m.reply) return m;
+    for (const r of cur.replies) for (let i = 0; i < r.variants.length; i++) if (P.sameBases(r.syls[i], user)) return { reply: r, variant: r.variants[i] };
+    return {};
   };
 
   /** A wrong or unclear answer: a gentle reaction, and the next hint level opens. */

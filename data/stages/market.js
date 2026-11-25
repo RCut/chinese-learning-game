@@ -18,13 +18,13 @@
     map: [
       'WAAAAAAAAAAAAAAAAW',
       'WLLLLLLMLLLLLMLLLW',
-      'WLMMMMMMMTMMMMMMMW',
+      'WMMMMMMMMTMMMMMMMW',
       'WLMMMMMMMTMMMMMMLW',
       'WLMLLLLMMTLLLLMMLW',
       'WLMLLLLMMTLLLLMMLW',
       'WLMMMMMMMTMMMMMMLW',
-      'WLLLLLLMMTMLLLLLLW',
-      'WMMMMMMMMDMMMMMMMW',
+      'WLMLLLLLMTMLLLLLLW',
+      'WLMMMMMMMDMMMMMMMW',
       'WWWWWWWWWWWWWWWWWW',
     ],
     playerStart: { x: 9, y: 7 },
@@ -50,12 +50,12 @@
       item('mk-egg', 16, 1, '🥚', '鸡蛋'),
 
       // ── left wall: tea and dry goods ──
-      sign('mk-tea', 1, 2, '🍵', '茶叶摊', [['绿茶', 'green tea'], ['红茶', 'black tea'], ['花生', 'peanuts'], ['大米', 'rice'], ['盐', 'salt']]),
-      item('mk-greentea', 1, 3, '🍵', '绿茶'),
-      item('mk-blacktea', 1, 4, '☕', '红茶'),
-      item('mk-peanut', 1, 5, '🥜', '花生'),
-      item('mk-rice', 1, 6, '🌾', '大米'),
-      item('mk-salt', 1, 7, '🧂', '盐'),
+      sign('mk-tea', 1, 3, '🍵', '茶叶摊', [['绿茶', 'green tea'], ['红茶', 'black tea'], ['花生', 'peanuts'], ['大米', 'rice'], ['盐', 'salt']]),
+      item('mk-greentea', 1, 4, '🍵', '绿茶'),
+      item('mk-blacktea', 1, 5, '☕', '红茶'),
+      item('mk-peanut', 1, 6, '🥜', '花生'),
+      item('mk-rice', 1, 7, '🌾', '大米'),
+      item('mk-salt', 1, 8, '🧂', '盐'),
 
       // ── island: fruit (Fruit Stall person stands at its end) ──
       sign('mk-fruit', 3, 4, '🍑', '水果摊', [['苹果', 'apple'], ['香蕉', 'banana'], ['橙子', 'orange'], ['葡萄', 'grapes'], ['梨', 'pear'], ['草莓', 'strawberry'], ['西瓜', 'watermelon']]),
@@ -85,11 +85,11 @@
       item('mk-crab', 16, 6, '🦀', '螃蟹'),
 
       // ── front counter, left: the till and weighing things ──
-      { id: 'mk-price', x: 2, y: 7, emoji: '🏷️', hanzi: '价钱', text: [{ hanzi: '多少钱？', english: 'How much is it?' }, { hanzi: '便宜一点，可以吗？', english: 'A little cheaper, OK?' }] },
-      item('mk-till', 3, 7, '🧾', '收银台', 'Pay at the 收银台 — and ask for 找钱 (change). — 找钱 means to give change.'),
-      item('mk-scale', 4, 7, '⚖️', '秤', 'Shops weigh your food on the 秤 and sell it by the 斤 (about 500 g).'),
-      item('mk-basket', 5, 7, '🧺', '篮子'),
-      item('mk-bag', 6, 7, '🛍️', '袋子', 'You can ask for a bag: 请给我一个袋子。 — Please give me a bag.'),
+      { id: 'mk-price', x: 3, y: 7, emoji: '🏷️', hanzi: '价钱', text: [{ hanzi: '多少钱？', english: 'How much is it?' }, { hanzi: '便宜一点，可以吗？', english: 'A little cheaper, OK?' }] },
+      item('mk-till', 4, 7, '🧾', '收银台', 'Pay at the 收银台 — and ask for 找钱 (change). — 找钱 means to give change.'),
+      item('mk-scale', 5, 7, '⚖️', '秤', 'Shops weigh your food on the 秤 and sell it by the 斤 (about 500 g).'),
+      item('mk-basket', 6, 7, '🧺', '篮子'),
+      item('mk-bag', 7, 7, '🛍️', '袋子', 'You can ask for a bag: 请给我一个袋子。 — Please give me a bag.'),
 
       // ── front counter, right: drinks ──
       sign('mk-drink', 11, 7, '🍹', '饮料摊', [['果汁', 'fruit juice'], ['牛奶', 'milk'], ['豆浆', 'soy milk'], ['酸奶', 'yogurt'], ['水', 'water']]),
@@ -103,12 +103,12 @@
       item('mk-lantern1', 7, 0, '🏮', '灯笼', 'Red lanterns bring good luck. — 灯笼 are hung for festivals and in markets.'),
       item('mk-lantern2', 13, 0, '🏮', '灯笼'),
       item('mk-lantern3', 17, 2, '🏮', '灯笼'),
-      item('mk-lantern4', 0, 8, '🏮', '灯笼'),
+      item('mk-lantern4', 0, 2, '🏮', '灯笼'),
     ],
     entities: [
       { id: 'door-market-out', kind: 'door', name: 'Outside', hanzi: '外面', emoji: '🚪', x: 9, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
       { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 7, y: 4, stand: { x: 7, y: 3 }, badge: 'badge-rose', pill: 'pill-stone' },
-      { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', emoji: '👨‍🍳', x: 7, y: 7, stand: { x: 7, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
+      { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', emoji: '👨‍🍳', x: 8, y: 7, stand: { x: 8, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
     ],
   };
 })(window.MSC = window.MSC || {});

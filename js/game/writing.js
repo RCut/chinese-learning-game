@@ -79,14 +79,14 @@
 
   WR.makeOffer = () => {
     const chars = draw();
-    st().offer = chars.length ? { chars, reshuffles: D.reshuffles } : null;
+    st().offer = chars.length ? { chars } : null;
     save();
     return st().offer;
   };
   WR.reshuffle = () => {
     const o = st().offer;
-    if (!o || o.reshuffles <= 0 || WR.poolLeft() <= D.lessonSize) return false;
-    o.chars = draw(); o.reshuffles--; save();
+    if (!o || WR.poolLeft() <= D.lessonSize) return false;
+    o.chars = draw(); save();
     return true;
   };
   WR.offer = () => st().offer || WR.makeOffer();
@@ -127,6 +127,13 @@
   }
 
   WR.hasLesson = () => !!st().lesson;
+  /** Leave a lesson in progress (not the tutorial) so a new set of characters can be chosen. Nothing is added to the wall. */
+  WR.abandonLesson = () => {
+    const L = st().lesson;
+    if (!L || L.kind !== 'lesson') return false;
+    st().lesson = null; st().offer = null; save();
+    return true;
+  };
   WR.lessonProgress = () => { const L = st().lesson; return L ? { done: L.mastered.length, total: L.chars.length, kind: L.kind } : null; };
   WR.continueSession = () => (st().lesson ? lessonSession() : null);
 

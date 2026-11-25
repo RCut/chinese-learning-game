@@ -74,7 +74,7 @@ Wang's stall is on the street from the first minute (no quest needed).
 
 - **First visit:** a short tutorial with 一 and 十, then straight into choosing a lesson. Both count as mastered.
 - **Lesson:** Wang offers 8 random unlearned characters (from the lowest tier that still has some); the player picks 4
-  ("Let Wang choose" and one reshuffle are available). Each character goes Watch → Trace → Guided; then all 4 are
+  ("Let Wang choose" and unlimited reshuffles are available; "Leave this lesson" drops an unfinished lesson so you can choose other characters). Each character goes Watch → Trace → Guided; then all 4 are
   written from memory in random order. **Mastered = at most 2 mistakes and no full-character hint.** A failed character
   goes back through Guided once and is checked again, without limit or penalty. Leaving mid-lesson keeps progress.
 - **Only when all 4 are mastered:** the characters hang on Wang's wall (in the player's own handwriting) and their

@@ -43,7 +43,7 @@
     const left = WR.poolLeft();
     const mastered = WR.masteredChars().length;
     const lessonBtn = prog
-      ? `<button class="btn btn-primary btn-block" data-click="wang-continue">✍️ Continue lesson <span class="num">(${prog.done}/${prog.total} mastered)</span></button>`
+      ? `<button class="btn btn-primary btn-block" data-click="wang-continue">✍️ Continue lesson <span class="num">(${prog.done}/${prog.total} mastered)</span></button>${prog.kind === 'lesson' ? '<button class="btn btn-ghost btn-block" data-click="wang-leave">🔀 Leave this lesson · pick other characters</button>' : ''}`
       : left
         ? '<button class="btn btn-primary btn-block" data-click="wang-new">✍️ New lesson</button>'
         : '<button class="btn btn-primary btn-block off" disabled>✍️ New lesson</button>';
@@ -67,7 +67,7 @@
         <span class="oc-hz hz">${U.esc(c)}</span><span class="oc-py">${U.esc(info.pinyin)}</span><span class="oc-mean">${U.esc(info.meaning)}</span>
         <span class="oc-n num">${WR.strokeCount(c)} strokes</span></button>`;
     }).join('');
-    const canReshuffle = offer.reshuffles > 0 && WR.poolLeft() > D.lessonSize;
+    const canReshuffle = WR.poolLeft() > D.lessonSize;
     const line = afterTutorial ? D.lines.tutorialDone : D.lines.offer;
     return `<div class="stack">${head()}
       <div class="box">${UI.sentence(line, { size: 'lg' })}</div>
@@ -75,7 +75,7 @@
       <div class="offer-grid">${cards}</div>
       <div class="actions">
         <button class="btn btn-ghost grow" data-click="wang-random">🎲 Let Wang choose</button>
-        <button class="btn btn-ghost ${canReshuffle ? '' : 'off'}" data-click="wang-reshuffle" ${canReshuffle ? '' : 'disabled'}>🔀 Reshuffle <span class="num sub">(${canReshuffle ? offer.reshuffles : 0})</span></button></div>
+        <button class="btn btn-ghost ${canReshuffle ? '' : 'off'}" data-click="wang-reshuffle" ${canReshuffle ? '' : 'disabled'}>🔀 Reshuffle</button></div>
       <div class="actions"><button class="btn btn-ghost" data-click="wang-back">← Back</button>
         <button class="btn btn-primary grow ${picked.size === need ? '' : 'off'}" data-click="wang-start" ${picked.size === need ? '' : 'disabled'}>Start lesson</button></div></div>`;
   }
@@ -115,6 +115,7 @@
   A['wang-tutorial'] = () => MSC.writer.begin(WR.hasLesson() ? WR.continueSession() : WR.startTutorial());
   A['wang-continue'] = () => MSC.writer.begin(WR.continueSession());
   A['wang-new'] = () => { view = 'offer'; picked = new Set(); WR.offer(); const o = WR.offer(); if (o && o.chars.length <= D.lessonSize) picked = new Set(o.chars); refresh(true); };
+  A['wang-leave'] = () => { if (WR.abandonLesson()) { view = 'offer'; picked = new Set(); WR.offer(); refresh(true); MSC.toast.show('Lesson left — pick new characters.'); } };
   A['wang-back'] = () => { view = 'menu'; afterTutorial = false; refresh(true); };
   A['wang-rules'] = () => { view = 'rules'; refresh(true); };
   A['wang-pick'] = (c) => {

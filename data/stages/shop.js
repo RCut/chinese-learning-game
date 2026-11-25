@@ -10,7 +10,7 @@
       'WWWWWWWWWWWWWWWW',
       'WHPPPPPPPPPPPPHW',
       'WHPPPPPPPPPPPPHW',
-      'WHPPTTPPTTPPPPHW',
+      'WHPPTTPPPTTPPPHW',
       'WPPPPPKKKKPPPPPW',
       'WPPPPPKKKKPPTTPW',
       'WPPTTPPPPPPPPPPW',
@@ -29,13 +29,13 @@
       // the four treasures of the study sit on Master Wang's big work table
       { id: 'sh-brush', x: 4, y: 3, emoji: '🖊️', hanzi: '毛笔', text: [{ hanzi: '毛笔 三十块', english: 'Writing brush: 30 yuan' }], note: 'The brush, 毛笔, is one of the Four Treasures of the Study 文房四宝: brush, ink, paper and inkstone.' },
       { id: 'sh-ink', x: 5, y: 3, emoji: '⚫', hanzi: '墨', note: 'Ink sticks are ground with water on an inkstone to make fresh ink.' },
-      { id: 'sh-inkstone', x: 8, y: 3, emoji: '🪨', hanzi: '砚台', note: 'The inkstone is where the ink is ground and kept.' },
-      { id: 'sh-xuan', x: 9, y: 3, emoji: '📃', hanzi: '宣纸', text: [{ hanzi: '宣纸 十块', english: 'Rice paper: 10 yuan' }], note: '宣纸 is soft, absorbent paper made in Xuan (Anhui) — the classic paper for brush and ink.' },
+      { id: 'sh-inkstone', x: 9, y: 3, emoji: '🪨', hanzi: '砚台', note: 'The inkstone is where the ink is ground and kept.' },
+      { id: 'sh-xuan', x: 10, y: 3, emoji: '📃', hanzi: '宣纸', text: [{ hanzi: '宣纸 十块', english: 'Rice paper: 10 yuan' }], note: '宣纸 is soft, absorbent paper made in Xuan (Anhui) — the classic paper for brush and ink.' },
       // back wall
       { id: 'sh-bookshelf', x: 1, y: 2, emoji: '📚', hanzi: '书架' },
       { id: 'sh-scroll', x: 3, y: 1, emoji: '📜', hanzi: '卷轴' },
       { id: 'sh-calligraphy', x: 5, y: 1, emoji: '🖋️', hanzi: '书法', text: [{ hanzi: '多看 多写', english: 'Look more, write more' }] },
-      { id: 'sh-painting', x: 10, y: 1, emoji: '🖼️', hanzi: '画' },
+      { id: 'sh-painting', x: 11, y: 1, emoji: '🖼️', hanzi: '画' },
       { id: 'sh-vase', x: 14, y: 2, emoji: '🏺', hanzi: '花瓶' },
       // display tables
       { id: 'sh-paper', x: 3, y: 6, emoji: '📄', hanzi: '纸' },

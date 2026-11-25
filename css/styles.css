@@ -450,3 +450,26 @@ button:disabled { cursor: default; }
 .py-opt { font-size: 18px; }
 .pr-msg { min-height: 20px; font-size: 13px; font-weight: 700; text-align: center; color: #44403c; }
 body.practice-open { overflow: hidden; }
+
+/* ───────── levels: chip, journey card, level-up pop-up ───────── */
+.chip-level { background: #ede9fe; border-color: #c4b5fd; color: #4c1d95; cursor: pointer; }
+.journey { background: #f5f3ff; border-color: #ddd6fe; }
+.lvl-bar.wide { width: 100%; height: 10px; }
+.levelup { position: fixed; inset: 0; z-index: 70; display: none; place-items: center; background: rgba(28,25,23,.55); padding: 16px; }
+.levelup.show { display: grid; }
+.levelup-card { width: min(420px, 100%); background: #fff; border-radius: 20px; padding: 22px 20px 18px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,.35); animation: lvlpop .35s cubic-bezier(.2,1.4,.4,1); }
+.levelup-card h3 { margin: 6px 0; font-size: 20px; }
+.levelup-card p { margin: 0 0 12px; font-size: 13.5px; color: #44403c; line-height: 1.5; }
+.levelup-burst { font-size: 40px; }
+.levelup-new { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-bottom: 14px; }
+.levelup-new span { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #f5f3ff; color: #4c1d95; }
+@keyframes lvlpop { from { transform: scale(.85); opacity: 0; } }
+
+/* ───────── new phrases ───────── */
+.new-phrases { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.new-phrase { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: linear-gradient(90deg, #fef3c7, #fde68a); color: #78350f; border: 1px solid #fbbf24; box-shadow: 0 0 0 3px rgba(251,191,36,.18); animation: glow 1.8s ease-in-out infinite; }
+.new-phrase .hz { font-size: 13px; }
+@keyframes glow { 50% { box-shadow: 0 0 0 5px rgba(251,191,36,.28); } }
+.log-learn { margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: #10b981; color: #fff; font-size: 11px; font-weight: 800; }
+.to-learn { padding: 10px; border-radius: 14px; background: #fffbeb; border: 1px solid #fde68a; }
+.to-learn .pcard { background: #fff; }

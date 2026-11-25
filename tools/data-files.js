@@ -6,6 +6,6 @@ module.exports = {
   /** dictionary + characters + every vocab extension */
   vocab: () => ['data/hsk.js', 'data/dictionary.js', 'data/characters.js', ...list('data/vocab')],
   /** everything the validator needs, in order */
-  all: () => ['js/core/art.js', ...list('data/art'), 'data/hsk.js', 'data/dictionary.js', 'data/characters.js', ...list('data/vocab'), 'data/world.js', ...list('data/stages'), 'data/menu.js', 'data/quests.js', 'data/ui-text.js', 'data/phrases.js', 'data/writing.js', 'data/strokes.js', 'data/chat.js', ...list('data/chats'), 'js/core/pattern.js', 'js/core/util.js', 'js/core/dictionary.js'],
+  all: () => ['js/core/art.js', ...list('data/art'), 'data/hsk.js', 'data/dictionary.js', 'data/characters.js', ...list('data/vocab'), 'data/world.js', ...list('data/stages'), 'data/menu.js', 'data/quests.js', 'data/ui-text.js', 'data/phrases.js', 'data/levels.js', 'data/writing.js', 'data/strokes.js', 'data/chat.js', ...list('data/chats'), 'js/core/pattern.js', 'js/core/util.js', 'js/core/dictionary.js'],
   chat: () => ['data/hsk.js', 'data/dictionary.js', 'data/characters.js', ...list('data/vocab'), 'data/chat.js', ...list('data/chats'), 'js/core/util.js', 'js/core/dictionary.js', 'js/core/pinyin.js', 'js/core/pattern.js'],
 };

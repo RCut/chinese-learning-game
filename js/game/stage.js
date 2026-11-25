@@ -43,9 +43,13 @@
     return side || { ...to.playerStart };
   };
 
-  const solids = (st = stage()) => [...st.entities.filter((e) => !isDoor(e)), ...(st.objects || [])];
-  const doorAt = (x, y) => stage().entities.find((e) => isDoor(e) && e.x === x && e.y === y) || null;
-  const thingAt = (x, y) => stage().entities.concat(stage().objects || []).find((e) => e.x === x && e.y === y) || null;
+  // Only what belongs to the player's level is in a place (data/levels.js): the rest appears after levelling up.
+  const ents = (st = stage()) => st.entities.filter((e) => !MSC.levels || MSC.levels.visible(e, 'person'));
+  const objs = (st = stage()) => (st.objects || []).filter((o) => !MSC.levels || MSC.levels.visible(o, 'object'));
+  ST.visibleStage = (st = stage()) => ({ ...st, entities: ents(st), objects: objs(st) });
+  const solids = (st = stage()) => [...ents(st).filter((e) => !isDoor(e)), ...objs(st)];
+  const doorAt = (x, y) => ents().find((e) => isDoor(e) && e.x === x && e.y === y) || null;
+  const thingAt = (x, y) => ents().concat(objs()).find((e) => e.x === x && e.y === y) || null;
   const blocked = () => [...W.blockedTiles, ...(stage().blockedTiles || [])];
 
   const label = (ent) => {
@@ -67,12 +71,12 @@
     // HTML on top of the canvas: name tags (people and doors) and Chinese board signs. The drawing itself is Phaser's (js/ui/board.js).
     const scenery = (st.scenery || []).filter((s) => s.text).map((s) =>
       `<div class="cell scenery" style="--x:${s.x};--y:${s.y}"><span class="${s.className || ''}">${MSC.ui.signHtml(s.text)}</span></div>`).join('');
-    const tags = st.entities.map((e) =>
+    const tags = ents(st).map((e) =>
       `<div class="cell entity ${isDoor(e) ? 'door' : ''}" id="ent-${e.id}" style="--x:${e.x};--y:${e.y}"><span class="entity-label ${e.badge}" data-ent-label="${e.id}"></span></div>`).join('');
     document.getElementById('board-dom').innerHTML = scenery + tags;
-    MSC.board.build(st, S.player);
+    MSC.board.build(ST.visibleStage(st), S.player);
     // the buttons above the board: the people and doors of THIS stage (simple objects have no button)
-    document.getElementById('pills').innerHTML = st.entities.map((e) =>
+    document.getElementById('pills').innerHTML = ents(st).map((e) =>
       `<button class="pill ${e.pill}" data-click="go" data-arg="${e.id}">${MSC.art.img(e.sprite || e.id, 2, true)}<span>${U.esc(e.name)}</span></button>`).join('');
   }
 
@@ -97,7 +101,7 @@
   /** Re-apply labels (display mode), player position and the active highlight. No DOM is added or removed. */
   ST.refresh = () => {
     const st = stage();
-    st.entities.forEach((e) => {
+    ents(st).forEach((e) => {
       const l = document.querySelector(`[data-ent-label="${e.id}"]`);
       if (l) {
         l.textContent = label(e);
@@ -236,10 +240,10 @@
   ST.go = (id) => {
     if (busy) return;
     const f = ST.find(id);
-    if (!f) return;
+    if (!f || (MSC.levels && !MSC.levels.visible(f.ent, f.type === 'object' ? 'object' : 'person'))) return;
     if (f.stage === S.stage) { pending = null; ST.walkTo(f.ent.x, f.ent.y); return; }
     const via = S.stage === W.start ? f.stage : W.start;                    // every place is reached from the street
-    const door = stage().entities.find((e) => isDoor(e) && e.to === via);
+    const door = ents().find((e) => isDoor(e) && e.to === via);
     if (!door) return;
     ST.walkTo(door.x, door.y);
     pending = id;

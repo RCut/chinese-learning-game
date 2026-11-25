@@ -156,7 +156,11 @@
     document.getElementById('cats').innerHTML = lv.map((c) => `<button class="cat ${S.phraseLevel === c ? 'on' : ''}" data-click="phrase-level" data-arg="${U.esc(c)}">${U.esc(c)}</button>`).join('');
     const q = query.trim().toLowerCase();
     const inLevel = all.filter((p) => S.phraseLevel === 'All' || p.level === Number(S.phraseLevel.slice(4)));
-    const html = PH.chapters().map((ch) => {
+    const waiting = (S.phraseQueue || []).map((id) => PH.get(id)).filter(Boolean);
+    const toLearn = waiting.length ? `<div class="chapter to-learn"><div class="row between"><h4>✨ To learn</h4><span class="sub num">${waiting.length} waiting</span></div>
+        <div class="sub">Phrases you met but haven't practised yet.</div>
+        <div class="pgrid">${waiting.map((p) => `<div class="pcard"><div>${UI.phraseLabel(p.hanzi)}</div><div style="font-weight:600;font-size:12.5px">${U.esc(p.english)}</div><button type="button" class="btn btn-primary btn-sm" data-click="teach-open" data-arg="${p.id}">Learn it</button></div>`).join('')}</div></div>` : '';
+    const html = toLearn + PH.chapters().map((ch) => {
       const ps = inLevel.filter((p) => p.chapter === ch.id);
       if (!ps.length) return '';
       const met = ps.filter((p) => PH.has(p.id) && (!q || p.english.toLowerCase().includes(q) || p.hanzi.includes(q) || D.sentencePinyin(p.hanzi).toLowerCase().includes(q)));

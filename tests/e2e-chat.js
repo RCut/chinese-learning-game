@@ -34,6 +34,7 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
 (async () => {
   const b = await chromium.launch();
   const p = await H.open(b);
+  await p.evaluate(() => MSC.levels.set(2));                  // these checks cover everything in the game (all levels)
 
   console.log('— meeting Xiao Li');
   ok('Xiao Li stands on the street with a name tag', (await p.$eval('[data-ent-label="friend"]', (e) => e.textContent)).includes('小李'));
@@ -135,6 +136,7 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
 
   console.log('— phone');
   const m = await H.open(b, { context: { ...devices['iPhone 13'] } });
+  await m.evaluate(() => MSC.levels.set(2));                  // these checks cover everything in the game (all levels)
   await H.goTo(m, 'friend'); await m.waitForSelector('[data-click="chat-send"]');
   const geo = await m.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
   ok('no horizontal overflow on a phone', geo.sw <= geo.cw, JSON.stringify(geo));

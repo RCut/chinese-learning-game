@@ -57,8 +57,10 @@
   /** Start a brand-new random conversation (never the one just before). */
   CH.begin = (npcId = 'friend') => {
     const C = SETS()[npcId];
-    const others = C.dialogues.filter((d) => d.id !== S.chatLast[npcId]);
-    const dlg = U.pick(others.length ? others : C.dialogues);
+    const atLevel = C.dialogues.filter((d) => !MSC.levels || MSC.levels.visible(d, 'dialogue'));
+    const pool = atLevel.length ? atLevel : C.dialogues;
+    const others = pool.filter((d) => d.id !== S.chatLast[npcId]);
+    const dlg = U.pick(others.length ? others : pool);
     const vars = {};
     Object.keys(dlg.slots || {}).forEach((name) => { const v = U.pick(dlg.slots[name]); vars[name] = v.hanzi; vars[`${name}.en`] = v.en; });
     return CH.start(dlg, vars, npcId);
@@ -102,7 +104,7 @@
     ch.log.push({ who: 'me', hanzi: match.variant, english: match.reply.en });
     ch.turns++;
     ch.cur = buildNode(match.reply.next);
-    if (ch.cur.end) { ch.finished = true; S.chatDone++; }
+    if (ch.cur.end) { ch.finished = true; S.chatDone++; if (MSC.levels && ch.npcId === 'friend') MSC.levels.flag('chatted'); }
     return ch.cur;
   };
 

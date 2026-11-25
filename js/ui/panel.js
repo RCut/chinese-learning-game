@@ -44,6 +44,19 @@
   }
 
   // ───────────────────────── quest overview ─────────────────────────
+  /** the journey card: the level, how many of its words are learned, and the tasks still to do */
+  function journey() {
+    if (!MSC.levels) return '';
+    const p = MSC.levels.progress();
+    const pct = Math.min(100, Math.round((100 * p.learned) / Math.max(1, p.need)));
+    return `<div class="box journey stack" style="gap:6px">
+      <div class="row between"><b>🗺️ ${U.esc(p.title)}</b><span class="sub num">${p.learned} / ${p.need} words learned</span></div>
+      <div class="lvl-bar wide"><i class="learned" style="width:${pct}%"></i></div>
+      <div class="sub">A word is learned when you can use it without help in two places (85%). ${MSC.levels.current() < MSC.levels.max() ? 'Learn these and finish the tasks to open the next level.' : ''}</div>
+      ${p.tasks.map((t) => `<div class="step-line ${t.done ? 'done' : 'todo'}"><span>${t.done ? '✅' : '⬜'}</span><span>${U.esc(t.text)}</span></div>`).join('')}
+    </div>`;
+  }
+
   function renderWelcome() {
     const done = { menu: S.story.menuChecked, order: S.story.questDone };
     const nextId = !done.menu ? 'menu' : !done.order ? 'barista' : null;
@@ -51,6 +64,7 @@
       <div class="pane-head"><div class="row"><div class="avatar">${avatar('compass')}</div>
         <div><div class="kicker">${UT.welcome.kicker}</div><h3>${UT.welcome.title}</h3></div></div>
         <div class="sub">Wallet <b class="num" style="color:#047857">¥${S.money}</b></div></div>
+      ${journey()}
       <div class="box amber stack" style="gap:8px">
         ${UT.quest.map((q, i) => `<div class="step-line ${done[q.id] ? 'done' : 'todo'}"><span>${done[q.id] ? '✅' : ['1️⃣', '2️⃣'][i]}</span><span>${U.esc(q.text)}</span></div>`).join('')}
         ${S.story.questDone ? '<div class="sub" style="color:#065f46;font-weight:700">Quest complete! Order again, help a traveler, or explore.</div>' : ''}
@@ -145,7 +159,7 @@
   function boardHtml(quiz) {
     if (quiz.board === 'menu') {
       return `<div class="box amber stack" style="gap:6px"><div class="row between sub" style="color:#92400e"><b>Today’s menu</b><span>Wallet <b class="num">¥${S.money}</b></span></div>
-        <div class="menu-board">${S.menuItems.map((m) => `<div class="menu-line"><span class="hz" style="font-weight:700">${UI.sentence({ hanzi: m.hanzi }, { size: 'sm', translation: false, speaker: false })}</span><span class="price num">¥${m.price}</span></div>`).join('')}</div></div>`;
+        <div class="menu-board">${MSC.economy.menu().map((m) => `<div class="menu-line"><span class="hz" style="font-weight:700">${UI.sentence({ hanzi: m.hanzi }, { size: 'sm', translation: false, speaker: false })}</span><span class="price num">¥${m.price}</span></div>`).join('')}</div></div>`;
     }
     if (quiz.board === 'sign') {
       return `<div class="box green"><div class="sign-lines">${quiz.signLines.map((l) => UI.sentence(l, { size: 'md', translation: false, speaker: false })).join('')}</div></div>`;
@@ -250,7 +264,7 @@
     }
     if (!user.length) { MSC.log.say(S.inputMode === 'recall' ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
     const res = B.check(step, user, S.inputMode === 'recall');
-    if (res.ok && res.first) MSC.mastery.useText(step.targetHanzi, { hint: st.hint, mistakes: st.attempts, tiles: S.inputMode === 'tiles' }, 'cafe');
+    if (res.ok && res.first) { MSC.mastery.useText(step.targetHanzi, { hint: st.hint, mistakes: st.attempts, tiles: S.inputMode === 'tiles' }, 'cafe'); if (MSC.teach) MSC.teach.prompt(); }
     MSC.speech.say(st.reaction.hanzi);
     if (res.ok && res.first) {
       MSC.addXP(25, step.goal.replace(/\.$/, ''));
@@ -299,6 +313,7 @@
     const res = QZ.submit(key);
     MSC.speech.say(st.reaction.hanzi);
     P.render(false, true);
+    if (res && res.ok && MSC.teach) MSC.teach.prompt();
     return res;
   };
   A['renew-quiz'] = (key) => { QZ.renew(key); P.render(true); MSC.speech.say(QZ.state(key).quiz.prompt.hanzi); };

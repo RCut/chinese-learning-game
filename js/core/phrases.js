@@ -34,11 +34,22 @@
     return list.filter((p) => p.norm.length >= 2 && n.includes(p.norm)).sort((a, b) => b.norm.length - a.norm.length);
   };
 
-  /** The player has met a phrase. (PR 3 turns this into a short practice screen; for now it is added with a log message.) */
-  PH.discover = (id) => {
+  /** The player has met a phrase: it waits for the short phrase screen (js/ui/teach.js) before it goes into the phrase book.
+   *  `direct` (the player SAID it correctly) adds it straight away. */
+  PH.discover = (id, direct) => {
+    const p = PH.get(id);
+    if (!p || S.phraseSet.has(p.id)) return false;
+    if (!direct && MSC.teach) { MSC.teach.offer(p.id); return false; }
+    return PH.add(p.id);
+  };
+  PH.queued = (id) => (S.phraseQueue || []).includes(id);
+
+  /** into the phrase book */
+  PH.add = (id) => {
     const p = PH.get(id);
     if (!p || S.phraseSet.has(p.id)) return false;
     S.phraseSet.add(p.id);
+    S.phraseQueue = (S.phraseQueue || []).filter((x) => x !== p.id);
     if (MSC.mastery) MSC.mastery.seen(p.key);
     if (MSC.log) MSC.log.html(`💬 New phrase: <button type="button" class="log-zh hz" data-click="open-phrase" data-arg="${p.id}">${MSC.util.esc(p.hanzi)}</button> <span class="log-en">${MSC.util.esc(p.english)}</span>`, 'vocab');
     if (MSC.progress) MSC.progress.save();
@@ -51,7 +62,7 @@
   MSC.mastery.useText = (text, how, place) => {
     const q = MSC.mastery.quality(how || {});
     const phrases = PH.find(text);
-    phrases.forEach((p) => PH.discover(p.id));
+    phrases.forEach((p) => PH.discover(p.id, true));
     MSC.mastery.record([...wordsOf(text), ...phrases.map((p) => p.key)], q, place);
   };
 })(window.MSC = window.MSC || {});

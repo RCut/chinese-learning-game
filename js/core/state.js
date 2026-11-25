@@ -31,6 +31,10 @@
     mastery: {},           // word / 'p:<phrase id>' → uses (see js/core/mastery.js)
     phraseSet: new Set(),  // phrases met (ids)
     hskOnly: false,        // notebook: show HSK words only
+    level: 1,              // the journey: level 1 = HSK 1, level 2 = HSK 2 (js/game/levels.js)
+    flags: {},             // level tasks done: ordered, chatted, wrote
+    levelDoneShown: 0,
+    phraseQueue: [],       // phrases met but not yet learned on the phrase screen (js/ui/teach.js)
     nbTab: 'words',        // notebook: 'words' | 'phrases'
     selectedWord: null,    // notebook detail pane
     category: 'All',
@@ -48,6 +52,10 @@
         if (saved.writing && typeof saved.writing === 'object') Object.assign(S.writing, saved.writing);
         if (saved.mastery && typeof saved.mastery === 'object') S.mastery = saved.mastery;
         if (Array.isArray(saved.phrases)) saved.phrases.forEach((id) => S.phraseSet.add(id));
+        if (saved.level) S.level = saved.level;
+        if (saved.flags) S.flags = saved.flags;
+        if (saved.levelDoneShown) S.levelDoneShown = saved.levelDoneShown;
+        if (Array.isArray(saved.phraseQueue)) S.phraseQueue = saved.phraseQueue;
         (saved.words || []).forEach((h) => {
           if (MSC.dict.get(h) && !S.vocabSet.has(h)) { S.vocab.push(h); S.vocabSet.add(h); }
         });
@@ -56,7 +64,7 @@
     save() {
       try {
         const starters = new Set(MSC.dict.all().filter((e) => e.starter).map((e) => e.hanzi));
-        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)), mastery: S.mastery, phrases: [...S.phraseSet] }));
+        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)), mastery: S.mastery, phrases: [...S.phraseSet], level: S.level, flags: S.flags, levelDoneShown: S.levelDoneShown, phraseQueue: S.phraseQueue }));
       } catch (e) { /* storage unavailable: progress simply isn't kept */ }
     },
   };

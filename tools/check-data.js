@@ -88,14 +88,21 @@ Object.keys(MSC.data.characters).forEach((c) => { if (!used.has(c)) warn.push(`c
   W.rules.forEach((r) => { if (!r.title || !r.tip) errors.push(`writing rule ${r.id}: needs title and tip`); });
 })();
 
-// ── HSK 1–2 target: 200 words, and every character of them can be learned at Master Wang's ──
+// ── HSK: every word of the official list (data/hsk.js) exists, and every character of it can be learned at Master Wang's ──
 (function checkHsk() {
-  const hsk = MSC.data.dictionary.filter((e) => e.hsk);
-  hsk.forEach((e) => { if (![1, 2].includes(e.hsk)) errors.push(`${e.hanzi}: hsk must be 1 or 2`); });
-  if (hsk.length < 200) errors.push(`only ${hsk.length} HSK 1–2 words; the target is 200`);
+  const H = MSC.data.hsk, D = MSC.dict;
+  if (!H || !H.levels) { errors.push('data/hsk.js is missing'); return; }
   const taught = new Set([...MSC.data.writing.tutorial, ...MSC.data.writing.pool].map((c) => c.char));
-  hsk.forEach((e) => [...e.hanzi].forEach((c) => { if (!taught.has(c)) errors.push(`HSK word ${e.hanzi}: character ${c} cannot be learned at Master Wang (add it to data/writing.js)`); }));
-  console.log(`HSK 1–2: ${hsk.length} words (${hsk.filter((e) => e.hsk === 1).length} at level 1, ${hsk.filter((e) => e.hsk === 2).length} at level 2)`);
+  Object.entries(H.levels).forEach(([l, words]) => {
+    words.forEach((w) => {
+      if (!D.get(w)) errors.push(`HSK ${l} word ${w} is missing from the dictionary (add it to data/vocab/hsk${l}.js)`);
+      [...w].forEach((c) => {
+        if (!taught.has(c)) errors.push(`HSK word ${w}: character ${c} cannot be learned at Master Wang (add it to data/writing.js)`);
+        if (!MSC.data.characters[c]) errors.push(`HSK word ${w}: character ${c} has no characters.js entry`);
+      });
+    });
+  });
+  console.log(`${H.standard}: ${Object.entries(H.levels).map(([l, w]) => `HSK ${l} ${w.length} words`).join(', ')}`);
 })();
 
 // ── chats (Xiao Li, the market shopkeeper … — every set in MSC.data.chats) ──
@@ -180,6 +187,28 @@ function checkChat(C, who) {
 }
 const chatCoverage = checkChat(MSC.data.chat, 'Xiao Li');
 Object.entries(MSC.data.chats || {}).forEach(([id, set]) => { if (set !== MSC.data.chat) checkChat(set, id); });
+
+// ── coverage: where can each HSK word be met (seen) and used (said by the player)? — a report, not an error ──
+(function coverage() {
+  const D = MSC.dict, PT = MSC.pattern;
+  const seen = new Map(), used = new Map(), extras = new Set();
+  const words = (text) => D.segment(text || '').filter((t) => t.kind === 'word').map((t) => t.hanzi);
+  const mark = (map, text, where) => words(text).forEach((w) => { if (!map.has(w)) map.set(w, new Set()); map.get(w).add(where); if (!D.level(w)) extras.add(w); });
+  Object.entries(MSC.data.chats || {}).forEach(([npc, set]) => set.dialogues.forEach((d) => Object.entries(d.nodes).forEach(([nid, n]) => {
+    const where = `${npc}:${d.id}.${nid}`;
+    if (n.npc) mark(seen, PT.fill(n.npc.hanzi, {}), where);
+    (n.replies || []).forEach((r) => (r.say || []).forEach((pat) => PT.expand(pat.replace(/\{[\w.]+\}/g, '')).forEach((v) => { mark(used, v, where); mark(seen, v, where); })));
+  })));
+  Object.values(MSC.data.world.stages).forEach((st) => (st.objects || []).forEach((o) => { mark(seen, o.hanzi, st.id); (o.text || []).forEach((l) => mark(seen, l.hanzi, st.id)); }));
+  [...(MSC.data.menu.drinks || []), ...(MSC.data.menu.foods || [])].forEach((m) => { mark(seen, m.hanzi, 'cafe'); mark(used, m.hanzi, 'cafe'); });
+  Object.entries(MSC.data.hsk.levels).forEach(([l, ws]) => {
+    const n0 = ws.filter((w) => !seen.has(w)), u0 = ws.filter((w) => !used.has(w)), u3 = ws.filter((w) => (used.get(w) || new Set()).size >= 3);
+    console.log(`coverage HSK ${l}: ${ws.length - n0.length}/${ws.length} words appear in the game, ${ws.length - u0.length} can be used by the player, ${u3.length} in 3+ places`);
+    if (process.env.SHOW_COVERAGE) { console.log(`  never seen: ${n0.join(' ')}`); console.log(`  never used: ${u0.filter((w) => seen.has(w)).join(' ')}`); }
+  });
+  const all = new Set([...seen.keys()]);
+  console.log(`extras: ${extras.size} of ${all.size} different words in the game's content are not HSK words (${Math.round((100 * extras.size) / all.size)}%; target ≤ 20%)`);
+})();
 
 // ── all Chinese text in the other data files must be segmentable ──
 function walk(node, trail, out) {

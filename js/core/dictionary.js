@@ -9,6 +9,15 @@
   const entries = MSC.data.dictionary;
   const byHanzi = new Map();
   entries.forEach((e) => byHanzi.set(e.hanzi, e));
+  // HSK levels come from the official list (data/hsk.js), never from hand-written tags
+  const levelOf = new Map();
+  Object.entries((MSC.data.hsk && MSC.data.hsk.levels) || {}).forEach(([l, ws]) => ws.forEach((w) => { if (!levelOf.has(w)) levelOf.set(w, Number(l)); }));
+  entries.forEach((e) => { const l = levelOf.get(e.hanzi); if (l) e.hsk = l; else delete e.hsk; });
+  /** HSK level of a word (0 = not an HSK word) */
+  D.level = (hanzi) => levelOf.get(hanzi) || 0;
+  /** the words of one HSK level, in list order */
+  D.hskWords = (l) => ((MSC.data.hsk && MSC.data.hsk.levels[l]) || []).slice();
+
   const maxLen = entries.reduce((m, e) => Math.max(m, e.hanzi.length), 1);
 
   D.get = (hanzi) => byHanzi.get(hanzi) || null;

@@ -34,10 +34,10 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
   NPC lines are blurred until tapped. The header toggle switches **Pinyin / Hybrid / Hanzi** everywhere.
 - **Notebook:** every word you meet. Filter by category, by **HSK 1–2** (with a progress bar) or **✍ Can write**. Each word shows
   its characters and components, related words (phrases, collocations, parts, compounds) and, once learned, *How to write*.
-- **Vocabulary:** the 200 words of HSK 1–2 plus about 200 helper words from the places (names, objects, foods).
+- **Vocabulary:** the 491 words of **HSK 1–2 in the revised HSK 3.0 lists** (294 + 197) plus helper words from the places (names, objects, foods).
 - **Barista Lin:** build the order from word tiles, type pinyin, or speak. Prices are real: one wallet (header), tips add to it,
   every order is built from what you can afford.
-- **Xiao Li (street) and Shopkeeper Zhang (market):** a new random conversation every visit — 24 with Xiao Li (covering all 200 HSK words),
+- **Xiao Li (street) and Shopkeeper Zhang (market):** a new random conversation every visit — 24 with Xiao Li,
   8 buying conversations with Zhang. You **build** your replies from word tiles (with distractors), **type** them, or **speak** them;
   several phrasings are accepted and your choice decides how the conversation branches. Tone slips are called out.
 - **Speaking:** what the recogniser heard is shown like an NPC line (tappable words, pinyin per the toggle, English gloss); right
@@ -58,7 +58,7 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
   Failing never removes anything.
 - **Practice** (from the notebook): memory mode; never changes mastery, only replaces your handwriting with a better attempt.
 - **Stroke rules** (e.g. horizontal before vertical) unlock as you meet them. The stroke order is checked by direction, order and shape.
-- Every character of every HSK word can be learned here (233 characters, tiered by stroke count).
+- Every character of every HSK 1–2 word can be learned here (tiered by stroke count).
 
 ## Interface notes
 
@@ -82,7 +82,8 @@ css/styles.css          styling
 vendor/                 phaser.min.js (Phaser 3, MIT — see PHASER_LICENSE.md)
 
 data/                   CONTENT — edit these, no game code needed
-  dictionary.js         every word: hanzi, pinyin, pinyinNum, english, pos, category, hsk, related, exclude, note
+  hsk.js                GENERATED official HSK word list per level (revised HSK 3.0) — the source of every word's level
+  dictionary.js         every word: hanzi, pinyin, pinyinNum, english, pos, category, related, exclude, note
   characters.js         per-character meaning + components
   vocab/<place>.js      extra words/characters per place (same formats; pushed into the dictionary)
   world.js              shared stage settings (fade time, tile letters); format documented in its header
@@ -99,7 +100,7 @@ js/ui/                  rendering and input: board (Phaser renderer), panel, tex
                         (writing tray), stroke-board (SVG canvas), howto, recognizer (speech input)
 js/main.js              start-up, header controls, keyboard
 
-tools/                  check-data.js (validator) · build-strokes.js · art-sheet.js (renders all art to a PNG) · data-files.js
+tools/                  check-data.js (validator) · build-strokes.js · art-sheet.js (renders all art to a PNG) · import-hsk.js (regenerates data/hsk.js) · data-files.js
 tests/                  node and browser tests
 licenses/               Arphic Public License (stroke data) — see THIRD_PARTY_NOTICES.md
 ```
@@ -138,9 +139,9 @@ characters, Chinese text that isn't in the dictionary, stage maps (shape, reacha
 | Change café items or prices | `data/menu.js` (orders, answers, tiles and hints are derived from it) |
 | Change dialogue or hints | `data/quests.js` |
 | Add a writable character | Add it to `pool` in `data/writing.js` (linked word, tier, mnemonic, optional tips), then `npm i hanzi-writer-data` somewhere outside the repo and run `node tools/build-strokes.js <path>/node_modules/hanzi-writer-data` |
-| Adjust the HSK target | Every character of every `hsk` word must be in Wang's pool; the validator enforces at least 200 words |
+| Update the HSK list | `data/hsk.js` is generated: clone https://github.com/drkameleon/complete-hsk-vocabulary (MIT) and run `node tools/import-hsk.js <path> [maxLevel]`. Levels are never written on dictionary entries — the game reads them from that list. Every listed word must be in the dictionary (`data/vocab/hsk1.js`, `hsk2.js`), and every character of it in Wang's pool with a character entry |
 
-HSK levels follow the classic HSK 2.0 lists as best recalled — spot-check before relying on them for exam prep.
+HSK levels come from the revised HSK 3.0 lists (the dataset's "newest" lists, believed to be the 2025 revision). `node tools/check-data.js` also prints a **coverage report**: how many words of each level appear in the game, how many the player can actually use, in how many places, and the share of non-HSK "extra" words (target ≤ 20%; `SHOW_COVERAGE=1` lists the missing words).
 
 ## Tests
 

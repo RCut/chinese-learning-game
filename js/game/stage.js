@@ -63,7 +63,7 @@
     board.style.setProperty('--ar-m', `${st.cols} / ${st.rows + 1}`);
     board.dataset.stage = st.id;
     const title = document.getElementById('stage-title');
-    if (title) title.textContent = `📍 ${st.name}`;
+    if (title) title.textContent = st.name;
     // HTML on top of the canvas: name tags (people and doors) and Chinese board signs. The drawing itself is Phaser's (js/ui/board.js).
     const scenery = (st.scenery || []).filter((s) => s.text).map((s) =>
       `<div class="cell scenery" style="--x:${s.x};--y:${s.y}"><span class="${s.className || ''}">${MSC.ui.signHtml(s.text)}</span></div>`).join('');

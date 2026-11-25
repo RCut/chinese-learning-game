@@ -33,6 +33,10 @@
 
   function inputArea(cur) {
     const st = cur.st;
+    if (S.chatMode === 'speak') {
+      const fallback = S.mic.unavailable ? '<div class="box amber box-sm">Speaking isn’t available here — use Build or Type instead.</div>' : '';
+      return `${UI.heardBox(st.heard)}${S.mic.msg ? `<div class="box amber box-sm">${U.esc(S.mic.msg)}</div>` : ''}${fallback}`;
+    }
     if (S.chatMode === 'recall') {
       return `<input type="text" id="chat-input" class="field" autocomplete="off" autocapitalize="off" spellcheck="false" value="${U.esc(st.recall)}" placeholder="Type pinyin (nǐ hǎo / ni3 hao3) or hanzi…" />`;
     }
@@ -69,14 +73,16 @@
     const npc = cur.npc
       ? `<div class="box">${UI.sentence(cur.npc, { size: 'lg' })}</div>`
       : '<div class="box"><div class="box-sm">💬 Xiao Li is waiting for <b>you</b> to speak first.</div></div>';
-    const modes = ['tiles', 'recall'].map((m) => `<button type="button" class="${S.chatMode === m ? 'on' : ''}" data-click="chat-mode" data-arg="${m}">${{ tiles: '🧩 Build', recall: '✍️ Type' }[m]}</button>`).join('');
+    const modes = ['tiles', 'recall', 'speak'].map((m) => `<button type="button" class="${S.chatMode === m ? 'on' : ''}" data-click="chat-mode" data-arg="${m}">${{ tiles: '🧩 Build', recall: '✍️ Type', speak: '🎙️ Speak' }[m]}</button>`).join('');
     return `<div class="stack">${top}${topic}
       <div class="chat-log">${more}${log}</div>
       ${npc}
       <div class="box amber"><span class="kicker" style="color:#92400e">Your goal</span><div style="font-weight:700;font-size:13px">${U.esc(cur.goal)}</div></div>
-      <div class="tabs3" style="grid-template-columns:repeat(2,1fr)">${modes}</div>
+      <div class="tabs3" style="grid-template-columns:repeat(3,1fr)">${modes}</div>
       <div class="stack" style="gap:10px">${inputArea(cur)}</div>
-      <div class="actions"><button type="button" class="btn btn-hint ${st.hint >= 3 ? 'invisible' : ''}" style="min-width:104px" data-click="chat-hint">${HINT_LABEL[Math.min(st.hint, 2)]}</button><button class="btn btn-primary grow" data-click="chat-send">Send</button></div>
+      <div class="actions"><button type="button" class="btn btn-hint ${st.hint >= 3 ? 'invisible' : ''}" style="min-width:104px" data-click="chat-hint">${HINT_LABEL[Math.min(st.hint, 2)]}</button>${S.chatMode === 'speak'
+        ? `<button type="button" class="btn btn-dark grow ${S.mic.recording ? 'rec' : ''}" data-click="chat-mic">${S.mic.recording ? '⏹ Stop' : '🎙️ Speak'}</button>`
+        : '<button class="btn btn-primary grow" data-click="chat-send">Send</button>'}</div>
       <div id="feedback" class="stack" style="gap:8px">${st.reaction ? `<div class="box amber">${UI.sentence({ hanzi: st.reaction.hanzi, english: st.reaction.english }, { size: 'sm' })}</div>` : ''}${hintBoxes(cur)}</div>
     </div>`;
   }
@@ -98,7 +104,7 @@
     const id = S.chat.dlg.id;
     setTimeout(() => { if (S.chat && S.chat.dlg.id === id && !S.chat.log.length && S.chat.cur.npc && S.active === C.npc.id) MSC.speech.say(S.chat.cur.npc.hanzi); }, 250);
   };
-  A['chat-mode'] = (m) => { S.chatMode = m; refresh(false); };
+  A['chat-mode'] = (m) => { if (MSC.recognizer.active()) MSC.recognizer.stop(); S.mic.recording = false; S.mic.msg = ''; S.chatMode = m; refresh(false); };
   A['chat-add'] = (i) => {
     const cur = live(); if (!cur) return;
     const idx = Number(i);
@@ -123,7 +129,37 @@
     const user = CH.userSyllables(cur, S.chatMode);
     if (!user.length) { MSC.toast.show(typing ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
     if (!typing) MSC.vocab.discoverText(cur.st.tray.map((t) => t.h).join(''));
-    const m = CH.match(cur, user);
+    submit(cur, CH.match(cur, user));
+  };
+
+  /** Speak: what the recogniser heard appears like Xiao Li's lines (tappable words), then it is judged like any answer. */
+  A['chat-mic'] = () => {
+    const cur = live(); if (!cur) return;
+    if (S.mic.recording && MSC.recognizer.active()) { MSC.recognizer.stop(); return; }
+    S.mic.recording = true; S.mic.msg = ''; cur.st.heard = '';
+    MSC.recognizer.start({
+      onInterim: (t) => { const el = document.getElementById('live'); if (el && !el.classList.contains('heard')) el.textContent = `Hearing: “${t}”`; },
+      onFinal: (fin) => {
+        S.mic.recording = false;
+        if (live() !== cur) return;
+        cur.st.heard = fin;
+        MSC.vocab.discoverText(fin);
+        submit(cur, CH.matchSpoken(cur, MSC.pinyin.parse(fin)));
+      },
+      onError: (code) => {
+        S.mic.recording = false;
+        if (code === 'unsupported') { S.mic.unavailable = true; S.mic.msg = 'Speech recognition isn’t supported in this browser.'; }
+        else if (['not-allowed', 'service-not-allowed', 'audio-capture'].includes(code)) { S.mic.unavailable = true; S.mic.msg = 'Microphone access is blocked here.'; }
+        else if (code === 'start-failed') { S.mic.unavailable = true; S.mic.msg = 'The microphone couldn’t start here.'; }
+        else if (code !== 'aborted' && code !== 'no-speech') S.mic.msg = `Mic problem (${code}). Try again.`;
+        refresh(false);
+      },
+      onEnd: () => { S.mic.recording = false; refresh(false); },
+    });
+    refresh(false);
+  };
+
+  function submit(cur, m) {
     if (m.reply) {
       quietXP(C.xpTurn);
       const next = CH.advance(m);
@@ -135,7 +171,7 @@
       MSC.speech.say(cur.st.reaction.hanzi);
       refresh(false);
     }
-  };
+  }
 
   document.addEventListener('keydown', (e) => { if (e.target && e.target.id === 'chat-input' && e.key === 'Enter') A['chat-send'](); });
   document.addEventListener('input', (e) => { if (e.target && e.target.id === 'chat-input' && live()) live().st.recall = e.target.value; });

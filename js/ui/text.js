@@ -27,6 +27,9 @@
    * opts: size 'lg'|'md'|'sm' · translation (default true) · speaker (default true)
    * Translation is always present but blurred, so revealing it never changes the layout.
    */
+  /** Word-by-word English for text we have no real translation of (e.g. what the speech recogniser heard). */
+  UI.gloss = (hanzi) => D.segment(hanzi).filter((t) => t.kind !== 'text').map((t) => D.tokenEnglish(t)).filter(Boolean).join(' · ');
+
   UI.sentence = (line, opts = {}) => {
     const size = opts.size || 'md';
     const tier = S.displayMode;
@@ -34,11 +37,16 @@
     const pyLine = tier === 2 ? `<div class="sentence-py">${U.esc(D.sentencePinyin(line.hanzi))}</div>` : '';
     const key = U.esc(line.english || '');
     const en = opts.translation === false || !line.english ? '' :
-      `<div class="sentence-en ${S.revealed.has(line.english) ? '' : 'veiled'}" data-reveal="${key}" title="Tap to show the translation">${U.esc(line.english)}</div>`;
+      `<div class="sentence-en ${opts.plain || S.revealed.has(line.english) ? '' : 'veiled'}" data-reveal="${key}" title="Tap to show the translation">${U.esc(line.english)}</div>`;
     const spk = opts.speaker === false ? '' :
       `<button type="button" class="say-btn" data-say="${U.esc(line.hanzi)}" aria-label="Play the whole sentence" title="Play the whole sentence">🔊</button>`;
     return `<div class="sentence ${size}"><div class="sentence-body"><div class="sentence-main hz">${main}</div>${pyLine}${en}</div>${spk}</div>`;
   };
+
+  /** What the speech recogniser heard, shown like an NPC line: tappable words, pinyin under it (per the display mode), plain English. */
+  UI.heardBox = (heard) => !heard
+    ? '<div id="live" class="mic-box">Say your answer in Mandarin.</div>'
+    : `<div id="live" class="box heard"><span class="kicker">You said</span>${UI.sentence({ hanzi: heard, english: UI.gloss(heard) }, { size: 'lg', plain: true })}</div>`;
 
   /** Single-word label (tiles) following the display mode. */
   UI.wordLabel = (hanzi, compact) => {

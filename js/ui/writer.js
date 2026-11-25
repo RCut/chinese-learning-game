@@ -34,16 +34,16 @@
         </div>
         <div class="w-topright"><span class="w-phase" id="w-phase"></span><button class="w-x" data-click="writer-close" aria-label="Close">✕</button></div>
       </div>
-      <div class="w-meta"><div class="w-slots" id="w-slots"></div><div class="w-count num" id="w-count"></div></div>
+      <div class="w-meta"><div class="w-slots" id="w-slots"></div><span id="w-seal" class="w-seal"></span><div class="w-count num" id="w-count"></div></div>
       <div class="w-boardwrap"><div id="w-board" class="w-board"></div></div>
       <div class="w-msg" id="w-msg" aria-live="polite"></div>
       <div class="w-controls">
         <button id="w-undo" data-click="w-undo">↶ Undo</button>
         <button id="w-clear" data-click="w-clear">🗑 Clear</button>
-        <button id="w-watch" data-click="w-watch">▶ Watch again</button>
+        <button id="w-watch" data-click="w-watch">▶ Watch</button>
         <button id="w-hint" class="hint" data-click="w-hint">💡 Hint</button>
-      </div>
-      <div class="w-foot"><span id="w-seal" class="w-seal"></span><span class="grow"></span><button id="w-next" class="btn btn-primary invisible" data-click="w-next">Next →</button></div>`;
+        <button id="w-next" class="next invisible" data-click="w-next">Next →</button>
+      </div>`;
     built = true;
     const head = $('w-handle');
     let y0 = null;                                                  // swipe down to close (phones)
@@ -208,7 +208,10 @@
     if (!interactive() || animating || run.hint >= 3) return;
     run.hint++;
     const i = board.idx;
-    if (run.hint === 1) msgText(`💡 ${WR.tipFor(cur.c, i)}`);
+    if (run.hint === 1) {
+      const info = WR.info(cur.c), sp = info.tips && info.tips[i];
+      msgText(`💡 ${info.mnemonic}${sp ? ` ${sp}` : ''}`);
+    }
     if (run.hint === 2) { board.showStart(i); msgText('Start at the orange dot and follow the arrow.'); }
     if (run.hint === 3) { board.setOutline(true); board.flashStroke(i); msgText('Here is the whole character. This counts as the full-character hint.'); }
     syncControls();

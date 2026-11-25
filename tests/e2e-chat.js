@@ -40,7 +40,7 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
   ok('Xiao Li stands on the street with a name tag', (await p.$eval('[data-ent-label="friend"]', (e) => e.textContent)).includes('小李'));
   ok('there is a button to walk to Xiao Li', !!(await p.$('.pill:has-text("Xiao Li")')));
   const layout0 = await rects(p);
-  await tap(p, '.pill:has-text("Xiao Li")'); await p.waitForSelector('[data-click="chat-send"]');
+  await H.goTo(p, 'friend'); await p.waitForSelector('[data-click="chat-send"]');
   let st = await state(p);
   ok('a conversation started', !!st.dlg && !st.finished && st.log === 0, JSON.stringify(st));
   let c = await cur(p);
@@ -105,14 +105,14 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
   console.log('— every visit starts a new conversation');
   const first = (await state(p)).dlg;
   await tap(p, '[data-click="overview"]'); await p.waitForTimeout(150);
-  await tap(p, '.pill:has-text("Xiao Li")'); await p.waitForSelector('[data-click="chat-send"]');
+  await H.goTo(p, 'friend'); await p.waitForSelector('[data-click="chat-send"]');
   ok('walking away and back starts a new random conversation', (await state(p)).dlg !== first && (await state(p)).log === 0);
   ok('words from the chat reach the notebook', await p.evaluate(() => MSC.state.vocab.length) > 50);
   ok('notebook counts HSK progress', /HSK 1–2 words discovered/.test(await p.evaluate(() => (MSC.actions.tab('notebook'), document.getElementById('hsk-progress').innerText))));
 
   console.log('— phone');
   const m = await H.open(b, { context: { ...devices['iPhone 13'] } });
-  await tap(m, '.pill:has-text("Xiao Li")'); await m.waitForSelector('[data-click="chat-send"]');
+  await H.goTo(m, 'friend'); await m.waitForSelector('[data-click="chat-send"]');
   const geo = await m.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
   ok('no horizontal overflow on a phone', geo.sw <= geo.cw, JSON.stringify(geo));
   await m.screenshot({ path: 'chat_phone.png' });

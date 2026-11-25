@@ -29,7 +29,7 @@ const next = async (p) => { await H.waitNext(p); await p.click('#w-next'); await
   const p = await H.open(b);
   const rect = (sel) => p.$eval(sel, (e) => { const r = e.getBoundingClientRect(); return [r.x, r.y, r.width, r.height].map(Math.round).join(','); });
   await seed(p, ['一', '十', '人', '大', '口', '日']);
-  await p.click('.pill:has-text("Master Wang")'); await p.waitForTimeout(400);
+  await H.goTo(p, 'wang');
 
   console.log('— specific stroke feedback (右: slanted stroke first)');
   await begin(p, "MSC.writing.startLesson(['右', '左', '女', '不'])");
@@ -118,20 +118,20 @@ const next = async (p) => { await H.waitNext(p); await p.click('#w-next'); await
     const o = MSC.writing.makeOffer(); const s = MSC.writing.startLesson(o.chars);
     return o.chars.length === 3 && s.slots().length === 3 && MSC.writing.reshuffle() === false; }));
   await p.evaluate(() => { MSC.state.writing.lesson = null; MSC.data.writing.pool.forEach((c) => { MSC.state.writing.mastered[c.char] = { last: 1 }; }); MSC.state.writing.offer = null; MSC.emit('writing-changed'); });
-  await p.click('.pill:has-text("Master Wang")'); await p.waitForSelector('[data-click="wang-review"]');
+  await H.goTo(p, 'wang');
   ok('pool empty → only Review (New lesson disabled)', await p.$eval('[data-click="wang-new"]', (e) => e.disabled).catch(() => true) && !!(await p.$('[data-click="wang-review"]')));
 
   console.log('— offline');
   const reqs = [];
   const p2 = await H.open(b); p2.on('request', (r) => reqs.push(r.url()));
-  await seed(p2, ['一', '十']); await p2.click('.pill:has-text("Master Wang")'); await p2.waitForTimeout(300);
+  await seed(p2, ['一', '十']); await H.goTo(p2, 'wang');
   await begin(p2, "MSC.writing.practiceSession('十')"); await H.writeChar(p2, '十'); await H.waitNext(p2);
   ok('no network requests while writing (stroke data is bundled)', reqs.filter((u) => /^https?:/.test(u)).length === 0, reqs.join(' '));
 
   console.log('— phone: bottom sheet + touch drawing without scrolling');
   const m = await H.open(b, { context: { ...devices['iPhone 13'] } });
   await seed(m, ['一', '十']);
-  await m.click('.pill:has-text("Master Wang")'); await m.waitForTimeout(500);
+  await H.goTo(m, 'wang');
   await begin(m, "MSC.writing.practiceSession('十')"); await m.waitForTimeout(500);
   const geo = await m.evaluate(() => { const w = document.getElementById('writer').getBoundingClientRect(), bd = document.getElementById('w-board').getBoundingClientRect(); return { wb: w.bottom, wh: w.height, vh: innerHeight, vw: innerWidth, bw: bd.width, bh: bd.height, pageW: document.documentElement.scrollWidth }; });
   ok('tray is a bottom sheet that fits the screen', Math.abs(geo.wb - geo.vh) < 2 && geo.wh <= geo.vh, JSON.stringify(geo));

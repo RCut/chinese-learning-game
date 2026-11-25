@@ -21,6 +21,13 @@ async function open(browser, opts = {}) {
   return p;
 }
 
+/** Walk to a person anywhere (through the street's doors if needed) and wait until their panel is open. */
+async function goTo(p, id) {
+  await p.evaluate((x) => MSC.stage.go(x), id);
+  await p.waitForFunction((x) => MSC.state.active === x && !document.getElementById('stage-fade').classList.contains('on'), id, { timeout: 25000 });
+  await p.waitForTimeout(150);
+}
+
 // the tray slides in; don't measure or draw until it has settled
 const settled = (p) => p.waitForFunction(() => { const w = document.getElementById('writer'); if (!w || !w.classList.contains('open')) return true; const t = getComputedStyle(w).transform; return t === 'none' || t === 'matrix(1, 0, 0, 1, 0, 0)'; });
 const boardRect = async (p) => { await settled(p); return boardRect0(p); };
@@ -57,4 +64,4 @@ const phase = (p) => p.$eval('#w-phase', (e) => e.textContent);
 const wchar = (p) => p.evaluate(() => MSC.writing && document.getElementById('w-hz').textContent);
 async function waitNext(p) { await p.waitForSelector('#w-next:not(.invisible)', { timeout: 15000 }); }
 
-module.exports = { open, drawStroke, writeChar, scribble, boardRect, phase, waitNext, strokeCount, URL };
+module.exports = { goTo, open, drawStroke, writeChar, scribble, boardRect, phase, waitNext, strokeCount, URL };

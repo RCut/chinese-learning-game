@@ -21,7 +21,7 @@ const ok = (n, c, x = '') => { console.log(c ? '  ok  ' : '  FAIL', n, c ? '' : 
   const say = (t) => p.evaluate((x) => { window.__heard = x; }, t);
 
   console.log('— Xiao Li: speaking');
-  await dismiss(); await p.click('.pill:has-text("Xiao Li")'); await p.waitForSelector('[data-click="chat-send"]');
+  await dismiss(); await H.goTo(p, 'friend');
   await dismiss(); await p.click('[data-click="chat-mode"][data-arg="speak"]');
   ok('Speak mode has a mic button instead of Send', !!(await p.$('[data-click="chat-mic"]')) && !(await p.$('[data-click="chat-send"]')));
   await say(await p.evaluate(() => MSC.chat.current().replies[0].variants[0]));
@@ -51,7 +51,9 @@ const ok = (n, c, x = '') => { console.log(c ? '  ok  ' : '  FAIL', n, c ? '' : 
   console.log('— Barista Lin');
   await p.click('[data-click="overview"]'); await dismiss();
   await p.evaluate(() => { MSC.state.story.menuChecked = true; MSC.state.inputMode = 'speak'; });
-  await p.click('.pill:has-text("Barista Lin")'); await dismiss();
+  await p.evaluate(() => MSC.stage.go('barista'));                       // Barista Lin is in the café now: out of the door, across, in
+  await p.waitForFunction(() => MSC.state.stage === 'cafe' && MSC.state.active === 'barista', null, { timeout: 20000 });
+  await dismiss();
   await say('我要咖啡');
   await p.waitForSelector('[data-click="mic"]');
   await p.click('[data-click="mic"]'); await p.waitForTimeout(300);

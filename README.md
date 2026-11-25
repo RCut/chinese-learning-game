@@ -12,13 +12,14 @@ No build step, no backend — open `index.html` (or serve the folder, e.g. `npx 
 
 ## The world
 
-Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a button above it. **E** or **Talk** interacts.
+Five places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a button above it. **E** or **Talk** interacts.
 
 | Place | What is there |
 |---|---|
 | **Street** (hub) | Doors to the other places (named on the board), a bus stop, signs, Xiao Li, a lost traveler, 17 everyday objects |
 | **Café** | Barista Lin (order and pay), the café menu, 16 objects (cups, teapot, cake display…) |
 | **Master Wang's shop** | Master Wang (learn to write), 16 objects (brush, ink, scrolls, lanterns…) |
+| **Xiao Ming's home** | Your friend 小明 and his family (爸爸, 妈妈, 姐姐, 弟弟): introductions, meals, routine; a calendar, a TV forecast and a phone to listen to |
 | **Market** | Shopkeeper Zhang (buying conversations), the fruit stall, 7 food stalls with price boards, 22 objects |
 
 - **Doors:** step on one (or tap it, or its button). The screen fades to black and back in 0.5 s, with a short arrival sound —
@@ -30,7 +31,7 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
 - **The journey — levels:** the game's levels follow HSK: **level 1 = HSK 1**, **level 2 = HSK 2**. At level 1 the places only hold
   things, conversations, café items and characters of HSK 1 (non-HSK things appear from level 2). The quest screen and the header
   chip (Lv 1) show the journey: the next level opens when **80% of the level's HSK words are learned** and its tasks are done
-  (order lunch, finish a conversation with Xiao Li, finish a writing lesson). A pop-up announces it, with what is new where;
+  (order lunch, finish a conversation with Xiao Li, finish a writing lesson, meet Xiao Ming's family). A pop-up announces it, with what is new where;
   every place fills up with the next level's things, and going back to them is how you keep practising.
 - **New phrases:** when someone says a phrase you haven't learned, it is highlighted under their line (✨ New phrase — learn it).
   After the conversation a short phrase screen opens: listen & see → build it from word tiles → say or type it from memory. Then it
@@ -58,6 +59,8 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
   several phrasings are accepted and your choice decides how the conversation branches. Tone slips are called out.
 - **Speaking:** what the recogniser heard is shown like an NPC line (tappable words, pinyin per the toggle, English gloss); right
   words in any tones are accepted.
+- **Listening moments:** some things you can listen to — the TV weather forecast, a phone call, the bus stop, Zhang calling out prices,
+  the café phone: *what did you hear?* (for your ears only; never scored).
 - **Fruit stall and traveler:** short pick-the-right-reply encounters (the fruit stall spends money, the traveler gives a tip).
 - **Hints are on demand:** nothing helpful is shown by default. 💡 Hint → grammar/pattern → word-by-word clue → the answer. A wrong
   answer opens the next level; the answer is always your call. Objectives are English-only.

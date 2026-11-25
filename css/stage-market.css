@@ -1,1 +1,6 @@
 /* Styles for the market stage only (tiles, scenery). Shared board styles are in styles.css. */
+/* the roof awning over each stall: red and cream stripes */
+.tile-awning { background: repeating-linear-gradient(90deg, #c2410c 0 9px, #fef3c7 9px 18px); box-shadow: inset 0 -4px 0 rgba(0,0,0,.25); }
+/* the worn path from the door */
+.tile-mk-path { background: #e1d9cb linear-gradient(135deg, rgba(0,0,0,.05) 25%, transparent 25%) 0 0 / 22px 22px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05); }
+[data-stage="market"] .scenery { opacity: 1; }

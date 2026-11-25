@@ -1,65 +1,53 @@
 /*
- * WORLD — the 12×9 street-corner map and everything placed on it.
+ * WORLD — shared settings for the stages (places) of the game. The places themselves live in data/stages/*.js:
  *
- * Map legend:  W wall · F café floor · C counter · D café door · S sidewalk · G grass · R road
- * Entities are interactive (solid) objects. `stand` is where the player walks to when the entity is clicked.
- * `zone` (optional) is an extra rectangle the player can stand in to talk to the entity.
+ *   street.js   the main road: doors to the other places, a bus stop, signs, Xiao Li, things to learn
+ *   cafe.js     Barista Lin's café
+ *   shop.js     Master Wang's calligraphy shop
+ *   market.js   the market: food stalls and the shopkeeper
+ *
+ * Each stage file registers   MSC.data.world.stages.<id> = { id, name, hanzi, cols, rows, map, playerStart, scenery, objects, entities }
+ *
+ *   map        rows of tile letters (see tileClasses). Every row must be exactly `cols` long and there must be `rows` rows.
+ *   scenery    decoration only: { x, y, text, className? }
+ *   objects    simple things to learn a word from: { id, x, y, emoji, hanzi, text?: [{ hanzi, english }], note? }
+ *              Walk up to one (or tap it) and its word goes into the notebook; `text` is a sign/notice to read.
+ *              `hanzi` MUST be a dictionary word. Objects are solid and have no name tag.
+ *   entities   people/things you do something with, and doors:
+ *                person  { id, name, hanzi, emoji, x, y, stand, zone?, badge, pill }
+ *                door    { id, kind: 'door', name, hanzi, emoji, x, y, to: '<stage id>', arrive?: { x, y }, badge, pill }
+ *                        A door sits on a walkable tile (usually 'D'); stepping on it (or tapping it) changes the stage.
+ *                        `arrive` (optional) = where you appear in the other stage. Left out, you appear on a free tile beside
+ *                        that stage's door back to this one — so doors can be moved without editing the other stage's file.
+ *              People and doors get a name tag on the board and a button above it; objects do not.
+ *   sound      what plays when you arrive here: 'street' | 'shop' | 'market' | 'cafe'
+ *
+ * Ids (objects, people, doors) must be unique across ALL stages. Every stage has a door back to the street.
+ *
+ * Tile letters (shared; a stage may add its own via `tileClasses` and block them via `blockedTiles`):
+ *   W wall · F café floor · C counter · D door mat · S sidewalk · G grass · R road · P wooden floor · M market stone
+ *   B shop-front wall · L stall table
  */
 (function (MSC) {
   MSC.data = MSC.data || {};
   MSC.data.world = {
-    cols: 12,
-    rows: 9,
-    map: [
-      'WWWWWWWWWWWW',
-      'WFFFFFFFFFFW',
-      'WFFCCCCCFFFW',
-      'WFFFFFFFFFFW',
-      'WDDSSSSSSSSS',
-      'SSSSSSSSSSSS',
-      'GGSSSSSSSSGG',
-      'RRRRRRRRRRRR',
-      'RRRRRRRRRRRR',
-    ],
-    blockedTiles: ['W', 'C', 'R'],
+    start: 'street',
+    playerEmoji: '🧑‍🎓',
+    fadeMs: 500,                       // a stage change: fade to black and back, in total
+    blockedTiles: ['W', 'C', 'R', 'B', 'L'],
     tileClasses: {
       W: 'tile-wall',
       F: 'tile-cafe-floor',
       C: 'tile-counter',
-      D: 'tile-cafe-floor tile-door',
+      D: 'tile-door',
       S: 'tile-sidewalk',
       G: 'tile-grass',
       R: 'tile-road',
+      P: 'tile-wood',
+      M: 'tile-market',
+      B: 'tile-shopfront',
+      L: 'tile-stall',
     },
-    playerStart: { x: 4, y: 4 },
-    playerEmoji: '🧑‍🎓',
-
-    // Purely decorative items.
-    scenery: [
-      { x: 5, y: 0, text: '☕ 咖啡店', className: 'scenery-sign' },
-      { x: 9, y: 1, text: '🪴' },
-      { x: 9, y: 3, text: '🪑' },
-      { x: 4, y: 2, text: '☕' },
-      { x: 6, y: 2, text: '🍰' },
-      { x: 4, y: 6, text: '写字', className: 'scenery-banner' },
-      { x: 0, y: 6, text: '🌳' },
-      { x: 11, y: 6, text: '🌳' },
-      { x: 1, y: 8, className: 'road-dash' },
-      { x: 3, y: 8, className: 'road-dash' },
-      { x: 5, y: 8, className: 'road-dash' },
-      { x: 7, y: 8, className: 'road-dash' },
-      { x: 9, y: 8, className: 'road-dash' },
-      { x: 11, y: 8, className: 'road-dash' },
-    ],
-
-    entities: [
-      { id: 'barista', name: 'Barista Lin', hanzi: '林老板', emoji: '👩‍🍳', x: 5, y: 1, stand: { x: 5, y: 3 }, zone: { x1: 3, x2: 7, y1: 3, y2: 3 }, badge: 'badge-amber', pill: 'pill-amber' },
-      { id: 'menu', name: 'Café Menu', hanzi: '菜单', emoji: '📋', x: 2, y: 2, stand: { x: 2, y: 3 }, badge: 'badge-stone', pill: 'pill-stone' },
-      { id: 'signpost', name: 'Signpost', hanzi: '路牌', emoji: '🪧', x: 2, y: 5, stand: { x: 3, y: 5 }, badge: 'badge-green', pill: 'pill-stone' },
-      { id: 'wang', name: 'Master Wang', hanzi: '王师傅', emoji: '🖌️', x: 4, y: 5, stand: { x: 5, y: 5 }, badge: 'badge-ink', pill: 'pill-ink' },
-      { id: 'friend', name: 'Xiao Li', hanzi: '小李', emoji: '🙋', x: 11, y: 4, stand: { x: 10, y: 4 }, badge: 'badge-teal', pill: 'pill-teal' },
-      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 9, y: 5, stand: { x: 8, y: 5 }, badge: 'badge-rose', pill: 'pill-stone' },
-      { id: 'passerby', name: 'Traveler', hanzi: '路人', emoji: '🧳', x: 6, y: 6, stand: { x: 6, y: 5 }, badge: 'badge-sky', pill: 'pill-sky' },
-    ],
+    stages: {},
   };
 })(window.MSC = window.MSC || {});

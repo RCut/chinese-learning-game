@@ -2,7 +2,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {}, console }; vm.createContext(ctx);
-['data/dictionary.js', 'data/characters.js', 'data/chat.js', 'js/core/util.js', 'js/core/dictionary.js', 'js/core/pinyin.js', 'js/core/pattern.js']
+require('../tools/data-files.js').chat()
   .forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f }));
 const MSC = ctx.window.MSC;
 MSC.state = {}; MSC.on = () => {}; MSC.emit = () => {};

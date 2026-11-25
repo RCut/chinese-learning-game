@@ -8,11 +8,11 @@
  */
 (function (MSC) {
   const U = MSC.util, D = MSC.dict, P = MSC.pinyin, S = MSC.state, PT = MSC.pattern;
-  const C = MSC.data.chat;
+  const SETS = () => MSC.data.chats;
   const CH = {};
 
   S.chat = null;          // the conversation in progress
-  S.chatLast = null;      // id of the previous one (so a new chat is never a repeat)
+  S.chatLast = {};        // npc id → id of that NPC's previous conversation (so a new chat is never a repeat)
   S.chatMode = 'tiles';   // 'tiles' | 'recall'
   S.chatDone = 0;         // conversations finished this session
 
@@ -47,20 +47,21 @@
   }
 
   /** Start a given conversation with given slot values (begin() calls this with random ones). */
-  CH.start = (dlg, vars) => {
-    S.chatLast = dlg.id;
-    S.chat = { dlg, vars, log: [], finished: false, turns: 0, cur: null };
+  CH.start = (dlg, vars, npcId = 'friend') => {
+    S.chatLast[npcId] = dlg.id;
+    S.chat = { npcId, set: SETS()[npcId], dlg, vars, log: [], finished: false, turns: 0, cur: null };
     S.chat.cur = buildNode(dlg.start);
     return S.chat;
   };
 
   /** Start a brand-new random conversation (never the one just before). */
-  CH.begin = () => {
-    const others = C.dialogues.filter((d) => d.id !== S.chatLast);
+  CH.begin = (npcId = 'friend') => {
+    const C = SETS()[npcId];
+    const others = C.dialogues.filter((d) => d.id !== S.chatLast[npcId]);
     const dlg = U.pick(others.length ? others : C.dialogues);
     const vars = {};
     Object.keys(dlg.slots || {}).forEach((name) => { const v = U.pick(dlg.slots[name]); vars[name] = v.hanzi; vars[`${name}.en`] = v.en; });
-    return CH.start(dlg, vars);
+    return CH.start(dlg, vars, npcId);
   };
 
   CH.current = () => (S.chat ? S.chat.cur : null);
@@ -88,7 +89,7 @@
 
   /** A wrong or unclear answer: a gentle reaction, and the next hint level opens. */
   CH.miss = (cur, tonesOff) => {
-    const st = cur.st;
+    const C = S.chat.set, st = cur.st;
     st.attempts++;
     st.hint = Math.max(st.hint, Math.min(st.attempts, 2));
     st.reaction = { type: 'retry', ...(tonesOff ? C.lines.tonesOff : C.lines.notUnderstood) };
@@ -111,5 +112,5 @@
     .map((t) => `${t.hanzi} (${D.tokenPinyin(t)}) = ${D.tokenEnglish(t) || '…'}`).join(' + ');
 
   MSC.chat = CH;
-  MSC.on('enter', (id) => { if (id === MSC.data.chat.npc.id) CH.begin(); });
+  MSC.on('enter', (id) => { if (SETS()[id]) CH.begin(id); });
 })(window.MSC = window.MSC || {});

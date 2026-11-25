@@ -22,6 +22,7 @@
     w('羊肉', 'yángròu', 'yang2 rou4', 'lamb / mutton', 'noun', F, { related: ['肉', '牛肉'] }),
     w('鸡肉', 'jīròu', 'ji1 rou4', 'chicken (meat)', 'noun', F, { related: ['肉', '鸡蛋'] }),
     w('虾', 'xiā', 'xia1', 'shrimp / prawn', 'noun', F),
+    w('螃蟹', 'pángxiè', 'pang2 xie4', 'crab', 'noun', F, { related: ['海鲜', '虾'] }),
     w('海鲜', 'hǎixiān', 'hai3 xian1', 'seafood', 'noun', F, { related: ['鱼', '虾'] }),
     // eggs, tofu, bakery, snacks
     w('豆腐', 'dòufu', 'dou4 fu5', 'tofu', 'noun', F),
@@ -29,6 +30,8 @@
     w('饺子', 'jiǎozi', 'jiao3 zi5', 'dumplings', 'noun', F, { related: ['包子'] }),
     w('面包', 'miànbāo', 'mian4 bao1', 'bread', 'noun', F),
     w('蛋糕', 'dàngāo', 'dan4 gao1', 'cake', 'noun', F),
+    w('饼干', 'bǐnggān', 'bing3 gan1', 'cookies / biscuits', 'noun', F, { related: ['蛋糕', '点心'] }),
+    w('糖果', 'tángguǒ', 'tang2 guo3', 'candy / sweets', 'noun', F, { related: ['糖', '点心'] }),
     w('点心', 'diǎnxin', 'dian3 xin5', 'pastries / light snacks', 'noun', F),
     // tea, dry goods, drinks, kitchen basics
     w('绿茶', 'lǜchá', 'lv4 cha2', 'green tea', 'noun', F, { related: ['茶', '红茶'] }),
@@ -76,6 +79,10 @@
     w('收银台', 'shōuyíntái', 'shou1 yin2 tai2', 'till / checkout counter', 'noun', M, { related: ['钱', '付钱'] })
   );
   Object.assign(MSC.data.characters, {
+    '饼': { meaning: 'cake / biscuit', parts: '饣 food + 并 (sound)' },
+    '干': { meaning: 'dry', parts: 'A forked pole: something dried on a stick' },
+    '螃': { meaning: 'crab (in 螃蟹)', parts: '虫 creature + 旁 (sound)' },
+    '蟹': { meaning: 'crab', parts: '解 (sound) + 虫 creature' },
     '橙': { meaning: 'orange (fruit)', parts: '木 tree + 登 (sound)' },
     '梨': { meaning: 'pear', parts: '利 (sound) over 木 tree' },
     '葡': { meaning: 'grape (in 葡萄)', parts: '艹 plant + 匍 (sound)' },

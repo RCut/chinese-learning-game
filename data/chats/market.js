@@ -1,7 +1,7 @@
 /*
  * CHAT — Shopkeeper Zhang (张老板), the grocer in the market. Same format and same engine as data/chat.js (Xiao Li):
  * every visit starts a NEW random conversation about BUYING things. Nothing is multiple choice — you build what you say.
- * Prices in the slots match the price boards of the stalls in data/stages/market.js.
+ * Prices in the slots are plain numbers of yuan; the stall boards themselves list item names only.
  */
 (function (MSC) {
   MSC.data = MSC.data || {};

@@ -38,7 +38,6 @@
     '色': { meaning: 'colour', parts: '⺈ person + 巴' },
     '灯': { meaning: 'lamp, light', parts: '火 fire + 丁 (sound)' },
     '笼': { meaning: 'cage; basket; lantern frame', parts: '⺮ bamboo + 龙 dragon (sound)' },
-    '花': { meaning: 'flower', parts: '艹 grass + 化 (sound)' },
     '瓶': { meaning: 'bottle, vase', parts: '并 (sound) + 瓦 tile, pottery' },
     '屏': { meaning: 'screen, shield', parts: '尸 + 并' },
     '风': { meaning: 'wind', parts: '几 + 乂' },

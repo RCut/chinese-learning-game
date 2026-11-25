@@ -173,9 +173,11 @@
   function renderObject(o) {
     const e = D.get(o.hanzi);
     const sub = e ? `<span class="kicker">${U.esc(e.category)}</span>` : '';
-    const body = o.text && o.text.length
-      ? `<div class="box green"><div class="sign-lines">${o.text.map((l) => UI.sentence(l, { size: 'md' })).join('')}</div></div>`
-      : `<div class="box">${UI.sentence({ hanzi: o.hanzi, english: e ? e.english : '' }, { size: 'lg' })}</div>`;
+    // the word itself comes first (it is what you hear); a sign or notice, if there is one, is shown below it
+    const word = `<div class="box">${UI.sentence({ hanzi: o.hanzi, english: e ? e.english : '' }, { size: 'lg' })}</div>`;
+    const sign = o.text && o.text.length
+      ? `<div class="box green"><div class="kicker" style="margin-bottom:4px">The sign says</div><div class="sign-lines">${o.text.map((l) => UI.sentence(l, { size: 'md', speaker: true })).join('')}</div></div>` : '';
+    const body = word + sign;
     return `<div class="stack">${head(o.emoji, e ? U.capitalize(e.english.split(/[\/;(]/)[0].trim()) : o.hanzi, o.hanzi, sub)}
       ${body}${o.note ? `<div class="box amber box-sm">${UI.richText(o.note)}</div>` : ''}
       <div class="sub">Nothing to do here — just learn the word. It is in your notebook now.</div></div>`;

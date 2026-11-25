@@ -4,6 +4,8 @@
   MSC.data.dictionary.push(
     { hanzi: '公共汽车', pinyin: 'gōnggòng qìchē', pinyinNum: 'gong1 gong4 qi4 che1', english: 'bus', pos: 'noun', category: A, related: ['公共汽车站'] },
     { hanzi: '公共汽车站', pinyin: 'gōnggòng qìchē zhàn', pinyinNum: 'gong1 gong4 qi4 che1 zhan4', english: 'bus stop', pos: 'place', category: A, related: ['公共汽车', '站'] },
+    { hanzi: '汽车', pinyin: 'qìchē', pinyinNum: 'qi4 che1', english: 'car', pos: 'noun', category: A, note: 'Literally "steam vehicle".' },
+    { hanzi: '摩托车', pinyin: 'mótuōchē', pinyinNum: 'mo2 tuo1 che1', english: 'motorbike', pos: 'noun', category: A },
     { hanzi: '自行车', pinyin: 'zìxíngchē', pinyinNum: 'zi4 xing2 che1', english: 'bicycle', pos: 'noun', category: A, note: 'Literally "self-going vehicle". Bikes are everywhere in Chinese cities.' },
     { hanzi: '红绿灯', pinyin: 'hóng-lǜ-dēng', pinyinNum: 'hong2 lv4 deng1', english: 'traffic light', pos: 'noun', category: A, related: ['斑马线'], note: 'Literally "red-green light".' },
     { hanzi: '斑马线', pinyin: 'bānmǎxiàn', pinyinNum: 'ban1 ma3 xian4', english: 'pedestrian crossing', pos: 'noun', category: A, related: ['红绿灯'], note: 'Literally "zebra line".' },
@@ -21,6 +23,8 @@
     { hanzi: '小心', pinyin: 'xiǎoxīn', pinyinNum: 'xiao3 xin1', english: 'be careful', pos: 'verb', category: A, note: 'Often seen on warning signs.' },
   );
   Object.assign(MSC.data.characters, {
+    '摩': { meaning: 'to rub (only in 摩托)', parts: '手 hand + 麻 (sound)' },
+    '托': { meaning: 'to support, to hold up (only in 摩托)', parts: '扌 hand + 乇 (sound)' },
     '汽': { meaning: 'steam, vapour, gas', parts: '氵 water + 气 air (sound) — 汽车 is a "steam vehicle"' },
     '自': { meaning: 'self; from', parts: 'Pictograph of a nose — people point to their nose for "me"' },
     '行': { meaning: 'to go, to walk; row, firm (háng)', parts: 'Pictograph of a crossroads' },

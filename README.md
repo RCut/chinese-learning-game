@@ -128,6 +128,7 @@ characters, Chinese text that isn't in the dictionary, stage maps (shape, reacha
 |---|---|
 | Add a word | One line in `data/dictionary.js` (or `data/vocab/<place>.js`) + its characters in `characters.js`. `starter: true` = in the notebook from the start; `hsk: 1\|2` counts it towards HSK progress |
 | Add a simple object | One entry in a stage's `objects` (`id, x, y, emoji, hanzi, text?, note?`); `hanzi` must be a dictionary word |
+| Pick an emoji | Stage emoji must be Emoji 11 or older (newer ones show blank boxes on many devices) — the validator enforces it. Anything on a board that looks like a thing must be an `objects` entry with its word; only shop-sign text and texture (road dashes, zebra stripes) may be scenery |
 | Add a place | New file in `data/stages/` + `<script>` tag in `index.html` + a door from the street and one back |
 | Add a conversation | Copy one in `data/chat.js` or `data/chats/`; a new talkable NPC also needs a person with the same id on a stage |
 | Change café items or prices | `data/menu.js` (orders, answers, tiles and hints are derived from it) |

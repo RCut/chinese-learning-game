@@ -32,8 +32,16 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
 
 - **Words everywhere:** tap a Chinese word to hear it, press and hold for its meaning, 🔊 for the whole sentence. Translations of
   NPC lines are blurred until tapped. The header toggle switches **Pinyin / Hybrid / Hanzi** everywhere.
-- **Notebook:** every word you meet. Filter by category, by **HSK 1–2** (with a progress bar) or **✍ Can write**. Each word shows
-  its characters and components, related words (phrases, collocations, parts, compounds) and, once learned, *How to write*.
+- **Notebook — Words:** every word you meet, by category; filter by HSK level, and **HSK only** hides non-HSK words. Each word shows
+  its **mastery**, its characters and components, the **phrases that use it**, related words and, once learned, *How to write*.
+- **Notebook — Phrases:** the phrase book (≈130 phrases in 14 chapters: greetings, café, market, family, time…), each with its HSK
+  level and mastery; you collect a phrase by meeting it in the game. A phrase lists its words; a word lists its phrases.
+- **Mastery:** a word or phrase is *learned* when you can USE it — say, build or type it — without help, in at least two places.
+  Each use scores 1 (no hint) · 0.7 (first hint) · 0.4 (word clue) · 0 (answer shown); a mistake ×0.6, word tiles ×0.85, picking
+  from options ×0.6. Mastery is a running average capped by evidence (1 use ≤ 30%, 2 ≤ 50%, 3 ≤ 70%), learned at 85%. Nothing fades.
+- **Practice** (🎯 in the notebook): 8 quick exercises on your weakest words or phrases — which word means…, build it from tiles,
+  fill the gap in a phrase, type the phrase — plus **What did you hear?**: a word is spoken and you pick its pinyin among
+  similar-sounding options (other tones, or real words that sound alike). Listening is for learning only and never changes mastery.
 - **Vocabulary:** the 491 words of **HSK 1–2 in the revised HSK 3.0 lists** (294 + 197) plus helper words from the places (names, objects, foods).
 - **Barista Lin:** build the order from word tiles, type pinyin, or speak. Prices are real: one wallet (header), tips add to it,
   every order is built from what you can afford.
@@ -90,13 +98,14 @@ data/                   CONTENT — edit these, no game code needed
   stages/<place>.js     one place: map, signs, objects (simple words), people, doors
   art/<place>.js        the pixel art: that place's objects, doors, ground tiles (art/shared.js: people, shared tiles)
   chat.js · chats/      conversations: Xiao Li · other NPCs (market.js = shopkeeper)
+  phrases.js            the phrase book: chapters and phrases (a phrase's HSK level is computed from its words)
   menu.js · quests.js · ui-text.js   café menu/prices, quest dialogue and hints, interface text
   writing.js · strokes.js            Wang's pool, rules and dialogue · GENERATED stroke data
 
-js/core/                pure logic (no DOM): art (pixel-art toolkit), util, dictionary (segmentation, related words), pinyin, pattern, stroke-match,
+js/core/                pure logic (no DOM): art (pixel-art toolkit), mastery (how well each word/phrase is known), phrases (phrase book, word↔phrase links), util, dictionary (segmentation, related words), pinyin, pattern, stroke-match,
                         state (state, saving, word discovery), speech (TTS), sfx (synthesised arrival sounds)
 js/game/                game logic: stage (places, walking, doors, fade), barista, quizzes, economy, chat, writing (lessons, mastery)
-js/ui/                  rendering and input: board (Phaser renderer), panel, text (sentences), gestures, log (notification log), notebook, chat-panel, wang-panel, writer
+js/ui/                  rendering and input: board (Phaser renderer), practice (Practice mode), panel, text (sentences), gestures, log (notification log), notebook, chat-panel, wang-panel, writer
                         (writing tray), stroke-board (SVG canvas), howto, recognizer (speech input)
 js/main.js              start-up, header controls, keyboard
 
@@ -151,11 +160,13 @@ node tests/stroke-match.test.js   # stroke matcher against all characters (clean
 node tests/validator.test.js      # proves the validator flags each content problem
 node tests/related.test.js        # related words are genuinely related
 node tests/chat.test.js           # plays every path of every conversation, for every NPC
+node tests/mastery.test.js        # mastery scoring rules; saying a phrase credits it and its words
 # browser tests (need playwright)
 node tests/e2e-board.js           # the Phaser canvas: every place drawn from the art, no emoji, no missing art, the player moves
 node tests/e2e-stages.js          # doors, 0.5 s fade, sounds, buttons per place, every object teaches its word, labels, phone
 node tests/e2e-chat.js            # talking to Xiao Li and the shopkeeper: tiles, typing, hints, branching
 node tests/e2e-speak.js           # speech input (mocked recogniser)
+node tests/e2e-practice.js        # notebook tabs, HSK only, mastery bars, word↔phrase links, Practice (listening never scores)
 node tests/e2e-log.js             # the notification log: one row / scrollable list, clickable words, no popups left
 node tests/e2e-writing.js         # tutorial, a lesson, wall, notebook
 node tests/e2e-writing-rules.js   # feedback, hints, review, practice, offers, phone touch

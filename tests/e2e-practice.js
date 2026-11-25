@@ -33,6 +33,7 @@ async function run(p, label) {
   console.log(`— ${label}: phrases`);
   const ph = await p.evaluate(() => { const x = MSC.phrases.all().find((q) => q.level === 1 && q.words.length >= 2); MSC.mastery.useText(x.hanzi, {}, 'cafe'); return { id: x.id, hanzi: x.hanzi, word: x.words.find((w) => MSC.dict.get(w)) }; });
   ok('saying a phrase adds it to the phrase book', await p.evaluate((id) => MSC.phrases.has(id), ph.id));
+  await p.evaluate(() => MSC.actions['close-pane']());
   await p.click('[data-click="nb-tab"][data-arg="phrases"]'); await p.waitForTimeout(150);
   ok('the Phrases tab is organised in chapters', (await p.$$('.chapter')).length >= 5);
   ok('the phrase is listed with level and mastery', await p.$eval(`.pcard[data-arg="${ph.id}"]`, (e) => !!e.querySelector('.tag') && !!e.querySelector('.mbar')).catch(() => false));
@@ -43,6 +44,7 @@ async function run(p, label) {
   ok('…and the word pane lists the phrase', await p.$eval('#word-pane', (e, id) => !!e.querySelector(`[data-click="open-phrase"][data-arg="${id}"]`), ph.id));
 
   console.log(`— ${label}: practice`);
+  await p.evaluate(() => MSC.actions['close-pane']());             // on a phone the word pane is a sheet over the list
   await p.click('[data-click="nb-tab"][data-arg="words"]');
   await p.click('[data-click="practice"]'); await p.waitForTimeout(300);
   ok('Practice opens with a session', await p.evaluate(() => MSC.practice.isOpen() && !!MSC.practice.current()));

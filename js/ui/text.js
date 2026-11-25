@@ -48,7 +48,10 @@
       `<div class="sentence-en ${opts.plain || S.revealed.has(line.english) ? '' : 'veiled'}" data-reveal="${key}" title="Tap to show the translation">${U.esc(line.english)}</div>`;
     const spk = opts.speaker === false ? '' :
       `<button type="button" class="say-btn" data-say="${U.esc(line.hanzi)}" aria-label="Play the whole sentence" title="Play the whole sentence">🔊</button>`;
-    return `<div class="sentence ${size}"><div class="sentence-body"><div class="sentence-main hz">${main}</div>${pyLine}${en}</div>${spk}</div>`;
+    // a phrase met here that you haven't learned yet stands out, with a way to learn it now
+    const fresh = opts.discover !== false && MSC.phrases ? MSC.phrases.find(line.hanzi).filter((p) => MSC.phrases.queued(p.id)) : [];
+    const newPh = fresh.length ? `<div class="new-phrases">${fresh.map((p) => `<button type="button" class="new-phrase" data-click="teach-open" data-arg="${p.id}">✨ New phrase · <span class="hz">${U.esc(p.hanzi)}</span> — learn it</button>`).join('')}</div>` : '';
+    return `<div class="sentence ${size}"><div class="sentence-body"><div class="sentence-main hz">${main}</div>${pyLine}${en}${newPh}</div>${spk}</div>`;
   };
 
   /** What the speech recogniser heard, shown like an NPC line: tappable words, pinyin under it (per the display mode), plain English. */

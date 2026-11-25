@@ -66,7 +66,7 @@
   };
 
   // ───────────────────────── offers ─────────────────────────
-  const unlearned = () => D.pool.filter((p) => !WR.isMastered(p.char));
+  const unlearned = () => D.pool.filter((p) => !WR.isMastered(p.char) && (!MSC.levels || MSC.levels.visible(p, 'char')));
   WR.poolLeft = () => unlearned().length;
 
   /** 8 random unlearned characters, from the lowest tier that still has some (filling from the next tier if needed). */

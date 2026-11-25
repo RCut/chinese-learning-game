@@ -13,7 +13,9 @@
     S.money = drink.price + food.price + U.pick(MSC.data.ui.startingSpare);
   };
 
-  E.items = (kind) => S.menuItems.filter((i) => i.kind === kind);
+  /** the café items of the player's level (an item's level: `level` in data/menu.js, else 1) */
+  E.menu = () => S.menuItems.filter((i) => !MSC.levels || i.level === undefined || i.level <= MSC.state.level);
+  E.items = (kind) => E.menu().filter((i) => i.kind === kind);
 
   /** All drink + food pairs the player can currently pay for. */
   E.affordablePairs = () => {

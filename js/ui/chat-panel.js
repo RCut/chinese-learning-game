@@ -164,7 +164,7 @@
       MSC.mastery.useText(m.variant, { hint: cur.st.hint, mistakes: cur.st.attempts, tiles: S.chatMode === 'tiles' }, S.chat.npcId);
       quietXP(mine().xpTurn);
       const next = CH.advance(m);
-      if (S.chat.finished) MSC.addXP(mine().xpFinish, 'Finished a conversation');
+      if (S.chat.finished) { MSC.addXP(mine().xpFinish, 'Finished a conversation'); if (MSC.teach) MSC.teach.prompt(); }
       if (next.npc) MSC.speech.say(next.npc.hanzi);
       refresh(true);
     } else {

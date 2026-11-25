@@ -20,6 +20,7 @@
       <div class="hdr-right">
         <div class="chip chip-money" id="money-chip" title="Your money"><span>💰</span><span id="money-val" class="num">¥0</span></div>
         <div class="chip chip-xp" title="Experience"><span>⭐</span><span id="xp-val" class="num">0 XP</span></div>
+        <button type="button" class="chip chip-level" id="level-chip" data-click="overview" title="Your level — open the journey">Lv 1</button>
         <nav class="seg dark">
           <button id="tab-stage" class="on" data-click="tab" data-arg="stage">🗺️ Stage</button>
           <button id="tab-notebook" data-click="tab" data-arg="notebook">📒 <span id="vocab-count" class="num">0</span> Words</button>
@@ -88,7 +89,10 @@
   <section id="writer" class="writer" role="dialog" aria-modal="true" aria-label="Writing practice"></section>
   <div id="practice-backdrop" class="writer-backdrop" data-click="pr-close"></div>
   <section id="practice" class="practice" role="dialog" aria-modal="true" aria-label="Practice"></section>
+  <div id="teach-backdrop" class="writer-backdrop" data-click="tc-later"></div>
+  <section id="teach" class="practice" role="dialog" aria-modal="true" aria-label="New phrase"></section>
 
+  <div id="levelup" class="levelup" role="dialog" aria-modal="true" aria-labelledby="levelup-title"><div class="levelup-card"><div class="levelup-burst">🎉</div><h3 id="levelup-title"></h3><p id="levelup-text"></p><div id="levelup-new" class="levelup-new"></div><button type="button" class="btn btn-primary btn-block" data-click="levelup-ok">Let’s go!</button></div></div>
   <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
 
   <!-- ART: pixel art drawn in code (no image files); the Phaser engine draws the places -->
@@ -121,6 +125,7 @@
   <script src="data/quests.js"></script>
   <script src="data/ui-text.js"></script>
   <script src="data/phrases.js"></script>
+  <script src="data/levels.js"></script>
   <script src="data/writing.js"></script>
   <script src="data/chat.js"></script>
   <script src="data/chats/market.js"></script>
@@ -149,6 +154,7 @@
   <script src="js/game/quizzes.js"></script>
   <script src="js/game/writing.js"></script>
   <script src="js/game/chat.js"></script>
+  <script src="js/game/levels.js"></script>
   <!-- SCREENS -->
   <script src="js/ui/recognizer.js"></script>
   <script src="js/ui/panel.js"></script>
@@ -158,6 +164,8 @@
   <script src="js/ui/howto.js"></script>
   <script src="js/ui/notebook.js"></script>
   <script src="js/ui/practice.js"></script>
+  <script src="js/ui/teach.js"></script>
+  <script src="js/ui/levelup.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

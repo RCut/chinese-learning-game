@@ -23,6 +23,7 @@ const labelCheck = (p) => p.evaluate(() => {
 (async () => {
   const b = await chromium.launch();
   const p = await H.open(b);
+  await p.evaluate(() => MSC.levels.set(2));                  // these checks cover everything in the game (all levels)
   await p.evaluate(() => { window.__sfx = []; const f = MSC.sfx.enter; MSC.sfx.enter = (k) => { window.__sfx.push(k); f(k); }; });
 
   console.log('— the street');
@@ -121,6 +122,7 @@ const labelCheck = (p) => p.evaluate(() => {
 
   console.log('— phone');
   const m = await H.open(b, { context: { ...devices['iPhone 13'] } });
+  await m.evaluate(() => MSC.levels.set(2));                  // these checks cover everything in the game (all levels)
   for (const id of ids) {
     await m.evaluate((s) => MSC.stage.show(s), id);
     await wait(m, 150);

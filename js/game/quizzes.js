@@ -12,8 +12,8 @@
   const factories = {
     menu() {
       const q = Q.menu;
-      const target = U.pick(S.menuItems);
-      const others = U.shuffle(S.menuItems.filter((i) => i.id !== target.id)).slice(0, 2);
+      const target = U.pick(MSC.economy.menu());
+      const others = U.shuffle(MSC.economy.menu().filter((i) => i.id !== target.id)).slice(0, 2);
       const vars = { item: target.hanzi, itemEn: target.english, price: U.priceHanzi(target.price), priceNum: target.price };
       return {
         key: 'menu', title: q.title, hanzi: q.hanzi, badge: q.badge, instruction: q.instruction, board: 'menu',

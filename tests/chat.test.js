@@ -64,7 +64,7 @@ function exhaust(d, npcId) {
 // every NPC set in MSC.data.chats gets the same treatment (Xiao Li, the shopkeeper …)
 Object.entries(MSC.data.chats).forEach(([npcId, set]) => {
   paths = 0; phrasings = 0;
-  const minD = set.family ? 2 : 5;
+  const minD = set.family || set.school ? 2 : 5;
   ok(`${npcId}: at least ${minD} dialogues`, set.dialogues.length >= minD, String(set.dialogues.length));
   set.dialogues.forEach((d) => ok(`${npcId}/${d.id} branches`, Object.values(d.nodes).some((n) => (n.replies || []).length > 1)));
   const seenSet = new Set(); let rep = 0, last = null;

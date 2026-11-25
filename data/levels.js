@@ -29,7 +29,9 @@
     2: {
       title: 'Level 2 · HSK 2',
       learnedShare: 0.8,
-      tasks: [],
+      tasks: [
+        { id: 'school', text: 'Make a new friend at school (finish a chat with Xiao Hong)' },
+      ],
       unlockTitle: 'HSK 2 complete!',
       unlockText: 'You have learned most of HSK 2. More levels are coming — keep practising to reach 100%.',
     },

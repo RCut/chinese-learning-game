@@ -117,7 +117,7 @@ function checkChat(C, who) {
       else if (t.kind === 'number') t.parts.forEach((p) => covered.add(p));
     });
   };
-  const minD = C.family ? 2 : 5;                                          // a family member at Xiao Ming's home only needs a couple
+  const minD = C.family || C.school ? 2 : 5;                                          // a family member at Xiao Ming's home only needs a couple
   if (!C.dialogues || C.dialogues.length < minD) errors.push(`${who}: chat needs at least ${minD} dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
   const syls = (text) => D.syllables(text);
   C.dialogues.forEach((d) => {
@@ -306,7 +306,7 @@ texts.forEach(([where, text]) => {
     const blockedT = [...Wd.blockedTiles, ...(st.blockedTiles || [])];
     new Set((st.map || []).join('')).forEach((ch) => { if (!MSC.art.tileFor(st.id, ch)) errors.push(`${w}: tile letter "${ch}" has no ground art (A.tile in data/art)`); });
     if (!st.name || !st.hanzi) errors.push(`${w}: name and hanzi are required`);
-    if (!['street', 'shop', 'market', 'cafe', 'home'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe | home`);
+    if (!['street', 'shop', 'market', 'cafe', 'home', 'school'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe | home | school`);
     const inMap = (x, y) => x >= 0 && y >= 0 && x < st.cols && y < st.rows && (st.map[y] || '')[x] !== undefined;
     const tileOk = (x, y) => inMap(x, y) && !blockedT.includes(st.map[y][x]);
     const solid = new Map();

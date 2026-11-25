@@ -25,7 +25,7 @@ ok('some start with the player, some with Xiao Li', C.dialogues.some((d) => !d.n
 
 // ── randomness: never the same conversation twice in a row, and every conversation comes up ──
 const seen = new Set(); let repeats = 0, prev = null;
-for (let i = 0; i < 600; i++) { CH.begin(); if (S.chat.dlg.id === prev) repeats++; prev = S.chat.dlg.id; seen.add(prev); }
+for (let i = 0; i < 3000; i++) { CH.begin(); if (S.chat.dlg.id === prev) repeats++; prev = S.chat.dlg.id; seen.add(prev); }
 ok('never repeats back to back', repeats === 0, String(repeats));
 ok('every conversation appears', seen.size === C.dialogues.length, `${seen.size}/${C.dialogues.length}`);
 const slotVals = new Set(); for (let i = 0; i < 300; i++) { CH.start(C.dialogues.find((d) => d.id === 'hobbies'), (() => { const v = {}; const s = C.dialogues.find((d) => d.id === 'hobbies').slots.hobby; const x = s[Math.floor(Math.random() * s.length)]; v.hobby = x.hanzi; v['hobby.en'] = x.en; return v; })()); slotVals.add(S.chat.vars.hobby); }
@@ -68,7 +68,7 @@ Object.entries(MSC.data.chats).forEach(([npcId, set]) => {
   ok(`${npcId}: at least ${minD} dialogues`, set.dialogues.length >= minD, String(set.dialogues.length));
   set.dialogues.forEach((d) => ok(`${npcId}/${d.id} branches`, Object.values(d.nodes).some((n) => (n.replies || []).length > 1)));
   const seenSet = new Set(); let rep = 0, last = null;
-  for (let i = 0; i < 400; i++) { CH.begin(npcId); if (S.chat.dlg.id === last) rep++; last = S.chat.dlg.id; seenSet.add(last); }
+  for (let i = 0; i < 40 * set.dialogues.length + 400; i++) { CH.begin(npcId); if (S.chat.dlg.id === last) rep++; last = S.chat.dlg.id; seenSet.add(last); }
   ok(`${npcId}: never repeats back to back`, rep === 0, String(rep));
   ok(`${npcId}: every conversation appears`, seenSet.size === set.dialogues.length, `${seenSet.size}/${set.dialogues.length}`);
   ok(`${npcId}: S.chat.set is this NPC's set`, S.chat.set === set && S.chat.npcId === npcId);

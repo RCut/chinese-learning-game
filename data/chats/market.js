@@ -425,11 +425,11 @@
         start: 'n1',
         nodes: {
           n1: { npc: { hanzi: '你好！你的包忘在这儿了！', english: 'Hello! You left your bag here!' }, goal: 'Thank him, and say that you forgot it.', tip: '忘 = forget: 我忘了. 忘在这儿 = forgot it here.',
-            replies: [{ say: ['谢谢！我忘了', '谢谢，我忘在这儿了', '啊，我忘了，谢谢'], en: 'Thanks! I forgot it.', next: 'n2' }] },
+            replies: [{ say: ['谢谢！我忘了', '谢谢，我忘在这儿了', '啊，我的包！谢谢'], en: 'Thanks! I forgot it.', next: 'n2' }] },
           n2: { npc: { hanzi: '你看看，里面的东西都在吗？', english: 'Have a look — are all the things inside still there?' }, goal: 'Say that your phone is inside — and everything is fine.', tip: '里面 = inside; 手机 = phone; 都 = all.',
             replies: [
-              { say: ['我的手机在里面', '手机在里面，都在', '都在，谢谢', '我拿出手机看看，都在', '包里面都在'], en: 'My phone is inside, and everything is there.', label: 'All there', next: 'bye1' },
-              { say: ['我的钱不在里面', '钱不在里面', '钱没有了'], en: 'My money is not inside.', label: 'No money', next: 'bye2' },
+              { say: ['我的手机在里面', '都在，谢谢', '我拿出手机看看'], en: 'My phone is inside, and everything is there.', label: 'All there', next: 'bye1' },
+              { say: ['我的钱不在里面'], en: 'My money is not inside.', label: 'No money', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '太好了！下次别忘了。', english: "Great! Don't forget it next time." }, end: true },
           bye2: { npc: { hanzi: '你再看看！', english: "Look again!" }, end: true },
@@ -443,7 +443,7 @@
         nodes: {
           n1: { npc: { hanzi: '我有两张门票，这周我没时间去。你要吗？', english: "I have two entrance tickets, but I have no time to go this week. Do you want them?" }, goal: 'Say that you do — and thank him.', tip: '要 = want; 门票 = entrance ticket; 太好了 / 谢谢.',
             replies: [
-              { say: ['我要，谢谢', '要，太好了', '太好了，谢谢', '我要门票，谢谢你的票'], en: 'Yes please, thank you.', label: 'Yes', next: 'n2' },
+              { say: ['我要，谢谢', '要，太好了', '这周我有时间', '我要门票，谢谢你的票'], en: 'Yes please, thank you.', label: 'Yes', next: 'n2' },
               { say: ['不要，谢谢', '我不要，谢谢'], en: 'No thanks.', label: 'No thanks', next: 'bye2' },
             ] },
           n2: { npc: { hanzi: '你跟谁去？', english: 'Who will you go with?' }, goal: 'Say that you will go with a friend — or with Mum.', tip: '跟 + person + 去.',
@@ -508,6 +508,28 @@
             replies: [{ say: ['谢谢', '谢谢你'], en: 'Thank you.', next: 'bye1' }] },
           bye1: { npc: { hanzi: '不客气！欢迎再来。', english: "You're welcome! Come again." }, end: true },
           bye2: { npc: { hanzi: '谢谢你！下次会好的。', english: 'Thanks! Next time it will be good.' }, end: true },
+        },
+      },
+
+      // ───────────────────────── Fish and meat (鱼, 肉, 条) ─────────────────────────
+      {
+        id: 'fishmeat', title: 'A fish and some meat',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '欢迎！今天的鱼很新鲜，肉也不错。你要什么？', english: 'Welcome! The fish is very fresh today and the meat is good too. What would you like?' }, goal: 'Say that you want a fish — or some meat.', tip: '条 counts fish: 一条鱼. 肉 = meat: 我要肉.',
+            replies: [
+              { say: ['我要一条鱼', '来一条鱼', '一条鱼'], en: 'I want a fish.', label: 'Fish', next: 'n2a' },
+              { say: ['我要肉', '来两斤肉', '我要两斤肉'], en: 'I want some meat.', label: 'Meat', next: 'n2b' },
+            ] },
+          n2a: { npc: { hanzi: '好的！这条大的，十八块。', english: 'OK! This big one is eighteen yuan.' }, goal: 'Say that is a bit expensive — or that you will take it.', tip: '太贵了 / 好，我要.',
+            replies: [
+              { say: ['有点贵', '太贵了'], en: "That's a bit expensive.", label: 'Expensive', next: 'bye1' },
+              { say: ['好，我要这条', '好，我要'], en: "OK, I'll take it.", label: 'Take it', next: 'bye2' },
+            ] },
+          n2b: { npc: { hanzi: '好的！两斤肉，三十块。', english: 'OK! Two jin of meat, thirty yuan.' }, goal: 'Say OK, and here is the money.', tip: '给你钱 = here is the money.',
+            replies: [{ say: ['好，给你钱', '好的，给你', '好，我拿出钱'], en: 'OK, here you are.', next: 'bye2' }] },
+          bye1: { npc: { hanzi: '那给你便宜两块！', english: 'Then two yuan off for you!' }, end: true },
+          bye2: { npc: { hanzi: '谢谢！欢迎再来！', english: 'Thank you! Come again!' }, end: true },
         },
       },
     ],

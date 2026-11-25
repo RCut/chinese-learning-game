@@ -1301,7 +1301,7 @@
           n2: { npc: { hanzi: '为什么喜欢这个颜色？', english: 'Why do you like this colour?' }, goal: 'Say that it looks nice — or that you like it on the bird.', tip: '好看 = good-looking; 花 = flower; 鸟 = bird.',
             replies: [
               { say: ['因为很好看', '很好看', '因为好看'], en: 'Because it looks nice.', label: 'Looks nice', next: 'bye' },
-              { say: ['鸟很好看', '这只鸟的颜色很好看', '因为我喜欢花和鸟'], en: 'The bird looks lovely.', label: 'The bird', next: 'bye' },
+              { say: ['鸟很好看', '这只鸟的颜色很好看', '我喜欢画花和鸟'], en: 'The bird looks lovely.', label: 'The bird', next: 'bye' },
             ] },
           bye: { npc: { hanzi: '真好！我们一起去看花吧！', english: "Lovely! Let's go and look at flowers together!" }, end: true },
         },
@@ -1357,7 +1357,7 @@
             replies: [{ say: ['我送你{gift}', '我送你{gift}，生日快乐', '我准备了{gift}送你'], en: "I'll give you {gift.en}.", next: 'n3' }] },
           n3: { npc: { hanzi: '太好了！我准备请朋友来家里。你来吗？', english: 'Great! I am getting ready to invite friends over. Will you come?' }, goal: 'Say that you will certainly come — or that you are sorry, you cannot.', tip: '一定 isn\'t needed: 我去 / 对不起，我不能去.',
             replies: [
-              { say: ['我去', '好，我去', '我会去', '我去，这周我有时间'], en: "I'll come.", label: 'Come', next: 'bye1' },
+              { say: ['我去', '好，我去', '我会去', '好，明天见面'], en: "I'll come.", label: 'Come', next: 'bye1' },
               { say: ['对不起，我不能去', '不好意思，我不能去'], en: "Sorry, I can't.", label: "Can't", next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '太好了！明天见！', english: 'Great! See you tomorrow!' }, end: true },
@@ -1377,7 +1377,7 @@
             ] },
           n2: { npc: { hanzi: '你要去药店买药吗？', english: 'Do you want to go to the pharmacy and buy medicine?' }, goal: 'Say that you will go — or that you will rest at home.', tip: '药 = medicine; 药店 = pharmacy; 休息 = rest.',
             replies: [
-              { say: ['好，我去药店买药', '我去药店买药', '我去药店'], en: "I'll go to the pharmacy.", label: 'Pharmacy', next: 'bye1' },
+              { say: ['好，我去药店买药', '我正想去药店', '我去药店'], en: "I'll go to the pharmacy.", label: 'Pharmacy', next: 'bye1' },
               { say: ['我在家休息', '我想在家休息', '我想回去休息'], en: "I'll rest at home.", label: 'Rest', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '好，快去吧。多喝水！', english: 'Good, off you go. Drink lots of water!' }, end: true },
@@ -1420,7 +1420,7 @@
               { say: ['有点远'], en: "It's a bit far.", label: 'Far', next: 'n3' },
             ] },
           n3: { npc: { hanzi: '好的。我是从机场回来的，东西很多。', english: "OK. I'm coming back from the airport and have a lot of things." }, goal: 'Say that you can help — carry it.', tip: '拿 = carry/take: 我帮你拿.',
-            replies: [{ say: ['我帮你拿', '我来帮你拿', '我帮你拿吧'], en: "I'll help you carry it.", next: 'bye' }] },
+            replies: [{ say: ['我帮你拿', '欢迎你回来，我帮你拿'], en: "I'll help you carry it.", next: 'bye' }] },
           bye: { npc: { hanzi: '谢谢你！你真好！', english: "Thank you! You're so kind!" }, end: true },
         },
       },
@@ -1456,9 +1456,9 @@
             ] },
           n2: { npc: { hanzi: '那我们出去走走，好吗？', english: "Then shall we go out for a walk?" }, goal: 'Say good — and ask him to open the door — or that you would rather stay in.', tip: '打开 = open; 门 = door: 请打开门. 动 = move: 我想动一动.',
             replies: [
-              { say: ['好，请打开门', '请打开门', '好，我打开门'], en: 'Good — please open the door.', label: 'Open the door', next: 'bye1' },
-              { say: ['好，我想动一动', '好，我也想动一动'], en: 'Good, I want to move around a bit.', label: 'Move a bit', next: 'bye1' },
-              { say: ['不去了，外面太冷', '我不想出去'], en: "No, I don't want to go out.", label: 'Stay in', next: 'bye2' },
+              { say: ['请打开门', '好，我打开门'], en: 'Good — please open the door.', label: 'Open the door', next: 'bye1' },
+              { say: ['我想动一动'], en: 'Good, I want to move around a bit.', label: 'Move a bit', next: 'bye1' },
+              { say: ['我不想出去'], en: "No, I don't want to go out.", label: 'Stay in', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '好！我们走吧！', english: "OK! Let's go!" }, end: true },
           bye2: { npc: { hanzi: '好吧，那我们在家看电视。', english: "OK, then let's watch TV at home." }, end: true },
@@ -1495,8 +1495,59 @@
           n2: { npc: { hanzi: '你学中文学了多长时间？', english: 'How long have you studied Chinese?' }, goal: 'Say about one year.', tip: '一年 = one year.',
             replies: [{ say: ['学了一年', '我学了一年', '一年'], en: 'For a year.', label: 'A year', next: 'n3' }, { say: ['学了两年', '我学了两年', '两年'], en: 'For two years.', label: 'Two years', next: 'n3' }] },
           n3: { npc: { hanzi: '太好了！慢慢学就好。', english: "Great! Just study slowly." }, goal: 'Say that you will study every day.', tip: '每天 = every day.',
-            replies: [{ say: ['我每天学', '我每天学习', '我每天都学'], en: 'I study every day.', next: 'bye' }] },
+            replies: [{ say: ['我每天学', '我每天学习', '我慢慢地学'], en: 'I study every day.', next: 'bye' }] },
           bye: { npc: { hanzi: '好好学！', english: 'Study well!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── Introductions (介绍, 姓) ─────────────────────────
+      {
+        id: 'introduce', title: 'Who is that?',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你认识那个人吗？他是我的朋友。', english: 'Do you know that person? He is my friend.' }, goal: 'Say that you do not know him, and ask Xiao Li to introduce you.', tip: '介绍 = introduce: 请你介绍一下.',
+            replies: [{ say: ['不认识，请你介绍一下', '我不认识，请你介绍一下', '请你介绍一下'], en: "I don't know him — please introduce us.", next: 'n2' }] },
+          n2: { npc: { hanzi: '好！他是我的同学。', english: 'OK! He is my classmate.' }, goal: 'Ask what his surname is.', tip: '姓 = surname: 他姓什么？',
+            replies: [{ say: ['他姓什么', '请问，他姓什么'], en: 'What is his surname?', next: 'n3' }] },
+          n3: { npc: { hanzi: '他姓王，叫小王。', english: 'His surname is Wang; he is called Xiao Wang.' }, goal: 'Say that you will say hello to him — or that you are shy.', tip: '我去 + verb; 不好意思 = shy / sorry.',
+            replies: [
+              { say: ['我去说你好', '好，明天见面'], en: "I'll go and say hello.", label: 'Say hello', next: 'bye' },
+              { say: ['你跟我去吧'], en: "I'm a bit shy — come with me.", label: 'Shy', next: 'bye' },
+            ] },
+          bye: { npc: { hanzi: '好，我们一起去！', english: "OK, let's go together!" }, end: true },
+        },
+      },
+
+      // ───────────────────────── Come in! (进, 进来, 进去, 门口, 站) ─────────────────────────
+      {
+        id: 'comein', title: 'Come in!',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你好！我站在门口。我可以进来吗？', english: 'Hello! I am standing at the door. May I come in?' }, goal: 'Tell him to come in, please.', tip: '请进 / 请进来 = please come in.',
+            replies: [{ say: ['请进', '请进来', '请进，请坐'], en: 'Please come in.', next: 'n2' }] },
+          n2: { npc: { hanzi: '谢谢！你家真大！这个门里面是什么？', english: 'Thanks! Your home is so big! What is behind this door?' }, goal: 'Say that it is the toilet — he can go in and look.', tip: '进去 = go in (away from me): 你进去看看.',
+            replies: [
+              { say: ['是洗手间，你进去看看', '你进去看看'], en: "It's the toilet — go in and look.", label: 'Toilet', next: 'bye1' },
+              { say: ['这间是我的房间，我们进去吧', '我们进去吧'], en: "It's my room — let's go in.", label: 'My room', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '谢谢你！我一会儿就回来！', english: "Thank you! I'll be right back!" }, end: true },
+          bye2: { npc: { hanzi: '好！你的房间里面有什么？', english: 'OK! What is in your room?' }, end: true },
+        },
+      },
+
+      // ───────────────────────── Toilet (洗手间, 左, 右) ─────────────────────────
+      {
+        id: 'toilet', title: 'Where is the toilet?',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '不好意思，请问洗手间在哪儿？', english: 'Excuse me, where is the toilet?' }, goal: 'Tell him it is on the right — or on the left.', tip: '洗手间 = toilet ("wash-hand room"); 右 = right, 左 = left: 往右走 / 往左走.',
+            replies: [
+              { say: ['洗手间在右边', '往右走', '往右走，洗手间在右边'], en: "It's on the right.", label: 'Right', next: 'n2' },
+              { say: ['洗手间在左边', '往左走', '往左走，洗手间在左边'], en: "It's on the left.", label: 'Left', next: 'n2' },
+            ] },
+          n2: { npc: { hanzi: '谢谢你！很远吗？', english: 'Thank you! Is it far?' }, goal: 'Say that it is close.', tip: '很近 / 不远.',
+            replies: [{ say: ['很近', '不远，很近', '不远'], en: "It's close.", next: 'bye' }] },
+          bye: { npc: { hanzi: '好的，谢谢！', english: 'OK, thanks!' }, end: true },
         },
       },
     ],

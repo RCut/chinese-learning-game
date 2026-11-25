@@ -239,6 +239,20 @@
         bye: { npc: { hanzi: '好，爷爷来了，我们一起吃饭。', english: "Good — when he comes, we'll all eat together." }, end: true },
       },
     },
+    {
+      id: 'husbandwife', title: 'Mum and Dad',
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '你妈妈是我的妻子，你知道吗？', english: 'Your mum is my wife, did you know?' }, goal: 'Say of course you know — and that Dad is her husband.', tip: '丈夫 = husband; 妻子 = wife.',
+          replies: [
+            { say: ['我知道，你是她的丈夫', '我知道，你是妈妈的丈夫'], en: 'I know — you are her husband.', label: 'Of course', next: 'n2' },
+            { say: ['我知道，她是你的妻子'], en: 'I know — she is your wife.', label: 'Of course (2)', next: 'n2' },
+          ] },
+        n2: { npc: { hanzi: '对！我们很爱你。', english: 'Right! We love you very much.' }, goal: 'Say that you love them too.', tip: '我也爱你们.',
+          replies: [{ say: ['我也爱你们', '我也爱你和妈妈'], en: 'I love you both too.', next: 'bye' }] },
+        bye: { npc: { hanzi: '好孩子！快去吃饭吧。', english: 'Good child! Go and eat.' }, end: true },
+      },
+    },
   ]);
 
   // ───────────────────────────────────────── Mum ─────────────────────────────────────────
@@ -485,11 +499,14 @@
           replies: [{ say: ['什么事情', '什么事', '什么事情啊'], en: 'What happened?', next: 'n2' }] },
         n2: { npc: { hanzi: '有一个男孩儿在教室里睡着了，女孩儿们都笑了！', english: 'A boy fell asleep in the classroom and the girls all laughed!' }, goal: 'Say that it is funny — or ask whether the boy laughed too.', tip: '真有意思 / 他也笑了吗？',
           replies: [
-            { say: ['真有意思', '太有意思了'], en: 'How funny!', label: 'Funny', next: 'n3a' },
-            { say: ['他也笑了吗', '那个男孩儿笑了吗', '男孩儿也笑了吗'], en: 'Did the boy laugh too?', label: 'Did he laugh?', next: 'n3b' },
+            { say: ['真有意思'], en: 'How funny!', label: 'Funny', next: 'n3a' },
+            { say: ['他也笑了吗', '男孩儿也笑了吗'], en: 'Did the boy laugh too?', label: 'Did he laugh?', next: 'n3b' },
+              { say: ['女孩儿们为什么笑'], en: 'Why did the girls laugh?', label: 'Why laugh?', next: 'n3c' },
           ] },
         n3a: { npc: { hanzi: '是啊！我笑了一天。', english: 'Yes! I laughed all day.' }, goal: 'Say goodbye — see you later.', tip: '一会儿见.',
           replies: [{ say: ['一会儿见', '好，一会儿见', '再见'], en: 'See you in a bit.', next: 'bye' }] },
+        n3c: { npc: { hanzi: '因为他睡着了还说话！小孩儿都爱笑。', english: 'Because he talked in his sleep! Kids love to laugh.' }, goal: 'Say that you love to laugh too.', tip: '我也爱笑.',
+          replies: [{ say: ['我也爱笑', '我也是小孩儿，我也爱笑'], en: 'I love to laugh too.', next: 'bye' }] },
         n3b: { npc: { hanzi: '他笑了！他说：我太累了。', english: 'He did! He said: I was so tired.' }, goal: 'Say that you hope he sleeps well tonight.', tip: '希望 + clause: 希望他今天晚上睡好.',
           replies: [{ say: ['希望他今天晚上睡好', '希望他睡好'], en: 'I hope he sleeps well tonight.', next: 'bye' }] },
         bye: { npc: { hanzi: '哈哈，再见！', english: 'Haha, bye!' }, end: true },

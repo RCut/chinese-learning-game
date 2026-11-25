@@ -1,0 +1,72 @@
+/* STAGE: Xiao Ming's home — his family lives here. (See data/world.js for the format.)
+ * Own tiles (data/art/home.js): W wallpaper wall · V window wall · P wooden floor · K kitchen tiles · C kitchen counter · U rug
+ *   T dining-table top · X dining-table front · H I J sofa (seen from behind: left, middle, right) · E bed head · Y bed foot. */
+(function (MSC) {
+  MSC.data.world.stages.home = {
+    id: 'home', name: 'Xiao Ming’s home', hanzi: '家', sound: 'home',
+    cols: 16, rows: 10,
+    blockedTiles: ['V', 'T', 'X', 'H', 'I', 'J', 'E', 'Y'],
+    map: [
+      'WWWVVWWWWWWWWVVW',
+      'WCCCCPPPPPPWPPEW',
+      'WKKKKPUUUUPWPPYW',
+      'WKKKKPUUUUPWPPPW',
+      'WKKKKPUHIJPPPPPW',
+      'WPPPPPPPPPPPPPPW',
+      'WPPTTTPPPPPPPPPW',
+      'WPPXXXPPPPPPPPPW',
+      'WPPPPPPPDPPPPPPW',
+      'WWWWWWWWWWWWWWWW',
+    ],
+    playerStart: { x: 8, y: 7 },
+    scenery: [],
+    objects: [
+      // on the walls
+      { id: 'hm-calendar', x: 5, y: 0, hanzi: '星期', note: 'The calendar: 星期 is "week". 星期一 is Monday … 星期天 is Sunday.',
+        text: [{ hanzi: '十月八号', english: 'October 8th' }, { hanzi: '今天星期天', english: 'Today is Sunday' }, { hanzi: '明天星期一', english: 'Tomorrow is Monday' }] },
+      { id: 'hm-painting', x: 9, y: 0, hanzi: '画', note: 'A 画 on the wall: a painting of the mountains.' },
+      { id: 'hm-room-sign', x: 11, y: 2, hanzi: '房间', text: [{ hanzi: '小明的房间', english: 'Xiao Ming’s room' }] },
+      // kitchen
+      { id: 'hm-water', x: 1, y: 1, hanzi: '水', note: 'A jug of 水. 喝水 = to drink water.' },
+      { id: 'hm-eggs', x: 2, y: 1, hanzi: '鸡蛋', note: '鸡蛋 = "chicken egg". Mum makes them for 早饭.' },
+      { id: 'hm-bread', x: 3, y: 1, hanzi: '面包', note: 'A loaf of 面包 for breakfast.' },
+      { id: 'hm-tea', x: 4, y: 1, hanzi: '茶', note: 'A cup of green 茶. 喝茶 = to drink tea.' },
+      { id: 'hm-fridge', x: 1, y: 4, hanzi: '冰箱', note: 'The 冰箱 keeps the 牛奶 cold.' },
+      { id: 'hm-apples', x: 4, y: 4, hanzi: '苹果', note: 'A basket of red 苹果. Count them with 个: 三个苹果.' },
+      // living room
+      { id: 'hm-flowers', x: 6, y: 1, hanzi: '花', note: 'Mum’s 花 in a blue vase.' },
+      { id: 'hm-tv', x: 7, y: 1, hanzi: '电视', note: '看电视 = to watch TV. Right now it shows the weather.',
+        listen: ['今天下雨', '明天下雨', '今天很冷', '明天很冷', '下午下雨'], listenTitle: 'The TV weather forecast' },
+      { id: 'hm-phone', x: 10, y: 1, hanzi: '电话', note: '打电话 = to make a phone call. Answer it with 喂！',
+        listen: ['喂，你好！', '喂，你在哪儿？', '我在家', '我现在很忙', '明天给我打电话'], listenTitle: 'Someone on the phone' },
+      { id: 'hm-cat', x: 9, y: 3, hanzi: '猫', note: 'The family 猫. For animals say 它 ("it").' },
+      // dining table
+      { id: 'hm-rice', x: 3, y: 6, hanzi: '米饭', note: 'A bowl of 米饭 with chopsticks. 吃饭 = to eat (a meal).' },
+      { id: 'hm-dishes', x: 4, y: 6, hanzi: '菜', note: '菜 = vegetables, and also a dish of food.' },
+      { id: 'hm-fruit', x: 5, y: 6, hanzi: '水果', note: 'A bowl of 水果: an apple, a banana and grapes.' },
+      { id: 'hm-dumplings', x: 3, y: 7, hanzi: '饺子', note: '饺子 for 午饭: dumplings.' },
+      { id: 'hm-cups', x: 4, y: 7, hanzi: '杯子', note: 'Two 杯子 on the table: cups.' },
+      { id: 'hm-mobile', x: 5, y: 7, hanzi: '手机', note: 'Somebody left a 手机 on the table: a mobile phone ("hand machine").' },
+      { id: 'hm-chair-1', x: 2, y: 6, hanzi: '椅子', note: 'A 椅子 to sit on: a chair. 请坐 = please sit down.' },
+      { id: 'hm-chair-2', x: 6, y: 6, hanzi: '椅子', note: 'A 椅子 to sit on: a chair. 请坐 = please sit down.' },
+      { id: 'hm-chair-3', x: 2, y: 7, hanzi: '椅子', note: 'A 椅子 to sit on: a chair. 请坐 = please sit down.' },
+      { id: 'hm-chair-4', x: 6, y: 7, hanzi: '椅子', note: 'A 椅子 to sit on: a chair. 请坐 = please sit down.' },
+      // bedroom
+      { id: 'hm-computer', x: 12, y: 1, hanzi: '电脑', note: 'Xiao Ming’s 电脑 ("electric brain"): a computer.' },
+      { id: 'hm-books', x: 13, y: 1, hanzi: '书', note: 'A shelf of 书. 看书 = to read.' },
+      { id: 'hm-ball', x: 13, y: 3, hanzi: '足球', note: 'Didi’s 足球: a football.' },
+      { id: 'hm-clothes', x: 14, y: 4, hanzi: '衣服', note: 'The wardrobe is full of 衣服. 穿衣服 = to put on clothes.' },
+      // the older sister's study corner
+      { id: 'hm-schoolbag', x: 12, y: 6, hanzi: '书包', note: 'Jiejie’s 书包: a schoolbag ("book bag").' },
+      { id: 'hm-desk', x: 14, y: 6, hanzi: '桌子', note: 'Jiejie’s 桌子 (desk), with her 汉字 homework on it.' },
+    ],
+    entities: [
+      { id: 'door-home-out', kind: 'door', name: 'Outside', hanzi: '外面', x: 8, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
+      { id: 'xiaoming', name: 'Xiao Ming', hanzi: '小明', x: 10, y: 6, stand: { x: 10, y: 7 }, badge: 'badge-sky', pill: 'pill-sky' },
+      { id: 'baba', name: 'Dad', hanzi: '爸爸', x: 10, y: 3, stand: { x: 10, y: 4 }, badge: 'badge-ink', pill: 'pill-ink' },
+      { id: 'mama', name: 'Mum', hanzi: '妈妈', x: 3, y: 3, stand: { x: 3, y: 4 }, badge: 'badge-rose', pill: 'pill-amber' },
+      { id: 'jiejie', name: 'Older sister', hanzi: '姐姐', x: 13, y: 6, stand: { x: 13, y: 7 }, badge: 'badge-green', pill: 'pill-teal' },
+      { id: 'didi', name: 'Younger brother', hanzi: '弟弟', x: 6, y: 2, stand: { x: 6, y: 3 }, badge: 'badge-amber', pill: 'pill-amber' },
+    ],
+  };
+})(window.MSC = window.MSC || {});

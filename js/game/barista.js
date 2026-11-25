@@ -89,11 +89,13 @@
   function mistake(step, user) {
     const R = Q.reactions;
     const ub = joinBases(user);
-    const wrongItem = S.menuItems.find((it) => {
+    // another item the player named — but not one hidden inside the ordered item (茶 in 热茶), and the longest match wins
+    const want = step.item ? joinBases(D.syllables(step.item.hanzi).map(P.fromNum)) : '';
+    const wrongItem = S.menuItems.filter((it) => {
       if (step.item && it.id === step.item.id) return false;
-      const bases = D.syllables(it.hanzi).map(P.fromNum);
-      return ub.includes(joinBases(bases));
-    });
+      const jb = joinBases(D.syllables(it.hanzi).map(P.fromNum));
+      return ub.includes(jb) && !want.includes(jb);
+    }).sort((x, y) => y.hanzi.length - x.hanzi.length)[0];
     if (wrongItem && step.item) {
       if (wrongItem.price > S.money) {
         return U.fillLine(R.notEnoughMoney, { item: wrongItem.hanzi, itemEn: wrongItem.english, price: U.priceHanzi(wrongItem.price), priceNum: wrongItem.price, money: U.priceHanzi(S.money), moneyNum: S.money });

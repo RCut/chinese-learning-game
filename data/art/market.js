@@ -128,9 +128,25 @@
     for (const [x, y] of [[3.5, 9], [7.5, 8.5], [11.5, 9]]) { blob(g, c, x, y, 2.2, 3, '#f3dcb0'); g.px(x - 1, y - 2, '#ffffff'); }
   });
 
+  // noodles: a bundle of fresh yellow noodles tied with a red band, lying on paper
+  D('mk-noodles', (g, c) => {
+    g.rect(1, 11, 14, 3, '#f4ecd8').hline(1, 13, 14, '#d9cfb4');
+    for (let y = 5; y < 12; y++) g.hline(2 + (y % 2), y, 12 - (y % 2), y % 2 ? '#f0d68a' : '#e6c66a');
+    for (const x of [3, 5, 8, 10, 12]) g.vline(x, 5, 7, '#d4b050');
+    g.px(1, 6, '#e6c66a').px(14, 7, '#f0d68a').px(1, 9, '#f0d68a').px(14, 10, '#e6c66a');
+    g.rect(7, 4, 2, 8, '#d9402f').px(7, 4, '#f27a6a');
+  });
+
   // ───────────── tea & dry goods ─────────────
   tin('mk-greentea', '#4f9a5a', '#d4b75a', '#2f6a3a');
   tin('mk-blacktea', '#b5382f', '#2f2a26', '#6b2a20');
+  // tea: an open tin heaped with dark tea leaves and a little scoop
+  D('mk-tea-tin', (g, c) => {
+    g.rect(3, 6, 10, 8, '#c9a227').vline(4, 7, 6, '#f2d070').vline(11, 7, 6, '#8a6a1d').hline(3, 13, 10, '#8a6a1d');
+    g.rect(5, 8, 6, 4, '#b5382f').px(7, 9, '#f2d070').px(8, 9, '#f2d070').px(7, 10, '#f2d070').px(8, 10, '#f2d070');
+    g.ellipse(7.5, 5, 5, 2, '#3f6a2a').px(5, 4, '#5f8a3a').px(8, 3, '#5f8a3a').px(10, 4, '#2f5a20').px(6, 5, '#2f5a20');
+    g.line(10, 4, 14, 1, '#d3a066').px(14, 0, '#d3a066');
+  });
   D('mk-peanut', (g, c) => {                                     // bowl of peanuts
     g.ellipse(7.5, 12, 6.5, 2.5, '#a9743f').rect(2, 11, 12, 2, '#a9743f').hline(2, 11, 12, '#d3a066').hline(4, 14, 8, '#7b4f27');
     const nut = (x, y) => { g.rect(x, y, 4, 2, '#e0bb7a').px(x, y, null).px(x + 3, y + 1, null).px(x + 1, y, '#f0d49a').px(x + 2, y + 1, '#b58a45'); g.px(x + 1, y + 1, '#c89a55'); };
@@ -261,6 +277,25 @@
     g.hline(5, 12, 6, '#a82a1f');
   });
 
+  // fruit: a wooden crate of mixed fruit (apple, orange, banana, grapes)
+  D('mk-fruitbox', (g, c) => {
+    g.disc(4.5, 7.5, 2.6, '#d9402f').px(3, 6, '#f08a7a');
+    g.disc(8.5, 6.5, 2.6, '#f08a22').px(7, 5, '#fbbf5a');
+    g.line(10, 5, 14, 7, '#f2d050').line(10, 6, 14, 8, '#e8c533').px(14, 6, '#6b4a2a');
+    g.disc(12, 9, 1.2, '#8a4ab0').disc(10.5, 9.5, 1.2, '#9a5ac0').px(11, 8, '#c08ae0');
+    g.rect(1, 9, 14, 6, '#c28d4f').hline(1, 9, 14, '#e0b070').hline(1, 12, 14, '#a9743f').hline(1, 14, 14, '#7b4f27');
+    g.vline(1, 9, 6, '#8a5d34').vline(14, 9, 6, '#8a5d34').vline(7, 10, 5, '#a9743f');
+  });
+  // vegetables: a basket of leafy greens (bok choy) with a carrot
+  D('mk-greens', (g, c) => {
+    for (const [x, col] of [[3, '#4f9a45'], [6, '#6fbf5a'], [9, '#4f9a45'], [12, '#6fbf5a']]) {
+      g.ellipse(x + 0.5, 5, 2, 3.5, col).vline(x, 5, 5, '#e8f4d0').px(x - 1, 3, c.lt(col, 0.35));
+    }
+    g.line(10, 9, 14, 3, '#e8832a').px(14, 2, '#4f9a45').px(13, 2, '#4f9a45');
+    g.rect(1, 9, 14, 6, '#c28d4f').hline(1, 9, 14, '#e0b070').hline(1, 14, 14, '#8a5d34');
+    for (let x = 2; x < 15; x += 3) g.vline(x, 10, 4, '#a9743f');
+  });
+
   // ───────────── counter: price, till, scale, basket, bag ─────────────
   D('mk-price', (g, c) => {                                      // chalk price board with a red tag
     g.rect(2, 2, 12, 10, '#8a5d34').rect(3, 3, 10, 8, '#3a4a3f').hline(2, 2, 12, '#c28d55');
@@ -337,7 +372,7 @@
     g.rect(5, 12, 6, 2, '#d9a62a').hline(5, 13, 6, '#a07a1a');
     g.vline(7, 14, 2, '#d9a62a').vline(8, 14, 2, '#f2d070').px(7, 15, '#d9a62a');
   }, { shadow: false });
-  ['mk-lantern1', 'mk-lantern2', 'mk-lantern3', 'mk-lantern4'].forEach(lantern);
+  ['mk-lantern2', 'mk-lantern3', 'mk-lantern4'].forEach(lantern);
 
   // ───────────── people & door ─────────────
   D('cart', (g, c) => {                                          // wooden fruit barrow loaded with fruit

@@ -55,7 +55,9 @@ async function run(p, label) {
   }));
   await p.evaluate(() => { MSC.levels.flag('ordered'); MSC.levels.flag('chatted'); });
   ok('…still level 1 with one task left', await p.evaluate(() => MSC.state.level === 1));
-  await p.evaluate(() => MSC.levels.flag('wrote')); await p.waitForTimeout(200);
+  await p.evaluate(() => MSC.levels.flag('wrote'));
+  ok('…still level 1 until Xiao Ming’s family is met', await p.evaluate(() => MSC.state.level === 1));
+  await p.evaluate(() => MSC.levels.flag('family')); await p.waitForTimeout(200);
   ok('80% learned + all tasks → level 2', await p.evaluate(() => MSC.state.level === 2 && document.getElementById('level-chip').textContent === 'Lv 2'));
   ok('a pop-up announces it, with what is new', await p.evaluate(() => document.getElementById('levelup').classList.contains('show') && /Level 2 unlocked/.test(document.getElementById('levelup').innerText) && document.querySelectorAll('#levelup-new span').length >= 2));
   ok('…and the log too', /Level 2 unlocked/.test(await p.$eval('#log-list', (e) => e.innerText)));

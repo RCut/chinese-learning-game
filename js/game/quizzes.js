@@ -48,7 +48,9 @@
 
     cart() {
       const q = Q.cart;
-      const f = U.pick(M.fruits);
+      const lvl = (x) => x.level || MSC.dict.level(x.hanzi) || 2;                     // only fruit of the player's level
+      const atLevel = M.fruits.filter((x) => !MSC.levels || lvl(x) <= MSC.state.level);
+      const f = U.pick(atLevel.length ? atLevel : M.fruits);
       const total = f.unitPrice * 2;
       const wrongTotal = total + U.pick([2, 3, 4]);
       const vars = {

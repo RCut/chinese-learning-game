@@ -208,7 +208,7 @@
   });
 
   // chairs: a wooden chair seen from the front (four share this)
-  ['cf-chair-1', 'cf-chair-2', 'cf-chair-3', 'cf-chair-4'].forEach((key) => A.draw(key, (g, c) => {
+  ['cf-chair-1', 'cf-chair-2', 'cf-chair-3', 'cf-chair-4', 'cf-chair-5'].forEach((key) => A.draw(key, (g, c) => {
     g.rect(3, 1, 10, 7, '#a9743f').rect(5, 2, 6, 4, '#8a5a30').hline(3, 1, 10, '#d3a066').vline(3, 1, 7, '#c28d55');
     g.rect(3, 8, 10, 3, '#d96a4a').hline(3, 8, 10, '#e98a6a').hline(3, 10, 10, '#b8473b');
     g.rect(3, 11, 2, 4, '#6e4727').rect(11, 11, 2, 4, '#6e4727');
@@ -251,5 +251,64 @@
     g.disc(7.5, 8.5, 3, '#ffffff').px(7, 6, '#3b2a1d').px(7, 11, '#3b2a1d').px(5, 8, '#3b2a1d').px(10, 8, '#3b2a1d').vline(7, 7, 2, '#3b2a1d').hline(8, 9, 2, '#d9482b');
     g.px(3, 4, '#d9482b').px(12, 4, '#d9482b').hline(4, 13, 8, '#c9a26b');
     g.px(4, 2, '#8a5a30').px(11, 2, '#8a5a30');
+  });
+
+  // ───────────── level-1 things ─────────────
+  // lunch: a hanging chalkboard with a rice-bowl doodle and chalk lines (the text is the sign's lines)
+  A.draw('cf-lunch', (g, c) => {
+    g.line(4, 0, 7, 2, '#8a5a30').line(11, 0, 8, 2, '#8a5a30');
+    g.rect(1, 2, 14, 12, '#8a5a30').rect(2, 3, 12, 10, '#2f3f38');
+    g.ellipse(5.5, 8.5, 2.5, 1.5, '#ffffff').rect(3, 7, 6, 2, '#f1efe8').rect(3, 9, 6, 2, '#d96a4a').px(3, 10, null).px(8, 10, null);
+    g.line(7, 4, 9, 7, '#e3b660').line(8, 4, 10, 7, '#e3b660');
+    g.hline(10, 8, 3, '#d9d4c3').hline(10, 10, 3, '#d9d4c3').hline(4, 5, 2, '#f1efe8');
+    g.hline(1, 13, 14, '#6e4727');
+  });
+  // telephone: an old red desk phone with the handset on top and a dial
+  A.draw('cf-phone', (g, c) => {
+    g.rect(2, 9, 12, 5, '#d9402f').rect(3, 8, 10, 1, '#d9402f').hline(2, 13, 12, '#a8281f').hline(3, 8, 10, '#f27a6a');
+    g.disc(7.5, 10.5, 2.2, '#f6ecd0').px(7, 10, '#3b2a1d').px(6, 9, '#3b2a1d').px(9, 9, '#3b2a1d').px(6, 12, '#3b2a1d').px(9, 12, '#3b2a1d');
+    g.rect(1, 4, 14, 2, '#c0352a').hline(1, 4, 14, '#f27a6a').rect(0, 5, 3, 3, '#c0352a').rect(13, 5, 3, 3, '#c0352a');
+    g.line(14, 12, 15, 15, '#3b2a1d');
+  });
+  // money: a little wooden tray with banknotes and gold coins
+  A.draw('cf-money', (g, c) => {
+    g.rect(1, 10, 14, 4, '#a9743f').hline(1, 10, 14, '#d3a066').hline(1, 13, 14, '#6e4727');
+    g.rect(2, 5, 9, 5, '#e8564a').frame(2, 5, 9, 5, '#b8473b').disc(6.5, 7.5, 1.3, '#f6c0b4');
+    g.rect(4, 3, 9, 5, '#d96a4a').frame(4, 3, 9, 5, '#a8381f').disc(8.5, 5.5, 1.3, '#f6c0b4').px(5, 4, '#f6c0b4').px(11, 6, '#f6c0b4');
+    for (const [x, y] of [[11, 9], [13, 8], [12, 10]]) g.disc(x, y, 1.6, '#f2cf4a').px(x, y, '#c9a227');
+  });
+  // water: a water dispenser — a big blue bottle upside down on a white stand, with a tap
+  A.draw('cf-water', (g, c) => {
+    g.rect(5, 0, 6, 1, '#4f9ad0').rect(4, 1, 8, 8, '#8fd0f2').rect(4, 1, 2, 8, '#c4e8fa').vline(11, 1, 8, '#5aa9e6').hline(4, 4, 8, '#5aa9e6');
+    g.rect(6, 9, 4, 1, '#4f9ad0');
+    g.rect(3, 10, 10, 14, '#f4f6f8').rect(3, 10, 2, 14, '#ffffff').rect(11, 10, 2, 14, '#c9d2d8').hline(3, 23, 10, '#9aa4ab');
+    g.rect(5, 13, 6, 4, '#cfd8de').px(7, 13, '#4f9ad0').px(8, 13, '#4f9ad0').px(7, 14, '#2f6fb0');
+    g.rect(6, 16, 4, 1, '#9aa4ab');
+  }, { w: 16, h: 24 });
+  // tea: a glass of green tea with leaves floating, on a saucer, with steam
+  A.draw('cf-tea', (g, c) => {
+    g.rect(1, 13, 14, 2, '#f6ecd0').hline(1, 14, 14, '#c9bd9c');
+    g.rect(4, 6, 8, 7, '#e8f4f0').rect(5, 7, 6, 6, '#b9d27a').hline(5, 7, 6, '#d8e8a0').vline(4, 6, 7, '#ffffff').vline(11, 6, 7, '#c0d8d0');
+    g.px(6, 9, '#4f7a2a').px(7, 10, '#5f8a3a').px(9, 8, '#4f7a2a').px(8, 11, '#4f7a2a').px(9, 11, '#5f8a3a');
+    g.px(6, 4, '#ffffff').px(7, 3, '#ffffff').px(6, 2, '#ffffff').px(9, 4, '#ffffff').px(10, 3, '#ffffff');
+  });
+  // rice: a blue-and-white bowl heaped with white rice and a pair of chopsticks
+  A.draw('cf-rice', (g, c) => {
+    g.ellipse(7.5, 7, 5.5, 3, '#ffffff').px(5, 5, '#f1efe8').px(9, 6, '#f1efe8').px(7, 4, '#f1efe8');
+    g.rect(2, 8, 12, 3, '#f8f8f4').rect(3, 11, 10, 2, '#f8f8f4').rect(5, 13, 6, 1, '#d9d4c3');
+    g.hline(2, 9, 12, '#4f7ab5').px(4, 10, '#4f7ab5').px(7, 10, '#4f7ab5').px(10, 10, '#4f7ab5').hline(3, 12, 10, '#c9d2d8');
+    g.line(9, 2, 15, 9, '#a9743f').line(10, 1, 15, 7, '#c98f58');
+  });
+  // dish (菜): a plate of green vegetables with red pepper bits
+  A.draw('cf-dish', (g, c) => {
+    g.ellipse(7.5, 10, 7, 3.5, '#f8f4ea').ellipse(7.5, 10, 5.5, 2.5, '#ffffff').hline(2, 13, 12, '#c9c3b2');
+    for (const [x, y, col] of [[4, 8, '#4f9a45'], [6, 7, '#6fbf5a'], [9, 7, '#4f9a45'], [11, 9, '#6fbf5a'], [7, 9, '#3f8a35'], [5, 10, '#6fbf5a'], [9, 10, '#4f9a45']]) g.ellipse(x, y, 1.6, 1, col);
+    g.px(6, 9, '#d9402f').px(10, 8, '#d9402f').px(8, 11, '#e8832a').vline(7, 7, 2, '#e8f4d0');
+  });
+  // mobile phone: a smartphone lying on the table, screen lit with app squares
+  A.draw('cf-mobile', (g, c) => {
+    g.rect(4, 2, 8, 13, '#2a2d33').rect(5, 3, 6, 10, '#7fc4e8').hline(5, 3, 6, '#bfe4f5');
+    g.rect(6, 5, 1, 1, '#f2cf4a').rect(8, 5, 1, 1, '#e8564a').rect(6, 7, 1, 1, '#6fae58').rect(8, 7, 1, 1, '#ffffff').rect(6, 9, 1, 1, '#d96a4a').rect(8, 9, 1, 1, '#5aa9e6');
+    g.hline(7, 13, 2, '#59606a').px(7, 2, '#59606a').px(8, 2, '#59606a');
   });
 })(window.MSC = window.MSC || {});

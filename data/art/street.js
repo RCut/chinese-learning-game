@@ -254,4 +254,93 @@
     g.line(11, 13, 14, 12, '#e8914a'); g.line(14, 12, 14, 8, '#e8914a'); g.px(14, 8, '#c06f2e'); g.px(13, 13, '#e8914a').px(15, 12, '#e8914a');   // tail
     g.rect(5, 12, 2, 3, '#f3e9d2'); g.rect(9, 12, 2, 3, '#f3e9d2');
   });
+
+  // ───────────── level-1 shop fronts on the facade (16×16 doorways, not walkable) ─────────────
+  const front = (g, col, edge) => { g.rect(0, 0, 16, 16, col); g.vline(0, 0, 16, edge); g.vline(15, 0, 16, edge); g.hline(0, 15, 16, A.c.dk(edge, 0.2)); };
+
+  A.draw('door-home', (g) => {                                     // Xiao Ming's apartment door: red door, red couplet strips, a lantern and a plant
+    wall(g);
+    g.rect(0, 0, 16, 2, '#b4573a'); g.hline(0, 2, 16, '#7a3322');                                                                  // little tiled porch roof
+    g.rect(4, 3, 8, 2, '#d9482b'); g.hline(5, 4, 6, '#f2c230');                                                                    // red strip above the door (no text)
+    g.rect(4, 5, 8, 11, '#8a5a33'); g.rect(5, 6, 6, 10, '#c0392b'); g.vline(5, 6, 10, '#e0574a'); g.vline(8, 6, 10, '#8f2a20');   // frame + red double door
+    g.px(7, 11, '#f2c230').px(9, 11, '#f2c230');                                                                                    // handles
+    g.rect(6, 7, 2, 2, '#f2c230'); g.px(6, 7, '#fbe27a'); g.rect(9, 7, 2, 2, '#f2c230'); g.px(9, 7, '#fbe27a');                     // gold door ornaments
+    g.rect(2, 5, 1, 8, '#d9482b'); g.rect(13, 5, 1, 8, '#d9482b');                                                                 // red couplet strips (no text)
+    g.vline(14, 3, 1, INK); g.rect(14, 4, 2, 3, '#e5483a'); g.px(14, 4, '#ff7a5a'); g.hline(14, 7, 2, '#f2c230');                    // a small lantern
+    g.rect(0, 13, 3, 3, '#c0603a'); g.hline(0, 13, 3, '#e08a5a'); g.disc(1.2, 11, 1.6, '#3f8f4a'); g.px(1, 10, '#5cae5f').px(0, 11, '#5cae5f');   // potted plant
+    g.rect(5, 15, 6, 1, '#d9a066');                                                                                                // door mat
+  }, { shadow: false });
+
+  A.draw('st-school', (g) => {                                     // school: pale wall, flag on a pole, clock, an iron gate
+    front(g, '#f1e6c8', '#cdb98f');
+    g.rect(0, 0, 16, 2, '#4a7ab0'); g.hline(0, 2, 16, '#2f5a85');
+    g.vline(2, 3, 7, '#6b6f78'); g.rect(3, 3, 4, 3, '#d9482b'); g.px(4, 4, '#f2c230');                                            // flag
+    g.disc(11.5, 5.5, 2.5, '#ffffff'); g.px(11, 4, INK).px(11, 5, INK).px(12, 5, INK); ring(g, 11.5, 5.5, 2.6, '#4a7ab0');           // clock
+    g.rect(1, 10, 14, 6, '#7a8089'); for (let x = 2; x < 15; x += 2) g.vline(x, 10, 6, '#b8bec6'); g.hline(1, 10, 14, '#4d5058'); g.hline(1, 13, 14, '#9aa3ab');   // gate
+    g.rect(7, 8, 2, 2, '#f2c230');
+  }, { shadow: false });
+
+  A.draw('st-hospital', (g) => {                                   // hospital: white front, green cross, glass doors
+    front(g, '#f4f4f0', '#cfd3d6');
+    g.rect(0, 0, 16, 2, '#4f9a8a'); g.hline(0, 2, 16, '#2f6f62');
+    g.disc(7.5, 6, 3.6, '#ffffff'); g.rect(6, 3, 3, 7, '#2fa05a'); g.rect(4, 5, 7, 3, '#2fa05a'); g.px(6, 3, '#5cc47f').px(4, 5, '#5cc47f');   // green cross
+    g.rect(3, 10, 10, 6, '#7fb8c8'); g.vline(7, 10, 6, '#cfd3d6').vline(8, 10, 6, '#cfd3d6'); g.frame(3, 10, 10, 6, '#9aa3ab');
+    g.px(4, 11, '#e6f6fa').px(9, 11, '#e6f6fa'); g.px(6, 13, '#4d5058').px(9, 13, '#4d5058');
+  }, { shadow: false });
+
+  A.draw('st-bookshop', (g) => {                                   // bookshop: wooden front, an open book above, books in the window
+    front(g, '#efe3cc', '#d8c7a6');
+    g.rect(0, 0, 16, 4, '#4f8a5a'); g.hline(0, 4, 16, '#2f5a3a');
+    g.rect(4, 1, 4, 3, '#ffffff'); g.rect(8, 1, 4, 3, '#f3e9d2'); g.vline(8, 1, 3, '#8a5a33'); g.hline(5, 2, 2, '#9aa3ab').hline(9, 2, 2, '#9aa3ab');   // open book
+    g.rect(1, 6, 14, 10, '#8a5a33'); g.rect(2, 7, 7, 8, '#a9dbe6'); g.rect(10, 7, 4, 9, '#6e4727'); g.px(13, 11, '#f2c230');
+    const bk = ['#b8453a', '#3f6fa6', '#d8b04a', '#4f8a5a', '#8c5a9c'];
+    for (let i = 0; i < 6; i++) g.vline(2 + i, 10 + (i % 2), 5 - (i % 2), bk[i % 5]);                                              // books on display
+    g.px(3, 7, '#e6f6fa').px(4, 8, '#e6f6fa');
+  }, { shadow: false });
+
+  A.draw('st-store', (g) => {                                      // shop / convenience store: striped awning, goods in the window
+    wall(g); awning(g, '#d9482b', '#ffffff');
+    g.rect(1, 6, 14, 10, '#5f6b78'); g.rect(2, 7, 8, 8, '#cfe8ef'); g.rect(11, 7, 3, 9, '#a9dbe6'); g.vline(11, 7, 9, '#3d4a55');
+    g.hline(2, 10, 8, '#9aa3ab'); g.hline(2, 14, 8, '#9aa3ab');
+    g.rect(3, 8, 1, 2, '#3f8f52').rect(5, 8, 1, 2, '#d9482b').rect(7, 8, 2, 2, '#f2c230');                                         // bottles and a box
+    g.rect(3, 12, 2, 2, '#f2994a').rect(6, 12, 2, 2, '#3f6fa6').rect(8, 12, 1, 2, '#e86f8a');
+    g.px(12, 8, '#e6f6fa'); g.px(13, 12, '#f2c230');
+  }, { shadow: false });
+
+  A.draw('st-restaurant', (g) => {                                 // restaurant: red front with gold trim, lanterns, a steaming bowl sign
+    front(g, '#b8332b', '#8f2a20');
+    g.rect(0, 0, 16, 2, '#6e1f1a'); g.hline(0, 2, 16, '#f2c230');
+    g.ellipse(7.5, 6, 3.5, 1.5, '#ffffff'); g.rect(4, 6, 8, 2, '#ffffff'); g.hline(5, 8, 6, '#d8d0c0'); g.hline(5, 6, 6, '#f2c230');   // bowl
+    g.line(9, 3, 12, 5, WOOD_D); g.line(10, 3, 13, 5, WOOD_D); g.px(6, 4, '#ffffff').px(7, 3, '#ffffff');                           // chopsticks + steam
+    for (const x of [1, 14]) { g.disc(x + 0.5, 5.5, 1.5, '#f26b43'); g.px(x, 4, '#f2c230').px(x, 7, '#f2c230'); }
+    g.rect(4, 10, 8, 6, '#6e3b22'); g.rect(5, 11, 6, 5, '#e8b04a'); g.vline(8, 11, 5, '#6e3b22'); g.hline(5, 11, 6, '#f6d27a');   // warm lit door
+    g.hline(1, 10, 3, '#f2c230').hline(12, 10, 3, '#f2c230');
+  }, { shadow: false });
+
+  A.draw('st-cinema', (g) => {                                     // cinema: dark front, marquee lights, a film poster
+    front(g, '#4a3a6a', '#2f2448');
+    g.rect(0, 0, 16, 3, '#2f2448'); for (let x = 1; x < 16; x += 2) g.px(x, 1, '#fbe07a');                                         // marquee bulbs
+    g.rect(2, 4, 6, 9, '#f3e9d2'); g.rect(3, 5, 4, 5, '#3f6fa6'); g.rect(4, 6, 2, 2, '#f2c230'); g.px(3, 9, '#2f5a85').px(6, 8, '#2f5a85').hline(3, 9, 4, '#2f5a85'); g.rect(3, 10, 4, 2, '#d9482b');    // poster
+    g.rect(9, 4, 5, 2, INK); for (let x = 9; x < 14; x += 2) g.px(x, 4, '#ffffff').px(x, 5, '#ffffff');                            // film strip
+    g.rect(9, 7, 6, 9, '#2a2030'); g.rect(10, 8, 4, 8, '#8a2a3a'); g.vline(12, 8, 8, '#5a1a26'); g.px(11, 12, '#f2c230');           // red curtain door
+  }, { shadow: false });
+
+  // ───────────── level-1 things on the pavement (16×24) ─────────────
+  A.draw('st-phone', (g) => {                                      // a street phone box: orange hood on a post, the handset inside
+    g.rect(7, 16, 2, 8, '#5a6b79'); g.vline(7, 16, 8, '#8aa0b2'); g.rect(5, 22, 6, 2, '#4d5a66');
+    g.ellipse(8, 5, 7, 4, '#f2994a'); g.rect(1, 5, 14, 11, '#f2994a'); g.hline(1, 5, 14, '#f6b77a'); g.vline(1, 5, 11, '#f6b77a');   // hood
+    g.rect(3, 6, 10, 9, '#fbe8d0');
+    g.rect(5, 7, 6, 7, '#3d4a55'); g.rect(6, 8, 4, 2, '#a9dbe6'); for (const [x, y] of [[6, 11], [8, 11], [6, 12], [8, 12]]) g.px(x, y, '#d8d0c0');   // phone with keys
+    g.vline(11, 7, 5, '#1b1b1b'); g.px(12, 7, '#1b1b1b').px(12, 11, '#1b1b1b');                                                    // handset
+    g.hline(1, 15, 14, '#c06f2e');
+  }, { w: 16, h: 24 });
+
+  A.draw('st-weather', (g) => {                                    // a weather board on a post: rain cloud today, a snowflake-cold tomorrow
+    g.rect(7, 15, 2, 9, '#5a6b79'); g.vline(7, 15, 9, '#8aa0b2'); g.rect(5, 22, 6, 2, '#4d5a66');
+    g.rect(1, 1, 14, 14, '#2a3a4a'); g.frame(1, 1, 14, 14, '#9aa3ab');
+    g.disc(5.5, 5, 2, '#e6eef2'); g.disc(8, 4.5, 2.4, '#e6eef2'); g.rect(4, 5, 7, 2, '#e6eef2');                                     // cloud
+    g.px(5, 8, '#6ab0ff').px(7, 9, '#6ab0ff').px(9, 8, '#6ab0ff').px(4, 10, '#6ab0ff').px(8, 11, '#6ab0ff');                       // rain
+    g.hline(3, 12, 10, '#4d5a66');
+    g.rect(11, 3, 2, 7, '#e6eef2'); g.rect(11, 7, 2, 3, '#4aa0e0'); g.px(12, 10, '#4aa0e0');                                         // thermometer (cold)
+  }, { w: 16, h: 24 });
 })(window.MSC = window.MSC || {});

@@ -196,7 +196,8 @@
     const body = word + sign;
     return `<div class="stack">${head(o.sprite || o.id, e ? U.capitalize(e.english.split(/[\/;(]/)[0].trim()) : o.hanzi, o.hanzi, sub)}
       ${body}${o.note ? `<div class="box amber box-sm">${UI.richText(o.note)}</div>` : ''}
-      <div class="sub">Nothing to do here — just learn the word. It is in your notebook now.</div></div>`;
+      ${o.listen && o.listen.length ? `<button type="button" class="btn btn-dark btn-block" data-click="obj-listen" data-arg="${U.esc(o.id)}">🎧 ${U.esc(o.listenTitle || 'Listen — what did you hear?')}</button>` : ''}
+      <div class="sub">${o.listen && o.listen.length ? 'Listen and pick what you heard — just for your ears, it doesn’t change your scores.' : 'Nothing to do here — just learn the word. It is in your notebook now.'}</div></div>`;
   }
 
   // ───────────────────────── render ─────────────────────────
@@ -316,6 +317,7 @@
     if (res && res.ok && MSC.teach) MSC.teach.prompt();
     return res;
   };
+  A['obj-listen'] = (id) => { const f = MSC.stage.find(id); if (f && f.ent.listen) MSC.practice.listen(f.ent.listen, f.ent.listenTitle); };
   A['renew-quiz'] = (key) => { QZ.renew(key); P.render(true); MSC.speech.say(QZ.state(key).quiz.prompt.hanzi); };
 
   document.addEventListener('keydown', (e) => {

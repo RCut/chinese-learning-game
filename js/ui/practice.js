@@ -112,12 +112,21 @@
     render();
     autoplay();
   };
+  /** A listening moment in the world (the TV, an announcement, someone calling out): "what did you hear?" on these texts. Never scores. */
+  PR.listen = (texts, title) => {
+    const list = U.shuffle(texts.slice()).map((t) => prepare({ type: 'listen', key: t, word: t })).filter((ex) => ex.options);
+    if (!list.length) return;
+    sess = { kind: 'listen', title: title || 'Listen', list, i: 0, right: 0 };
+    $('practice').classList.add('open'); $('practice-backdrop').classList.add('show');
+    document.body.classList.add('practice-open');
+    render(); autoplay();
+  };
   PR.close = () => {
     if (!sess) return;
     const s = sess; sess = null;
     $('practice').classList.remove('open'); $('practice-backdrop').classList.remove('show');
     document.body.classList.remove('practice-open');
-    if (s.i > 0) MSC.log.say(`Practice: ${s.right} of ${s.list.length} right.`);
+    if (s.i > 0 && s.kind !== 'listen') MSC.log.say(`Practice: ${s.right} of ${s.list.length} right.`);
     if (MSC.notebook) MSC.notebook.render(true);
   };
   PR.isOpen = () => !!sess;
@@ -170,13 +179,13 @@
     if (!ex) {
       el.innerHTML = `<div class="pr-head"><b>🎯 Practice</b><button class="w-x" data-click="pr-close" aria-label="Close">✕</button></div>
         <div class="box green"><div class="box-title">Done!</div><div class="box-sm">${sess.right} of ${sess.list.length} right. Your scores are updated in the notebook.</div></div>
-        <div class="actions"><button class="btn btn-ghost grow" data-click="pr-close">Close</button><button class="btn btn-primary grow" data-click="practice" data-arg="${sess.kind}">Again ↺</button></div>`;
+        <div class="actions"><button class="btn btn-ghost grow" data-click="pr-close">Close</button>${sess.kind === 'listen' ? '' : `<button class="btn btn-primary grow" data-click="practice" data-arg="${sess.kind}">Again ↺</button>`}</div>`;
       return;
     }
     const st = ex.st;
     const dots = sess.list.map((x, i) => `<span class="w-slot ${i < sess.i ? 'done' : i === sess.i ? 'cur' : ''}"></span>`).join('');
     const canCheck = ex.type === 'build' || ex.type === 'type';
-    el.innerHTML = `<div class="pr-head"><b>🎯 Practice · ${sess.kind === 'phrases' ? 'Phrases' : 'Words'}</b><div class="w-slots">${dots}</div><button class="w-x" data-click="pr-close" aria-label="Close">✕</button></div>
+    el.innerHTML = `<div class="pr-head"><b>${sess.kind === 'listen' ? `🎧 ${U.esc(sess.title)}` : `🎯 Practice · ${sess.kind === 'phrases' ? 'Phrases' : 'Words'}`}</b><div class="w-slots">${dots}</div><button class="w-x" data-click="pr-close" aria-label="Close">✕</button></div>
       <div class="pr-body">${prompt(ex)}${answerArea(ex)}</div>
       <div class="pr-msg" id="pr-msg">${st.result}</div>${hintBox(ex)}
       <div class="actions">

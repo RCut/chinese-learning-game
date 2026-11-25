@@ -145,12 +145,6 @@
     g.line(9, 7, 12, 5, '#3f8a58').line(6, 11, 4, 9, '#3f8a58').line(9, 12, 12, 10, '#3f8a58').line(6, 16, 4, 14, '#3f8a58');
     g.rect(10, 17, 2, 2, '#b8302a');
   });
-  scroll('sh-scroll2', '#e8efe0', (g) => {                      // mountain landscape
-    g.rect(4, 5, 8, 7, '#cfe0ea');
-    g.line(4, 12, 7, 6, '#4a5a6a').line(7, 6, 10, 10, '#4a5a6a').line(8, 12, 11, 8, '#5f7080').line(11, 8, 12, 10, '#5f7080');
-    g.rect(4, 12, 8, 1, '#4a5a6a'); g.rect(4, 13, 8, 5, '#8fb8d0'); g.hline(5, 15, 3, '#cfe0ea').hline(8, 17, 3, '#cfe0ea');
-    g.px(10, 6, '#f2c04a');
-  });
   const framed = (key, draw) => A.draw(key, (g, c) => {
     g.rect(1, 3, 14, 12, '#7a4a2b').frame(1, 3, 14, 12, '#c58b55');
     g.rect(3, 5, 10, 8, '#f3ead0');
@@ -161,12 +155,6 @@
     g.rect(3, 5, 10, 4, '#f6d98a').rect(3, 9, 10, 4, '#6fa8c8');
     g.disc(7.5, 8.5, 2, '#e8624a').rect(3, 9, 10, 1, '#4f88a8');
     g.hline(4, 11, 3, '#9fcce0').hline(9, 12, 3, '#9fcce0');
-  });
-  framed('sh-painting2', (g) => {                               // flowering branch
-    g.line(3, 12, 11, 6, '#5a3a22');
-    g.line(7, 9, 9, 11, '#5a3a22');
-    [[11, 6], [8, 7], [5, 10], [9, 10], [12, 8]].forEach(([x, y]) => g.disc(x + 0.5, y + 0.5, 1.2, '#f08ab4'));
-    [[11, 6], [8, 7], [9, 10]].forEach(([x, y]) => g.px(x, y, '#fbe3ee'));
   });
   A.draw('sh-lantern', (g, c) => {                              // red paper lantern with tassel
     g.rect(7, 0, 2, 3, '#4a3a2a');
@@ -193,12 +181,6 @@
     g.rect(2, 5, 12, 4, '#f1ebd9').hline(2, 5, 12, '#ffffff').vline(13, 5, 4, '#cfc6a8').vline(2, 5, 4, '#cfc6a8');
     g.hline(4, 7, 8, '#e0d8bc');
     g.rect(5, 7, 6, 1, '#c8a05a');
-  });
-  A.draw('sh-pot', (g, c) => {                                  // brush pot with several brushes
-    g.line(5, 8, 3, 1, '#d8b85a').line(8, 8, 8, 0, '#d8b85a').line(10, 8, 12, 2, '#c9a45a').line(7, 8, 5, 1, '#b8963c');
-    g.rect(2, 0, 2, 2, '#1d1a1f').rect(7, 0, 2, 1, '#1d1a1f').rect(11, 1, 2, 2, '#1d1a1f').px(5, 0, '#1d1a1f');
-    g.rect(3, 8, 10, 7, '#5f8f6a').rect(3, 8, 10, 1, '#7fb08a').vline(3, 8, 7, '#7fb08a').hline(3, 14, 10, '#3d6a48').vline(12, 9, 6, '#4a7a55');
-    g.hline(4, 11, 8, '#3d6a48');
   });
   A.draw('sh-seal', (g, c) => {                                 // red stone stamp: carved knob on top, square body, red print on paper
     g.rect(6, 2, 4, 3, '#d9564a').hline(6, 2, 4, '#f08a7c').vline(6, 2, 3, '#f08a7c').px(9, 4, '#8f2a20');
@@ -239,5 +221,57 @@
     g.px(7, 5, '#e0b64a').px(8, 5, '#e0b64a').px(7, 6, '#e0b64a').px(8, 6, '#e0b64a').px(6, 7, '#e0b64a').px(9, 7, '#e0b64a').px(6, 4, '#e0b64a').px(9, 4, '#e0b64a');
     g.rect(3, 11, 2, 4, '#6e4423').rect(11, 11, 2, 4, '#6e4423').rect(3, 14, 2, 1, '#4f2f19').rect(11, 14, 2, 1, '#4f2f19');
     g.hline(5, 12, 6, '#6e4423');
+  });
+
+  // ───────── level 1: reading and writing ─────────
+  const INK = '#1d1a1f', GRID = '#d9564a';
+  A.draw('sh-hanzi', (g, c) => {                                // a wall chart: one big 人 in a red practice square with guide lines
+    g.px(7, 0, '#c9a227').px(8, 0, '#c9a227').line(4, 2, 7, 0, '#c9a227').line(11, 2, 8, 0, '#c9a227');
+    g.rect(1, 2, 14, 13, '#fbf6e6').frame(1, 2, 14, 13, '#3f6fa6').hline(1, 2, 14, '#6f9bd0');
+    g.frame(3, 4, 10, 10, GRID);
+    for (let i = 4; i < 13; i += 2) { g.px(i, 8, '#f0b8b0'); g.px(7, i + 0, '#f0b8b0'); }                // dashed guide lines
+    g.line(8, 5, 4, 12, INK).line(7, 5, 3, 12, INK);                                                       // 人: the left-falling stroke
+    g.line(8, 8, 11, 12, INK).line(8, 9, 12, 12, INK);                                                     //     and the right-falling stroke
+  });
+  A.draw('sh-class', (g, c) => {                                // the class notice board: cork, pinned sheets, a little clock
+    g.rect(1, 2, 14, 12, '#7a4a2b').rect(2, 3, 12, 10, '#c89a64');
+    g.px(4, 5, '#b48650').px(10, 11, '#b48650').px(12, 4, '#b48650');
+    g.rect(3, 4, 5, 7, '#ffffff').hline(4, 6, 3, '#9aa3ab').hline(4, 8, 3, '#9aa3ab').hline(4, 9, 2, '#9aa3ab').px(5, 4, '#d9482b');   // timetable
+    g.disc(11, 6.5, 2.4, '#fbf6e6'); g.px(11, 5, INK).px(11, 6, INK).px(12, 6, INK); g.px(11, 4, '#3f6fa6');                            // clock note
+    g.rect(9, 10, 4, 2, '#f2d27a').px(10, 10, '#3f8a58');                                                                                 // sticky note
+    g.hline(1, 14, 14, '#4f2f19');
+  });
+  A.draw('sh-reading', (g, c) => {                              // a wooden reading stand with an open book
+    g.rect(7, 9, 2, 6, '#8a5530').rect(4, 14, 8, 2, '#6e4425').hline(4, 14, 8, '#a2693d');
+    g.line(1, 8, 4, 3, '#a2693d').line(15, 8, 12, 3, '#a2693d').hline(1, 9, 15, '#7a4a2b');
+    g.rect(2, 3, 6, 6, '#fbf6e6').rect(8, 3, 6, 6, '#f1ebd9').vline(8, 3, 6, '#b48650');
+    g.hline(3, 5, 4, '#9aa3ab').hline(3, 7, 3, '#9aa3ab').hline(9, 5, 4, '#9aa3ab').hline(9, 7, 4, '#9aa3ab');
+    g.rect(2, 2, 12, 1, '#b8453a');
+  });
+  A.draw('sh-practice', (g, c) => {                             // a practice sheet: red squares with 一 and 二 written in, a pencil
+    g.rect(1, 3, 14, 12, '#fbf6e6').hline(1, 3, 14, '#ffffff').hline(1, 14, 14, '#d9d1b8');
+    g.frame(2, 4, 6, 7, GRID).frame(8, 4, 6, 7, GRID);
+    g.hline(3, 7, 4, INK);                                                                   // 一
+    g.hline(10, 6, 2, INK).hline(9, 8, 4, INK);                                              // 二
+    g.line(4, 13, 10, 12, '#e8b04a').px(10, 12, '#f2c4a8').px(4, 13, INK);                       // pencil
+  });
+  A.draw('sh-computer', (g, c) => {                             // a little desktop computer: screen, stand, keyboard
+    g.rect(2, 1, 12, 9, '#3d4a55').rect(3, 2, 10, 7, '#a9dbe6').hline(3, 2, 10, '#e6f6fa');
+    g.hline(4, 4, 5, '#3f6fa6').hline(4, 6, 6, '#6f9bd0').px(11, 7, '#d9482b');
+    g.rect(7, 10, 2, 2, '#5a6b79').rect(5, 12, 6, 1, '#5a6b79');
+    g.rect(2, 13, 12, 2, '#e4e6ea').hline(2, 13, 12, '#ffffff'); for (let x = 3; x < 13; x += 2) g.px(x, 14, '#9aa3ab');
+  });
+  A.draw('sh-chair', (g, c) => {                                // a wooden chair (side view)
+    g.rect(3, 1, 2, 14, '#8a5530').vline(3, 1, 14, '#b47a45');
+    g.rect(5, 3, 1, 5, '#a2693d');
+    g.rect(3, 8, 11, 2, '#c58b55').hline(3, 8, 11, '#e0ac77');
+    g.rect(12, 10, 2, 5, '#8a5530'); g.rect(5, 10, 1, 5, '#6e4425');
+  });
+  A.draw('sh-desk', (g, c) => {                                 // a pupil's desk with an open book on it
+    g.rect(0, 7, 16, 2, '#c58b55').hline(0, 7, 16, '#e0ac77').hline(0, 9, 16, '#5e3a1b');
+    g.rect(1, 9, 14, 2, '#8f5c32'); g.rect(1, 11, 2, 4, '#6e4425').rect(13, 11, 2, 4, '#6e4425');
+    g.rect(3, 3, 5, 4, '#fbf6e6').rect(8, 3, 5, 4, '#f1ebd9').vline(8, 3, 4, '#b48650').hline(3, 6, 10, '#3f6fa6');
+    g.hline(4, 4, 3, '#9aa3ab').hline(9, 4, 3, '#9aa3ab');
+    g.line(12, 2, 14, 6, '#e8b04a');                                                          // a pencil leaning on the book
   });
 })(window.MSC = window.MSC || {});

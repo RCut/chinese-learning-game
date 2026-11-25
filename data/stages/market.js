@@ -16,83 +16,69 @@
     blockedTiles: ['A'],
     map: [
       'WAAAAAAAAAAAAAAAAW',
-      'WLLLLLLLLLLLLLLLLW',
+      'WLLLMLLLMLLLMLLLMW',
       'WMMMMMMMMTMMMMMMMW',
       'WLMMMMMMMTMMMMMMLW',
-      'WLMLLLLMMTLLLLLMLW',
-      'WLMLLLLMMTLLLLLMLW',
-      'WLMMMMMMMTMMMMMMLW',
-      'WLMLLLLLMTMLLLLLLW',
-      'WLMMMMMMMDMMMMMMMW',
+      'WLMLLLMMMTLLLMMMLW',
+      'WLMLLLMMMTLLMMMMLW',
+      'WLMMMMMMMTMMMMMMMW',
+      'WMMMMMLLMTMMMMMMMW',
+      'WMMMMMMMMDMMMMMMMW',
       'WWWWWWWWWWWWWWWWWW',
     ],
     playerStart: { x: 9, y: 7 },
     scenery: [],
-    // Level 1 (HSK 1) goods sit first on their stalls, next to the (level-2) stall sign: 菜 · 鸡蛋 面条儿 · 茶 ·
-    // 包子 饺子 面包 · 苹果 水果 · 水 牛奶 — and Zhang's price board (块) by his counter. The rest appears at level 2.
+    // Level 1 (HSK 1) goods sit first on their stalls, next to the stall sign: 菜 · 肉 鱼 · 鸡蛋 面条儿 · 水 牛奶 ·
+    // 包子 饺子 面包 米饭 · 苹果 水果 · 茶 — and Zhang's price board (块) by his counter. The rest appears at level 2.
     objects: [
-      // ── back wall, left to right: vegetables · meat · tofu, eggs & noodles ──
-      sign('mk-veg', 1, 1, '蔬菜摊', [['菜', 'vegetables'], ['白菜', 'Chinese cabbage'], ['土豆', 'potato'], ['西红柿', 'tomato'], ['黄瓜', 'cucumber'], ['辣椒', 'chili pepper']],
-        '黄瓜和青菜都很新鲜！ — The cucumbers and green vegetables are fresh!'),
-      item('mk-greens', 2, 1, '菜', '菜 is vegetables — and also a dish of food: 中国菜 is Chinese food.'),
-      item('mk-cabbage', 3, 1, '白菜'),
-      item('mk-potato', 4, 1, '土豆'),
-      item('mk-tomato', 5, 1, '西红柿'),
-      item('mk-cucumber', 6, 1, '黄瓜'),
-      item('mk-chili', 7, 1, '辣椒', '辣 means spicy — 这个很辣！ — This one is very spicy!'),
+      // ── back wall, left to right: vegetables · meat & fish · eggs & noodles · drinks ──
+      sign('mk-veg', 1, 1, '菜', [['菜', 'vegetables'], ['白菜', 'Chinese cabbage'], ['豆腐', 'tofu']],
+        '菜 is vegetables — and also a dish of food: 中国菜 is Chinese food.'),
+      item('mk-cabbage', 2, 1, '白菜', '黄瓜和青菜都很新鲜！ — The vegetables are fresh!'),
+      item('mk-bean-curd', 3, 1, '豆腐'),
 
-      sign('mk-meat', 8, 1, '肉摊', [['猪肉', 'pork'], ['牛肉', 'beef'], ['羊肉', 'lamb'], ['鸡肉', 'chicken']]),
-      item('mk-pork', 9, 1, '猪肉'),
-      item('mk-beef', 10, 1, '牛肉'),
-      item('mk-lamb', 11, 1, '羊肉'),
-      item('mk-chicken', 12, 1, '鸡肉'),
+      sign('mk-meat', 5, 1, '肉', [['肉', 'meat'], ['鱼', 'fish']]),
+      item('mk-pork', 6, 1, '肉', '肉 is meat. 我不吃肉。 — I do not eat meat.'),
+      item('mk-fishitem', 7, 1, '鱼', '鱼很新鲜！ — The fish is very fresh!'),
 
-      sign('mk-tofu', 13, 1, '豆腐摊', [['鸡蛋', 'eggs'], ['面条儿', 'noodles'], ['豆腐', 'tofu']]),
-      item('mk-egg', 14, 1, '鸡蛋', 'Eggs are counted with 个: 两个鸡蛋 = two eggs.'),
-      item('mk-noodles', 15, 1, '面条儿', 'Fresh 面条儿 (noodles). 面 is flour, 条 is a long strip.'),
-      item('mk-bean-curd', 16, 1, '豆腐'),
+      sign('mk-tofu', 9, 1, '面', [['鸡蛋', 'eggs'], ['面条儿', 'noodles'], ['面', 'flour / noodles']]),
+      item('mk-egg', 10, 1, '鸡蛋', 'Eggs are counted with 个: 两个鸡蛋 = two eggs.'),
+      item('mk-noodles', 11, 1, '面条儿', 'Fresh 面条儿 (noodles). 面 is flour, 条 is a long strip.'),
 
-      // ── left wall: tea and dry goods ──
-      sign('mk-tea', 1, 3, '茶叶摊', [['茶', 'tea'], ['绿茶', 'green tea'], ['红茶', 'black tea'], ['大米', 'rice'], ['盐', 'salt']]),
-      item('mk-tea-tin', 1, 4, '茶', 'A tin of 茶 (tea leaves). 喝茶 = to drink tea.'),
-      item('mk-greentea', 1, 5, '绿茶'),
-      item('mk-blacktea', 1, 6, '红茶'),
-      item('mk-rice', 1, 7, '大米'),
-      item('mk-salt', 1, 8, '盐'),
+      sign('mk-drink', 13, 1, '水', [['水', 'water'], ['牛奶', 'milk'], ['果汁', 'fruit juice']], '喝水 = to drink water.'),
+      item('mk-milk', 14, 1, '牛奶'),
+      item('mk-juice', 15, 1, '果汁'),
 
-      // ── island: snacks and bakery (beside the Fruit Stall cart) ──
-      sign('mk-snack', 3, 4, '点心摊', [['包子', 'steamed buns'], ['饺子', 'dumplings'], ['面包', 'bread'], ['馒头', 'plain steamed bread'], ['蛋糕', 'cake'], ['饼干', 'cookies'], ['糖果', 'candy']],
+      // ── left wall: tea ──
+      sign('mk-tea', 1, 3, '茶', [['茶', 'tea'], ['绿茶', 'green tea'], ['红茶', 'black tea'], ['奶茶', 'milk tea']], '喝茶 = to drink tea.'),
+      item('mk-greentea', 1, 4, '绿茶'),
+      item('mk-blacktea', 1, 5, '红茶'),
+      item('mk-milktea', 1, 6, '奶茶', '奶茶 = "milk tea": a sweet tea drink with milk.'),
+
+      // ── island: snacks and bakery ──
+      sign('mk-snack', 3, 4, '点心', [['包子', 'steamed buns'], ['饺子', 'dumplings'], ['面包', 'bread'], ['米饭', 'rice'], ['蛋糕', 'cake']],
         '蛋糕和点心也很好吃！ — The cakes and pastries are tasty too!'),
       item('mk-bun', 4, 4, '包子'),
       item('mk-dumpling', 5, 4, '饺子'),
-      item('mk-bread', 6, 4, '面包'),
-      item('mk-mantou', 3, 5, '馒头'),
-      item('mk-cake', 4, 5, '蛋糕'),
-      item('mk-cookie', 5, 5, '饼干'),
-      item('mk-candy', 6, 5, '糖果'),
+      item('mk-bread', 3, 5, '面包'),
+      item('mk-rice', 4, 5, '米饭'),
+      item('mk-cake', 5, 5, '蛋糕'),
 
-      // ── island: fruit and nuts ──
-      sign('mk-fruit', 10, 4, '水果摊', [['苹果', 'apple'], ['水果', 'fruit'], ['香蕉', 'banana'], ['橙子', 'orange'], ['葡萄', 'grapes'], ['梨', 'pear'], ['草莓', 'strawberry'], ['西瓜', 'watermelon'], ['花生', 'peanuts']]),
+      // ── island: fruit (beside the Fruit Stall cart) ──
+      sign('mk-fruit', 10, 4, '水果', [['苹果', 'apple'], ['香蕉', 'banana'], ['西瓜', 'watermelon'], ['橙子', 'orange']],
+        '水果 is fruit — all kinds. 我喜欢吃水果。 — I like eating fruit.'),
       item('mk-apple', 11, 4, '苹果'),
-      item('mk-fruitbox', 12, 4, '水果', '水果 is fruit — all kinds. 我喜欢吃水果。 — I like eating fruit.'),
-      item('mk-banana', 13, 4, '香蕉'),
-      item('mk-orange', 14, 4, '橙子'),
-      item('mk-grape', 10, 5, '葡萄'),
-      item('mk-pear', 11, 5, '梨'),
-      item('mk-berry', 12, 5, '草莓'),
-      item('mk-melon', 13, 5, '西瓜'),
-      item('mk-peanut', 14, 5, '花生'),
+      item('mk-banana', 12, 4, '香蕉'),
+      item('mk-melon', 10, 5, '西瓜'),
+      item('mk-orange', 11, 5, '橙子'),
 
-      // ── right wall: seafood ──
-      sign('mk-fish', 16, 3, '海鲜摊', [['鱼', 'fish'], ['虾', 'shrimp'], ['螃蟹', 'crab']], '海鲜很新鲜！ — The seafood is very fresh!'),
-      item('mk-fishitem', 16, 4, '鱼'),
-      item('mk-shrimp', 16, 5, '虾'),
-      item('mk-crab', 16, 6, '螃蟹'),
+      // ── right wall: bags ──
+      sign('mk-bagsign', 16, 3, '包', [['包', 'bag'], ['书包', 'schoolbag'], ['袋子', 'carrier bag']],
+        '包 is a bag. 书包 is a schoolbag ("book bag").'),
+      { id: 'mk-schoolbag', sprite: 'hm-schoolbag', x: 16, y: 4, hanzi: '书包', note: '书包: a schoolbag.' },
+      item('mk-bag', 16, 5, '袋子', 'You can ask for a bag: 请给我一个袋子。 — Please give me a bag.'),
 
-      // ── front counter, left: shopping things and, next to Zhang, his price board ──
-      item('mk-basket', 3, 7, '篮子'),
-      item('mk-bag', 4, 7, '袋子', 'You can ask for a bag: 请给我一个袋子。 — Please give me a bag.'),
-      item('mk-scale', 5, 7, '秤', 'Shops weigh your food on the 秤 and sell it by the 斤 (about 500 g).'),
+      // ── front: the till and, next to Zhang, his price board ──
       item('mk-till', 6, 7, '收银台', 'Pay at the 收银台 — and ask for 找钱 (change). — 找钱 means to give change.'),
       {
         id: 'mk-price', x: 7, y: 7, hanzi: '块',
@@ -106,14 +92,6 @@
         listen: ['四块', '十块', '七块', '一块', '两块', '十四块', '四十块'], listenTitle: 'Zhang calls out the prices',
       },
 
-      // ── front counter, right: drinks ──
-      sign('mk-drink', 11, 7, '饮料摊', [['水', 'water'], ['牛奶', 'milk'], ['果汁', 'fruit juice'], ['豆浆', 'soy milk'], ['酸奶', 'yogurt']]),
-      item('mk-water', 12, 7, '水'),
-      item('mk-milk', 13, 7, '牛奶'),
-      item('mk-juice', 14, 7, '果汁'),
-      item('mk-soymilk', 15, 7, '豆浆'),
-      item('mk-yogurt', 16, 7, '酸奶'),
-
       // ── lanterns hanging on the walls ──
       item('mk-lantern2', 17, 8, '灯笼', 'Red lanterns bring good luck. — 灯笼 are hung for festivals and in markets.'),
       item('mk-lantern3', 17, 2, '灯笼'),
@@ -121,7 +99,7 @@
     ],
     entities: [
       { id: 'door-market-out', kind: 'door', name: 'Outside', hanzi: '外面', x: 9, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
-      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', x: 7, y: 5, stand: { x: 7, y: 6 }, badge: 'badge-rose', pill: 'pill-stone' },
+      { id: 'cart', name: 'Fruit Stall', hanzi: '水果', x: 7, y: 5, stand: { x: 7, y: 6 }, badge: 'badge-rose', pill: 'pill-stone' },
       { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', x: 8, y: 7, stand: { x: 8, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
     ],
   };

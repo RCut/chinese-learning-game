@@ -1,3 +1,73 @@
-/* STAGE: the school — level 2. Filled in by the HSK 2 content round. (See data/world.js for the format.) */
+/* STAGE: the school — level 2. A classroom on the left, the hall and a little sports corner on the right. (See data/world.js for the format.)
+ * Own tiles (data/art/school.js): W wall · Q blackboard · N notice-board wall · P wooden classroom floor · H hall floor · T running track · D door mat. */
 (function (MSC) {
+  MSC.data.world.stages.school = {
+    id: 'school', name: 'The school', hanzi: '学校', sound: 'school',
+    cols: 16, rows: 10,
+    blockedTiles: ['W', 'Q', 'N'],
+    map: [
+      'WQQQQQWWWNNWWWWW',
+      'WPPPPPPWHHHHHHHW',
+      'WPPPPPPWHHHHHHHW',
+      'WPPPPPPWHHHHHHHW',
+      'WPPPPPPPHHHHHHHW',
+      'WPPPPPPPHTTTTTHW',
+      'WPPPPPPWHTTTTTHW',
+      'WPPPPPPWHHHHHHHW',
+      'WPPPPPPWHHHDHHHW',
+      'WWWWWWWWWWWWWWWW',
+    ],
+    playerStart: { x: 8, y: 7 },
+    scenery: [],
+    objects: [
+      // classroom: board, walls, cupboard
+      { id: 'sc-word', x: 2, y: 0, hanzi: '词', sprite: 'sc-wordcard', level: 2, note: 'A new 词 for today: a word. 词 is also in 汉语词.' },
+      { id: 'sc-classroom-sign', x: 5, y: 0, hanzi: '教室', text: [{ hanzi: '这是教室', english: 'This is the classroom' }, { hanzi: '请坐', english: 'Please sit down' }] },
+      { id: 'sc-timetable', x: 7, y: 2, hanzi: '周', note: 'The timetable for the 周 (week): 星期一 to 星期五.',
+        text: [{ hanzi: '星期一', english: 'Monday' }, { hanzi: '星期二', english: 'Tuesday' }, { hanzi: '星期三', english: 'Wednesday' }, { hanzi: '星期四', english: 'Thursday' }, { hanzi: '星期五', english: 'Friday' }] },
+      { id: 'sc-cupboard', x: 1, y: 1, hanzi: '里面', note: 'The cupboard is open: what is 里面? Books and notebooks.' },
+      { id: 'sc-shelf', x: 6, y: 1, hanzi: '上面', note: 'Books on the shelf: 书在桌子上面. 上面 = "on top".' },
+      { id: 'sc-box', x: 6, y: 2, hanzi: '下面', note: 'A box 下面 the shelf: 下面 = "underneath".' },
+      { id: 'sc-teacher-desk', x: 3, y: 1, hanzi: '桌子', note: 'The teacher’s big 桌子, with a mug and the class books.' },
+      { id: 'sc-watch', x: 4, y: 1, hanzi: '手表', note: 'A 手表 on the teacher’s desk: someone left it.' },
+      { id: 'sc-seat', x: 1, y: 6, hanzi: '位', note: 'A card with a seat number: 位 counts people politely,.' },
+      // student desks, each with its chair
+      { id: 'sc-desk-1', x: 2, y: 3, hanzi: '桌子', sprite: 'sc-desk', note: 'A student’s 桌子: a desk.' },
+      { id: 'sc-chair-1', x: 2, y: 4, hanzi: '椅子', sprite: 'sc-chair', note: 'A 椅子. 请坐 = please sit down.' },
+      { id: 'sc-desk-2', x: 4, y: 3, hanzi: '桌子', sprite: 'sc-desk', note: 'A student’s 桌子: a desk.' },
+      { id: 'sc-chair-2', x: 4, y: 4, hanzi: '椅子', sprite: 'sc-chair', note: 'A 椅子. 请坐 = please sit down.' },
+      { id: 'sc-desk-3', x: 2, y: 6, hanzi: '桌子', sprite: 'sc-desk', note: 'A student’s 桌子: a desk.' },
+      { id: 'sc-chair-3', x: 2, y: 7, hanzi: '椅子', sprite: 'sc-chair', note: 'A 椅子. 请坐 = please sit down.' },
+      { id: 'sc-desk-4', x: 4, y: 6, hanzi: '桌子', sprite: 'sc-desk', note: 'A student’s 桌子: a desk.' },
+      { id: 'sc-chair-4', x: 4, y: 7, hanzi: '椅子', sprite: 'sc-chair', note: 'A 椅子. 请坐 = please sit down.' },
+      { id: 'sc-notebook', x: 3, y: 3, hanzi: '本子', note: 'A 本子: a notebook. 本 counts books and notebooks.' },
+      { id: 'sc-pen', x: 3, y: 6, hanzi: '笔', note: 'A red 笔: a pen.' },
+      { id: 'sc-test', x: 5, y: 3, hanzi: '考', sprite: 'sc-testpaper', note: '考 = to take an exam: 考试, 考得好 ("did well in the exam").' },
+      { id: 'sc-nametag', x: 5, y: 6, hanzi: '名', note: '名 = name: 名字 and 姓名 ("full name"), 有名 = famous.' },
+      // the hall: notice board, lists
+      { id: 'sc-gate-sign', x: 8, y: 0, hanzi: '高中', note: '高中 = senior high school ("high middle"). Xiao Hong goes to 高中.' },
+      { id: 'sc-notice-start', x: 9, y: 0, hanzi: '开学', note: '开学 = school starts ("open study").',
+        text: [{ hanzi: '星期一开学', english: 'School starts on Monday' }, { hanzi: '欢迎你', english: 'Welcome' }] },
+      { id: 'sc-notice-exam', x: 10, y: 0, hanzi: '考试', note: 'The exam notice: the dates of the 考试.',
+        text: [{ hanzi: '星期三考试', english: 'Exam on Wednesday' }, { hanzi: '下午两点', english: 'Two o’clock in the afternoon' }] },
+      { id: 'sc-names', x: 12, y: 0, hanzi: '姓名', note: 'The class list: 姓名 is a full name (family name + given name).',
+        text: [{ hanzi: '姓名', english: 'Name' }, { hanzi: '小红', english: 'Xiao Hong' }, { hanzi: '小明', english: 'Xiao Ming' }, { hanzi: '小李', english: 'Xiao Li' }] },
+      { id: 'sc-score', x: 13, y: 0, hanzi: '分', note: 'The score board: 分 = points. 一百分 would be full marks.',
+        listen: ['四十分', '五十分', '六十分', '八十分', '九十分'], listenTitle: 'The score announcement' },
+      { id: 'sc-left', x: 7, y: 3, hanzi: '左', sprite: 'sc-sign-left', note: '左 = left. 左边 = the left side.', text: [{ hanzi: '左边是教室', english: 'On the left is the classroom' }] },
+      { id: 'sc-right', x: 7, y: 6, hanzi: '右', sprite: 'sc-sign-right', note: '右 = right. 右边 = the right side.', text: [{ hanzi: '右边是篮球', english: 'On the right is basketball' }] },
+      // the sports corner
+      { id: 'sc-ball', x: 9, y: 3, hanzi: '球', note: '球 = a ball, any ball: 篮球, 足球, 球 for short.' },
+      { id: 'sc-basketball', x: 13, y: 3, hanzi: '篮球', note: '篮球 = basketball ("basket ball"). 打篮球 = to play basketball.' },
+      { id: 'sc-football', x: 14, y: 4, hanzi: '足球', note: '足球 = football ("foot ball"). 踢足球 = to play football.' },
+      { id: 'sc-shoes', x: 9, y: 7, hanzi: '跑', note: '跑 = to run. 跑得快 = runs fast.' },
+      { id: 'sc-track-sign', x: 13, y: 7, hanzi: '跑步', note: '跑步 = to go running (a jog or a race).' },
+      { id: 'sc-dance', x: 14, y: 6, hanzi: '跳舞', note: '跳舞 = to dance: "jump" + "dance".' },
+      { id: 'sc-swim', x: 9, y: 8, hanzi: '游', note: '游 = to swim; 游泳 is the full word.' },
+    ],
+    entities: [
+      { id: 'door-school-out', kind: 'door', name: 'Outside', hanzi: '外面', x: 11, y: 8, to: 'street', level: 2, badge: 'badge-stone', pill: 'pill-stone' },
+      { id: 'xiaohong', name: 'Xiao Hong', hanzi: '小红', x: 11, y: 3, stand: { x: 11, y: 4 }, level: 2, badge: 'badge-sky', pill: 'pill-sky' },
+    ],
+  };
 })(window.MSC = window.MSC || {});

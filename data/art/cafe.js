@@ -132,16 +132,6 @@
     g.px(4, 3, '#ffffff').px(4, 4, '#ffffff');
   }, { shadow: true });
 
-  // clock: a tall wooden longcase clock with a round face and a pendulum
-  A.draw('cf-clock', (g, c) => {
-    g.rect(3, 22, 10, 2, '#6e4727').rect(4, 9, 8, 13, '#8a5a30').rect(4, 9, 2, 13, '#a9743f');
-    g.rect(5, 12, 6, 9, '#4f321a').rect(7, 14, 2, 5, '#e3b660').px(7, 19, '#f2cf4a').px(8, 19, '#f2cf4a');
-    g.rect(2, 1, 12, 9, '#a9743f').hline(2, 1, 12, '#c98f58').rect(3, 0, 10, 1, '#8a5a30');
-    g.disc(7.5, 5.5, 3.5, '#fff6e0').disc(7.5, 5.5, 3.5, '#fff6e0');
-    g.px(7, 2, '#3b2a1d').px(7, 8, '#3b2a1d').px(4, 5, '#3b2a1d').px(11, 5, '#3b2a1d');
-    g.vline(7, 3, 3, '#3b2a1d').hline(8, 5, 2, '#3b2a1d');
-  }, { w: 16, h: 24 });
-
   // window: a tall window with curtains, a sill and a flower box
   A.draw('cf-window', (g, c) => {
     g.rect(1, 2, 14, 18, '#fff6e0');
@@ -154,23 +144,6 @@
     g.rect(1, 21, 14, 3, '#8a5a30').hline(1, 21, 14, '#a9743f');
     g.px(3, 20, '#e8564a').px(7, 20, '#f2cf4a').px(11, 20, '#e8564a').px(5, 20, '#6fae58').px(9, 20, '#6fae58');
   }, { w: 16, h: 24 });
-
-  // lamp: a standing lamp with a warm cloth shade, glowing
-  A.draw('cf-lamp', (g, c) => {
-    g.rect(3, 1, 10, 3, '#f6d68a').rect(2, 4, 12, 4, '#f2c25f').rect(3, 4, 3, 4, '#fbe3a6').hline(2, 7, 12, '#d9a13f');
-    g.rect(7, 8, 2, 12, '#6e4727').rect(7, 8, 1, 12, '#8a5a30');
-    g.rect(4, 20, 8, 2, '#8a5a30').rect(3, 22, 10, 2, '#6e4727').hline(4, 20, 8, '#a9743f');
-    g.px(1, 0, '#fff3c4').px(14, 1, '#fff3c4').px(0, 6, '#fff3c4');
-  }, { w: 16, h: 24 });
-
-  // teapot: round belly, lid with knob, curved spout, loop handle
-  A.draw('cf-teapot', (g, c) => {
-    g.ellipse(7.5, 9.5, 5, 4, '#4f9a8a').ellipse(6.5, 8.5, 2.5, 1.5, '#7fc4b4');
-    g.rect(4, 4, 7, 2, '#3f8576').rect(6, 2, 3, 2, '#3f8576').px(7, 1, '#f2cf4a').px(8, 1, '#f2cf4a');   // lid + knob
-    g.px(12, 8, '#4f9a8a').px(12, 7, '#4f9a8a').px(13, 7, '#4f9a8a').px(13, 6, '#4f9a8a').px(14, 6, '#4f9a8a').px(14, 5, '#4f9a8a');   // spout
-    g.vline(1, 7, 4, '#3f8576').px(2, 6, '#3f8576').px(2, 11, '#3f8576').px(2, 7, '#3f8576').px(2, 10, '#3f8576');   // handle
-    g.hline(5, 13, 6, '#2f6f62');
-  });
 
   // sugar: a glass jar of white cubes with a lid and a spoon
   A.draw('cf-sugar', (g, c) => {
@@ -198,15 +171,6 @@
     g.hline(3, 4, 4, '#ffffff');
   });
 
-  // plate: a round white plate seen from the front, with a blue rim and a croissant
-  A.draw('cf-plate', (g, c) => {
-    g.ellipse(7.5, 10.5, 7, 3, '#f8f4ea').ellipse(7.5, 10.5, 7, 3, '#f8f4ea');
-    g.ellipse(7.5, 10.5, 5, 2, '#ffffff');
-    g.hline(2, 9, 12, '#7fa7d9').px(1, 10, '#7fa7d9').px(14, 10, '#7fa7d9');
-    g.ellipse(7.5, 8, 3.5, 2, '#d99a4e').px(5, 7, '#f0c27a').px(7, 6, '#f0c27a').px(9, 7, '#b87a34').px(8, 9, '#b87a34');
-    g.hline(2, 12, 12, '#c9c3b2');
-  });
-
   // chairs: a wooden chair seen from the front (four share this)
   ['cf-chair-1', 'cf-chair-2', 'cf-chair-3', 'cf-chair-4', 'cf-chair-5'].forEach((key) => A.draw(key, (g, c) => {
     g.rect(3, 1, 10, 7, '#a9743f').rect(5, 2, 6, 4, '#8a5a30').hline(3, 1, 10, '#d3a066').vline(3, 1, 7, '#c28d55');
@@ -228,30 +192,12 @@
     g.px(5, 4, '#ffffff').px(6, 3, '#ffffff').px(5, 2, '#ffffff').px(8, 4, '#ffffff').px(9, 3, '#ffffff');
   });
 
-  // fridge: tall cream fridge with two doors and handles, a magnet
-  A.draw('cf-fridge', (g, c) => {
-    g.rect(2, 1, 12, 23, '#e8f1f5').rect(2, 1, 3, 23, '#ffffff').rect(12, 1, 2, 23, '#c9d8df');
-    g.hline(2, 9, 12, '#7b858d').hline(2, 10, 12, '#a9b5bd');
-    g.vline(11, 4, 4, '#7b858d').vline(11, 12, 5, '#7b858d');
-    g.rect(5, 13, 2, 2, '#e8564a').px(5, 5, '#f2cf4a').px(6, 5, '#f2cf4a');
-    g.rect(3, 23, 10, 1, '#59606a');
-  }, { w: 16, h: 24 });
-
   // plants: a leafy plant in a terracotta pot (two share this)
   ['cf-plant', 'cf-plant-2'].forEach((key) => A.draw(key, (g, c) => {
     g.ellipse(7.5, 5.5, 5, 4.5, '#5fa24f').ellipse(5, 4, 2.5, 2, '#86c06c').ellipse(10.5, 7, 2.5, 2, '#4f9040');
     g.line(8, 9, 8, 6, '#3f7a35').line(5, 5, 7, 8, '#3f7a35').line(11, 5, 9, 8, '#3f7a35');
     g.rect(3, 9, 10, 2, '#c26a3f').rect(4, 11, 8, 4, '#b25a33').hline(3, 9, 10, '#e08a5a').vline(4, 11, 4, '#d9784a');
   }));
-
-  // opening hours: a hanging board with a round clock face and two small hooks (no text)
-  A.draw('cf-hours', (g, c) => {
-    g.rect(3, 0, 10, 2, '#8a5a30').px(5, 0, '#c9a26b').px(10, 0, '#c9a26b');
-    g.rect(2, 3, 12, 11, '#f6ecd0').frame(2, 3, 12, 11, '#8a5a30');
-    g.disc(7.5, 8.5, 3, '#ffffff').px(7, 6, '#3b2a1d').px(7, 11, '#3b2a1d').px(5, 8, '#3b2a1d').px(10, 8, '#3b2a1d').vline(7, 7, 2, '#3b2a1d').hline(8, 9, 2, '#d9482b');
-    g.px(3, 4, '#d9482b').px(12, 4, '#d9482b').hline(4, 13, 8, '#c9a26b');
-    g.px(4, 2, '#8a5a30').px(11, 2, '#8a5a30');
-  });
 
   // ───────────── level-1 things ─────────────
   // lunch: a hanging chalkboard with a rice-bowl doodle and chalk lines (the text is the sign's lines)
@@ -310,5 +256,42 @@
     g.rect(4, 2, 8, 13, '#2a2d33').rect(5, 3, 6, 10, '#7fc4e8').hline(5, 3, 6, '#bfe4f5');
     g.rect(6, 5, 1, 1, '#f2cf4a').rect(8, 5, 1, 1, '#e8564a').rect(6, 7, 1, 1, '#6fae58').rect(8, 7, 1, 1, '#ffffff').rect(6, 9, 1, 1, '#d96a4a').rect(8, 9, 1, 1, '#5aa9e6');
     g.hline(7, 13, 2, '#59606a').px(7, 2, '#59606a').px(8, 2, '#59606a');
+  });
+  // ── HSK 2 things ──
+  // milk tea (奶茶): a tall clear cup of beige tea, tapioca pearls at the bottom and a fat straw
+  A.draw('cf-milktea', (g, c) => {
+    g.rect(4, 4, 8, 10, '#f4efe6').rect(5, 5, 6, 8, '#d9b48a').rect(5, 5, 6, 2, '#ead2b0').vline(4, 4, 10, '#ffffff').vline(11, 5, 9, '#cfc6b4');
+    g.rect(5, 11, 6, 2, '#5a3a26'); g.px(6, 11, '#7a5238').px(9, 12, '#7a5238').px(8, 11, '#7a5238');
+    g.rect(3, 3, 10, 1, '#e8564a').hline(3, 3, 10, '#f08a7c');
+    g.line(9, 3, 11, 0, '#4f9a8a').line(10, 3, 12, 0, '#4f9a8a');
+    g.hline(5, 14, 6, '#bdb391');
+  });
+  // noodles (面): a blue-and-white bowl of noodles with an egg and a green sprig, chopsticks across
+  A.draw('cf-noodle', (g, c) => {
+    g.ellipse(7.5, 7.5, 6, 3, '#f2d98a').ellipse(7.5, 7, 5, 2, '#f6e4a2');
+    for (const x of [4, 6, 8, 10]) g.line(x, 6, x + 2, 8, '#d8b95a');
+    g.disc(10.5, 6.5, 1.6, '#ffffff').px(10, 6, '#f2b030').px(11, 6, '#f2b030'); g.px(5, 6, '#4f9a45').px(6, 5, '#4f9a45');
+    g.rect(2, 9, 12, 3, '#f8f8f4').rect(4, 12, 8, 2, '#f8f8f4').hline(5, 14, 6, '#d9d4c3');
+    g.hline(2, 10, 12, '#4f7ab5').px(4, 11, '#4f7ab5').px(7, 11, '#4f7ab5').px(10, 11, '#4f7ab5');
+    g.line(9, 1, 14, 8, '#a9743f').line(11, 1, 15, 6, '#c98f58');
+  });
+  // bag (包): a satchel with a flap, a buckle and a strap
+  A.draw('cf-bag', (g, c) => {
+    g.rect(3, 6, 10, 8, '#c0603a').rect(3, 6, 10, 4, '#d97a4a').hline(3, 9, 10, '#8f3f22').rect(3, 6, 1, 8, '#e08a5a');
+    g.rect(7, 8, 2, 3, '#f2c230').px(7, 9, '#fbe27a');
+    g.line(4, 6, 6, 2, '#8f3f22').line(11, 6, 9, 2, '#8f3f22').hline(6, 2, 4, '#8f3f22');
+    g.hline(3, 14, 10, '#8f3f22');
+  });
+  // seat card (位): a little tent card on the table, three chairs drawn as dots
+  A.draw('cf-seats', (g, c) => {
+    g.rect(2, 4, 12, 9, '#f6efd8').frame(2, 4, 12, 9, '#c9a227').hline(2, 13, 12, '#8a5a33');
+    for (const x of [5, 8, 11]) { g.disc(x, 7, 1.2, '#c0392b'); g.rect(x - 1, 9, 3, 2, '#c0392b'); }
+    g.hline(3, 12, 10, '#e0d2a4');
+  });
+  // inside sign (里面): a wooden board with an arrow pointing into a doorway
+  A.draw('cf-inside', (g, c) => {
+    g.rect(1, 3, 14, 10, '#8a5a33').rect(2, 4, 12, 8, '#d9a066').frame(1, 3, 14, 10, '#5e3a1b');
+    g.rect(3, 7, 7, 2, '#3b2a1d'); g.line(10, 5, 13, 8, '#3b2a1d').line(10, 10, 13, 8, '#3b2a1d').vline(10, 6, 4, '#3b2a1d');
+    g.px(4, 5, '#ecc088').px(5, 5, '#ecc088');
   });
 })(window.MSC = window.MSC || {});

@@ -122,6 +122,41 @@
         bye: { npc: { hanzi: '明天见！', english: 'See you tomorrow!' }, end: true },
       },
     },
+    // ── HSK 2 ──
+    {
+      id: 'washhands', title: 'Wash your hands!',
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '你过来！要吃饭了，快去洗手！', english: "Come here! We're about to eat — go and wash your hands!" }, goal: 'Say that you will go and wash your hands — or that you have already washed them.', tip: '洗手 = wash hands; 我去洗手. 已经…了 = already.',
+          replies: [
+            { say: ['好，我去洗手', '我去洗手'], en: "OK, I'll go and wash my hands.", label: 'Go wash', next: 'n2a' },
+            { say: ['我已经洗了', '我已经洗手了'], en: "I've already washed them.", label: 'Already', next: 'n2b' },
+          ] },
+        n2a: { npc: { hanzi: '洗好了吗？', english: 'All washed?' }, goal: 'Say that you have washed them.', tip: '好了 / 洗了 = done.',
+          replies: [{ say: ['洗好了', '我洗好了', '洗了'], en: 'Done.', next: 'bye1' }] },
+        n2b: { npc: { hanzi: '我没看见你去洗手！你的眼睛在哪儿？', english: "I didn't see you wash them! Where were your eyes?" }, goal: 'Say sorry, you will go and wash them.', tip: '对不起 + 我去洗.',
+          replies: [{ say: ['对不起，我去洗手', '好吧，我去洗手', '我去洗手'], en: "Sorry, I'll go and wash.", next: 'bye2' }] },
+        bye1: { npc: { hanzi: '好！现在可以吃饭了。', english: 'Good! Now we can eat.' }, end: true },
+        bye2: { npc: { hanzi: '快去！', english: 'Quick, go!' }, end: true },
+      },
+    },
+    {
+      id: 'onthebed', title: 'Where is my cat?',
+      slots: { col: [{ hanzi: '黑色', en: 'black' }, { hanzi: '白色', en: 'white' }] },
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '我的{col}书包不见了！你看见了吗？', english: "My {col.en} school bag is gone! Have you seen it?" }, goal: 'Say that it is on top of the bed — or underneath it.', tip: '上面 = on top; 下面 = underneath; 床 = bed: 在床上面 / 在床下面.',
+          replies: [
+            { say: ['在床上面', '书包在床上面', '在床上'], en: "It's on the bed.", label: 'On the bed', next: 'n2a' },
+            { say: ['在床下面', '书包在床下面'], en: "It's under the bed.", label: 'Under the bed', next: 'n2b' },
+          ] },
+        n2a: { npc: { hanzi: '真的！里面有我的书。谢谢你！', english: "It is! My books are inside. Thank you!" }, goal: 'Say that it is nothing.', tip: '不客气.',
+          replies: [{ say: ['不客气', '没关系'], en: "You're welcome.", next: 'bye' }] },
+        n2b: { npc: { hanzi: '哦，我看到了！猫在里面睡觉！', english: "Oh, I see it! The cat is asleep inside!" }, goal: 'Say that the cat is so pretty.', tip: '漂亮 = pretty.',
+          replies: [{ say: ['猫很漂亮', '小猫很漂亮', '猫真漂亮'], en: 'The cat is so pretty.', next: 'bye' }] },
+        bye: { npc: { hanzi: '我们一会儿再找别的东西吧。', english: "Let's look for the rest in a while." }, end: true },
+      },
+    },
   ]);
 
   // ───────────────────────────────────────── Dad ─────────────────────────────────────────
@@ -183,6 +218,25 @@
         n2b: { npc: { hanzi: '很冷？那你多穿衣服！', english: 'Cold? Then put on more clothes!' }, goal: 'Say thank you — you will wear more clothes.', tip: '多 + verb = "do more of it": 多穿衣服.',
           replies: [{ say: ['谢谢，我多穿衣服', '好，我多穿衣服'], en: "Thanks, I'll wear more clothes.", next: 'bye' }] },
         bye: { npc: { hanzi: '电视上说，明天天气很好！', english: 'The TV says the weather will be nice tomorrow!' }, end: true },
+      },
+    },
+    // ── HSK 2 ──
+    {
+      id: 'grandpa', title: 'Grandpa is coming',
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '下周爷爷要从北京过来！', english: 'Next week Grandpa is coming from Beijing!' }, goal: 'Say that you are happy — and ask how he is coming.', tip: '怎么来？= "how is he coming?"; 爷爷 = paternal grandfather.',
+          replies: [{ say: ['太好了！爷爷怎么来', '太好了，他怎么来', '爷爷怎么来'], en: 'Great! How is he coming?', next: 'n2' }] },
+        n2: { npc: { hanzi: '坐飞机。一个小时就到了。', english: 'By plane. It takes just an hour.' }, goal: 'Say that you will go to the airport with Dad.', tip: '跟 + person + 一起: 我跟你一起去机场.',
+          replies: [
+            { say: ['我跟你一起去机场', '我跟你去机场', '我跟你一起去'], en: "I'll go to the airport with you.", label: 'Go with Dad', next: 'n3a' },
+            { say: ['我在家等爷爷', '我在家等'], en: "I'll wait for Grandpa at home.", label: 'Wait at home', next: 'n3b' },
+          ] },
+        n3a: { npc: { hanzi: '好！我们打车去。', english: "Good! We'll go by taxi." }, goal: 'Say OK.', tip: '好的.',
+          replies: [{ say: ['好的', '好', '好，谢谢爸爸'], en: 'OK.', next: 'bye' }] },
+        n3b: { npc: { hanzi: '好。你想想，爷爷喜欢吃什么？', english: 'OK. Think — what does Grandpa like to eat?' }, goal: 'Say that he likes noodles.', tip: '喜欢吃 + food.',
+          replies: [{ say: ['爷爷喜欢吃面条', '他喜欢吃面条', '面条'], en: 'He likes noodles.', next: 'bye' }] },
+        bye: { npc: { hanzi: '好，爷爷来了，我们一起吃饭。', english: "Good — when he comes, we'll all eat together." }, end: true },
       },
     },
   ]);
@@ -267,6 +321,25 @@
         bye: { npc: { hanzi: '谢谢！昨天他们都去学校了，今天都在家。', english: 'Thank you! Yesterday they were all at school; today they are all at home.' }, end: true },
       },
     },
+    // ── HSK 2 ──
+    {
+      id: 'grandma', title: 'Grandma’s phone',
+      slots: { col: [{ hanzi: '红色', en: 'red' }, { hanzi: '白色', en: 'white' }, { hanzi: '绿色', en: 'green' }] },
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '奶奶的手机坏了，她不能打电话。', english: "Grandma's phone is broken, so she can't make calls." }, goal: 'Ask Mum whether you can help.', tip: '帮忙 = help: 我可以帮忙吗？',
+          replies: [{ say: ['我可以帮忙吗', '我能帮忙吗', '我可以帮你吗'], en: 'Can I help?', next: 'n2' }] },
+          n2: { npc: { hanzi: '好！我们给她买一个新的。你说什么颜色好？', english: 'Good! Let us buy her a new one. What colour is best?' }, goal: 'Suggest a {col.en} one.', tip: '颜色 = colour: 买{col}的.',
+          replies: [{ say: ['买{col}的', '{col}的好', '{col}'], en: 'A {col.en} one.', next: 'n3' }] },
+        n3: { npc: { hanzi: '好。奶奶会很高兴。你要跟我去商店吗？', english: 'Good. Grandma will be very happy. Do you want to come to the shop with me?' }, goal: 'Say yes, you will go with her — or that you will stay and wash the dishes.', tip: '洗 = wash: 洗碗.',
+          replies: [
+            { say: ['好，我跟你去', '我跟你去'], en: "Yes, I'll go with you.", label: 'Go', next: 'bye1' },
+            { say: ['我在家洗碗', '我洗碗'], en: "I'll stay and wash the dishes.", label: 'Wash up', next: 'bye2' },
+          ] },
+        bye1: { npc: { hanzi: '走吧，我们快去快回。', english: "Let's go — there and back quickly." }, end: true },
+        bye2: { npc: { hanzi: '你真好！谢谢你。', english: "You're so kind! Thank you." }, end: true },
+      },
+    },
   ]);
 
   // ───────────────────────────────────────── Older sister ─────────────────────────────────────────
@@ -321,6 +394,25 @@
           ] },
         bye1: { npc: { hanzi: '对，我很忙。下课了我想睡觉！', english: "Yes, I'm busy. After class I just want to sleep!" }, end: true },
         bye2: { npc: { hanzi: '好，我现在休息。我们看电视吧！', english: "OK, I'll rest now. Let's watch TV!" }, end: true },
+      },
+    },
+    // ── HSK 2 ──
+    {
+      id: 'abroad', title: 'Studying abroad',
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '我想出国学习。', english: 'I want to study abroad.' }, goal: 'Ask which country she wants to go to.', tip: '国家 = country; 哪个国家？',
+          replies: [{ say: ['你想去哪个国家', '哪个国家', '你想去哪儿'], en: 'Which country do you want to go to?', next: 'n2' }] },
+        n2: { npc: { hanzi: '可能去中国。机票要一万多块！', english: "Maybe China. The plane ticket is over ten thousand yuan!" }, goal: 'Say that it is so expensive — or that you hope she can go.', tip: '这么 + adjective = "so …"; 希望 = hope.',
+          replies: [
+            { say: ['这么贵', '这么贵啊'], en: "So expensive!", label: 'Expensive', next: 'n3a' },
+            { say: ['希望你能去', '我希望你能去'], en: 'I hope you can go.', label: 'I hope so', next: 'n3b' },
+          ] },
+        n3a: { npc: { hanzi: '是啊，但是我想去。我会好好学习。', english: "Yes, but I want to go. I'll study hard." }, goal: 'Say that you hope she can go.', tip: '希望你能去.',
+          replies: [{ say: ['希望你能去', '我希望你能去'], en: 'I hope you can go.', next: 'bye' }] },
+        n3b: { npc: { hanzi: '谢谢！我比去年学得好了。', english: "Thanks! I'm studying better than last year." }, goal: 'Say that she is very good.', tip: '你真好 / 你很好.',
+          replies: [{ say: ['你真好', '你很好', '你真不错'], en: "You're great.", next: 'bye' }] },
+        bye: { npc: { hanzi: '谢谢你，我会告诉你的。', english: "Thanks — I'll tell you about it." }, end: true },
       },
     },
   ]);
@@ -382,6 +474,25 @@
           replies: [{ say: ['好，那我也看电视', '那我也看电视'], en: "OK, then I'll watch TV too.", next: 'bye2' }] },
         bye1: { npc: { hanzi: '我不知道！我们看吧！', english: "I don't know! Let's watch!" }, end: true },
         bye2: { npc: { hanzi: '好！电视很好看！', english: 'Good! The TV is really good!' }, end: true },
+      },
+    },
+    // ── HSK 2 ──
+    {
+      id: 'funnything', title: 'A funny thing at school',
+      start: 'n1',
+      nodes: {
+        n1: { npc: { hanzi: '今天学校有一件有意思的事情！', english: 'Something funny happened at school today!' }, goal: 'Ask what happened.', tip: '事情 = matter / thing; 什么事情？',
+          replies: [{ say: ['什么事情', '什么事', '什么事情啊'], en: 'What happened?', next: 'n2' }] },
+        n2: { npc: { hanzi: '有一个男孩儿在教室里睡着了，女孩儿们都笑了！', english: 'A boy fell asleep in the classroom and the girls all laughed!' }, goal: 'Say that it is funny — or ask whether the boy laughed too.', tip: '真有意思 / 他也笑了吗？',
+          replies: [
+            { say: ['真有意思', '太有意思了'], en: 'How funny!', label: 'Funny', next: 'n3a' },
+            { say: ['他也笑了吗', '那个男孩儿笑了吗', '男孩儿也笑了吗'], en: 'Did the boy laugh too?', label: 'Did he laugh?', next: 'n3b' },
+          ] },
+        n3a: { npc: { hanzi: '是啊！我笑了一天。', english: 'Yes! I laughed all day.' }, goal: 'Say goodbye — see you later.', tip: '一会儿见.',
+          replies: [{ say: ['一会儿见', '好，一会儿见', '再见'], en: 'See you in a bit.', next: 'bye' }] },
+        n3b: { npc: { hanzi: '他笑了！他说：我太累了。', english: 'He did! He said: I was so tired.' }, goal: 'Say that you hope he sleeps well tonight.', tip: '希望 + clause: 希望他今天晚上睡好.',
+          replies: [{ say: ['希望他今天晚上睡好', '希望他睡好'], en: 'I hope he sleeps well tonight.', next: 'bye' }] },
+        bye: { npc: { hanzi: '哈哈，再见！', english: 'Haha, bye!' }, end: true },
       },
     },
   ]);

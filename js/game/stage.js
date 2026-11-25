@@ -114,6 +114,7 @@
     MSC.board.setActive(S.active);
     MSC.board.setNear(!!ST.adjacent());
     fitLabels();
+    fitSigns();
   };
 
   /** Name tags are wider than their cell. Slide any tag that would stick out of the board back inside, and nudge
@@ -139,7 +140,27 @@
       placed.push({ left: r.left, right: r.right, top: r.top, bottom: r.bottom });
     });
   }
-  window.addEventListener('resize', fitLabels);
+  /** Shop-front signs on a narrow board would sit on top of each other: stagger neighbours onto a second line. */
+  function fitSigns() {
+    const board = document.getElementById('board');
+    if (!board) return;
+    const signs = [...board.querySelectorAll('.scenery-sign')];
+    signs.forEach((s) => { s.style.transform = ''; });
+    signs.sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+    const placed = [];
+    signs.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      let dy = 0;
+      for (let tries = 0; tries < 2; tries++) {
+        const hit = placed.find((p) => r.left < p.right + 2 && r.right > p.left - 2 && r.top + dy < p.bottom && r.bottom + dy > p.top);
+        if (!hit) break;
+        dy = hit.bottom - r.top + 1;
+      }
+      if (dy) s.style.transform = `translateY(${Math.round(dy)}px)`;
+      placed.push({ left: r.left, right: r.right, top: r.top + dy, bottom: r.bottom + dy });
+    });
+  }
+  window.addEventListener('resize', () => { fitLabels(); fitSigns(); });
 
   // ───────────── walking ─────────────
   ST.walkable = (x, y) => {

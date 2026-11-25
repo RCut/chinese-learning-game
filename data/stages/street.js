@@ -24,13 +24,10 @@
       // shop-front signs
       { x: 0, y: 0, text: '学校', className: 'scenery-sign' },
       { x: 1.9, y: 0, text: '医院', className: 'scenery-sign' },
-      { x: 3.1, y: 0, text: '咖啡店', className: 'scenery-sign' },
       { x: 6, y: 0, text: '书店', className: 'scenery-sign' },
-      { x: 9, y: 0, text: '字画店', className: 'scenery-sign' },
       { x: 11, y: 0, text: '商店', className: 'scenery-sign' },
       { x: 13, y: 0, text: '饭店', className: 'scenery-sign' },
       { x: 14.9, y: 0, text: '电影院', className: 'scenery-sign' },
-      { x: 16.1, y: 0, text: '市场', className: 'scenery-sign' },
       // bus shelter roof and the zebra crossing
       { x: 6, y: 5, className: 'shelter' }, { x: 7, y: 5, className: 'shelter' }, { x: 8, y: 5, className: 'shelter' },
       { x: 12, y: 7, className: 'zebra' }, { x: 12, y: 8, className: 'zebra' }, { x: 12, y: 9, className: 'zebra' },

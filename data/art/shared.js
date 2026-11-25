@@ -104,5 +104,5 @@
   A.draw('zebra', (g) => { for (let y = 1; y < 16; y += 4) g.rect(1, y, 14, 2, '#f1efe8'); }, { outline: false, shadow: false });
   A.draw('shelter', (g) => { g.rect(0, 0, 16, 5, 'rgba(120,190,230,.55)'); g.hline(0, 0, 16, '#2f6f9a').hline(0, 5, 16, '#2f6f9a'); g.vline(0, 0, 16, '#2f6f9a'); g.vline(15, 0, 16, '#2f6f9a'); }, { outline: false, shadow: false });
   A.draw('compass', (g, c) => { g.disc(7.5, 7.5, 6.5, '#e0b24a'); g.disc(7.5, 7.5, 5, '#fff7e0'); g.line(7, 3, 8, 7, '#d9482b').line(8, 3, 8, 7, '#d9482b'); g.line(7, 8, 7, 12, '#4a5a7a').line(8, 8, 8, 12, '#4a5a7a'); g.px(7, 7, '#3b2a1d').px(8, 8, '#3b2a1d'); g.px(7, 1, '#8a6a1d').px(8, 1, '#8a6a1d'); }, { shadow: false });
-  A.draw('bubble', (g) => { g.rect(1, 1, 14, 9, '#ffffff'); g.rect(0, 2, 16, 7, '#ffffff'); g.px(6, 11, '#ffffff').px(7, 11, '#ffffff').px(7, 12, '#ffffff'); g.px(4, 5, '#3b2a1d').px(8, 5, '#3b2a1d').px(12, 5, '#3b2a1d'); }, { w: 16, h: 14, shadow: false });
+  A.draw('bubble', (g) => { g.rect(1, 1, 14, 9, '#ffffff'); g.rect(0, 2, 16, 7, '#ffffff'); g.px(6, 11, '#ffffff').px(7, 11, '#ffffff').px(7, 12, '#ffffff'); g.px(4, 5, '#3b2a1d').px(8, 5, '#3b2a1d').px(12, 5, '#3b2a1d'); }, { w: 16, h: 16, shadow: false });
 })(window.MSC = window.MSC || {});

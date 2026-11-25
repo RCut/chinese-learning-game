@@ -48,7 +48,7 @@ const labelCheck = (p) => p.evaluate(() => {
     await p.waitForFunction((s) => MSC.state.stage === s, to, { timeout: 8000 });
     const tSwitch = Date.now() - t0;
     const fadeOn = await p.evaluate(() => document.getElementById('stage-fade').classList.contains('on'));
-    await p.waitForFunction(() => !document.getElementById('stage-fade').classList.contains('on'), null, { timeout: 3000 });
+    await p.waitForFunction(() => !MSC.stage.busy(), null, { timeout: 3000 });
     ok(`street → ${to}: screen is black at the moment of the switch`, fadeOn || tSwitch > 0);
     const nowPills = await pills(p);
     const st = world[to];
@@ -60,7 +60,7 @@ const labelCheck = (p) => p.evaluate(() => {
     ok(`${to}: has a door back outside`, !!out);
     await p.click(`#pills .pill[data-arg="${out.id}"]`);
     await p.waitForFunction(() => MSC.state.stage === 'street', null, { timeout: 8000 });
-    await p.waitForFunction(() => !document.getElementById('stage-fade').classList.contains('on'), null, { timeout: 3000 });
+    await p.waitForFunction(() => !MSC.stage.busy(), null, { timeout: 3000 });
     ok(`${to} → street: back on the street, street sound`, (await p.evaluate(() => window.__sfx)).slice(-1)[0] === 'street');
   }
 
@@ -73,7 +73,7 @@ const labelCheck = (p) => p.evaluate(() => {
     const t0 = Date.now();
     await p.waitForFunction(() => MSC.state.stage === 'cafe', null, { timeout: 3000 });
     const half = Date.now() - t0;
-    await p.waitForFunction(() => !document.getElementById('stage-fade').classList.contains('on'), null, { timeout: 3000 });
+    await p.waitForFunction(() => !MSC.stage.busy(), null, { timeout: 3000 });
     const full = Date.now() - t0;
     ok('stage switches about 0.25 s into the fade and the fade-back ends about 0.5 s in', half < 600 && full < 900, `half ${half}ms full ${full}ms`);
     await p.evaluate(() => MSC.stage.show('street'));

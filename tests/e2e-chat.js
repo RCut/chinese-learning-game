@@ -110,6 +110,30 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
   ok('words from the chat reach the notebook', await p.evaluate(() => MSC.state.vocab.length) > 50);
   ok('notebook counts HSK progress', /HSK 1–2 words discovered/.test(await p.evaluate(() => (MSC.actions.tab('notebook'), document.getElementById('hsk-progress').innerText))));
 
+  console.log('— the market shopkeeper has his own conversations');
+  await p.evaluate(() => MSC.actions.tab('stage'));
+  await H.goTo(p, 'grocer');
+  await p.waitForSelector('[data-click="chat-send"]');
+  ok('walking to Shopkeeper Zhang starts HIS chat (not Xiao Li\'s)', await p.evaluate(() => MSC.state.chat.npcId === 'grocer' && MSC.state.chat.set === MSC.data.chats.grocer && MSC.state.stage === 'market'));
+  ok('the panel shows the shopkeeper', /Shopkeeper Zhang/.test(await p.innerText('#panel')));
+  const grocerDlgs = new Set();
+  for (let round = 0; round < 4; round++) {
+    for (let guard = 0; guard < 14 && !(await state(p)).finished; guard++) {
+      c = await cur(p);
+      const ri = Math.floor(Math.random() * c.replies.length), vi = Math.floor(Math.random() * c.replies[ri].variants.length);
+      await tap(p, '[data-click="chat-clear"]').catch(() => {});
+      await build(p, c.replies[ri].variants[vi]);
+      await tap(p, '[data-click="chat-send"]'); await p.waitForTimeout(120);
+    }
+    st = await state(p); grocerDlgs.add(st.dlg);
+    ok(`shopkeeper conversation "${st.dlg}" reached its ending`, st.finished && !!(await p.$('text=Conversation finished')));
+    await tap(p, '[data-click="chat-new"]'); await p.waitForTimeout(150);
+    ok('"Talk again" keeps talking to the shopkeeper', await p.evaluate(() => MSC.state.chat.npcId === 'grocer'));
+  }
+  ok(`played ${grocerDlgs.size} different shopkeeper conversations`, grocerDlgs.size >= 3);
+  ok('the stall quiz still opens: Fruit Stall', await (async () => { await H.goTo(p, 'cart'); return p.evaluate(() => MSC.state.active === 'cart'); })());
+  ok('walking to Xiao Li still starts Xiao Li\'s chat', await (async () => { await H.goTo(p, 'friend'); await p.waitForSelector('[data-click="chat-send"]'); return p.evaluate(() => MSC.state.chat.npcId === 'friend'); })());
+
   console.log('— phone');
   const m = await H.open(b, { context: { ...devices['iPhone 13'] } });
   await H.goTo(m, 'friend'); await m.waitForSelector('[data-click="chat-send"]');

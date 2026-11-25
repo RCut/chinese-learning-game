@@ -87,7 +87,7 @@ sound — street ambience when you go out, a soft jingle when you go into a shop
 
 ## Master Wang — learning to write (王师傅)
 
-Wang's stall is on the street from the first minute (no quest needed).
+Wang's shop is on the street from the first minute (no quest needed): walk through the 字画店 door.
 
 - **First visit:** a short tutorial with 一 and 十, then straight into choosing a lesson. Both count as mastered.
 - **Lesson:** Wang offers 8 random unlearned characters (from the lowest tier that still has some); the player picks 4
@@ -139,7 +139,7 @@ Master Wang's** (`data/writing.js` has 235 characters, tiered by stroke count). 
 with `hsk`, make sure each of its characters has an entry in `data/characters.js` and in the Wang pool, and rebuild the
 stroke data (see "Adding characters").
 
-## Xiao Li (小李) — conversation practice
+## Xiao Li (小李) and the market shopkeeper — conversation practice
 
 Walk up to Xiao Li (right side of the street, or the **Xiao Li** button) and a **new random conversation** starts —
 never the same one twice in a row. There are **24 branching conversations** (some start with Xiao Li, some with you),
@@ -152,6 +152,7 @@ phone calls, home, daily routine, polite address, asking questions, handwriting�
   conversation branches. Random slots (a hobby, a name, the weather) make the same conversation differ between visits.
 - **Hints on demand:** 💡 Hint → the pattern to use → the words you need, word by word → example answers. A wrong answer opens
   the next level by itself, never the answer. Tone slips are called out ("right words, tones are a little different").
+- **The market shopkeeper** (Zhang 张老板, in the market) works exactly the same way, with 8 conversations about buying things (`data/chats/market.js`); any new talkable person registers as `MSC.data.chats.<id>` and needs a person with that id on a stage.
 - **Adding a conversation:** copy one in `data/chat.js`. Replies are *patterns*: `(是，)我是学生` (optional part),
   `我[想|要]喝茶` (alternatives), `{drink}` (random slot). The validator checks that every word exists in the dictionary,
   every path ends, every conversation really branches, no answer is accepted by two different branches, and goals are English-only.

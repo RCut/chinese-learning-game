@@ -24,7 +24,7 @@ async function open(browser, opts = {}) {
 /** Walk to a person anywhere (through the street's doors if needed) and wait until their panel is open. */
 async function goTo(p, id) {
   await p.evaluate((x) => MSC.stage.go(x), id);
-  await p.waitForFunction((x) => MSC.state.active === x && !document.getElementById('stage-fade').classList.contains('on'), id, { timeout: 25000 });
+  await p.waitForFunction((x) => MSC.state.active === x && !MSC.stage.busy(), id, { timeout: 25000 });
   await p.waitForTimeout(150);
 }
 

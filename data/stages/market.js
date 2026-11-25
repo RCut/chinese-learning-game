@@ -36,7 +36,7 @@
         ['土豆 一斤 两块', 'Potatoes — 2 yuan a jin'],
         ['西红柿 一斤 四块', 'Tomatoes — 4 yuan a jin'],
         ['萝卜 一斤 两块', 'Radish — 2 yuan a jin'],
-      ], '黄瓜和青菜也很新鲜！ — Cucumbers and green vegetables are fresh too!'),
+      ], '黄瓜一斤三块，青菜也很新鲜！ — Cucumbers are 3 yuan a jin, and the green vegetables are fresh too!'),
       stall('mk-meat', 6, 1, '🥩', '肉摊', [
         ['猪肉 一斤 十八块', 'Pork — 18 yuan a jin'],
         ['牛肉 一斤 三十块', 'Beef — 30 yuan a jin'],
@@ -67,6 +67,7 @@
       stall('mk-drink', 14, 7, '🧃', '饮料摊', [
         ['果汁 一瓶 六块', 'Fruit juice — 6 yuan a bottle'],
         ['酸奶 一瓶 四块', 'Yogurt — 4 yuan a bottle'],
+        ['牛奶 一瓶 三块', 'Milk — 3 yuan a bottle'],
         ['水 一瓶 两块', 'Water — 2 yuan a bottle'],
       ]),
 

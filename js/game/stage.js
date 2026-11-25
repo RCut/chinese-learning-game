@@ -64,6 +64,8 @@
     board.style.setProperty('--ar', `${st.cols} / ${st.rows}`);
     board.style.setProperty('--ar-m', `${st.cols} / ${st.rows + 1}`);
     board.dataset.stage = st.id;
+    const title = document.getElementById('stage-title');
+    if (title) title.textContent = `📍 ${st.name}`;
     const tiles = [];
     for (let y = 0; y < st.rows; y++) for (let x = 0; x < st.cols; x++) tiles.push(`<div class="tile ${tileClass(st.map[y][x])}"></div>`);
     const scenery = (st.scenery || []).map((s) =>

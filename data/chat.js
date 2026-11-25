@@ -651,7 +651,7 @@
           n4: { npc: { hanzi: '天冷了，你要多穿衣服！', english: "It's getting cold — wear more clothes!" }, goal: 'Say OK — or say that you are not cold, you like the cold.', tip: '多穿 = "wear more". 不冷 = not cold.',
             replies: [
               { say: ['好，我多穿衣服', '好，谢谢'], en: "OK, I'll wear more.", label: 'OK', next: 'bye1' },
-              { say: ['我不冷', '我喜欢冷天'], en: "I'm not cold — I like cold days.", label: 'Not cold', next: 'bye2' },
+              { say: ['我不冷', '我喜欢冷天', '我不冷，我很热'], en: "I'm not cold — I like cold days.", label: 'Not cold', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '对！冷的时候，喝一杯热茶。再见！', english: 'Right! When it is cold, drink a cup of hot tea. Goodbye!' }, end: true },
           bye2: { npc: { hanzi: '是吗？我喜欢热天！再见！', english: 'Really? I like hot days! Goodbye!' }, end: true },
@@ -892,7 +892,7 @@
             replies: [{ say: ['喂，(我)听见了，你有什么事', '(我)听见了，有什么事', '喂，你有什么事'], en: 'Yes, I can hear you. What is it?', next: 'n2' }] },
           n2: { npc: { hanzi: '我想问你一个问题。你现在能说话吗？', english: 'I want to ask you something. Can you talk now?' }, goal: 'Say yes, go ahead — or sorry, you are in class.', tip: '能 = can. 你说吧 = "go ahead". 上课 = be in class.',
             replies: [
-              { say: ['能，你说吧', '可以，你问吧', '我能说话'], en: 'Yes, go ahead.', label: 'Go ahead', next: 'n3' },
+              { say: ['能，你说吧', '能，你问吧', '我能说话'], en: 'Yes, go ahead.', label: 'Go ahead', next: 'n3' },
               { say: ['对不起，我在上课', '对不起，我现在没有时间'], en: "Sorry, I'm in class.", label: 'In class', next: 'n2b' },
             ] },
           n2b: { npc: { hanzi: '好的，你几点下课？', english: 'OK, what time does your class end?' }, goal: 'Say that class ends at twelve, and that you will call him back then.', tip: '下课 = class ends. 再 = again. 打电话 = make a phone call.',
@@ -959,7 +959,7 @@
           n3: { npc: { hanzi: '五分钟。书店里有很多书。你想买什么书？', english: 'Five minutes. The bookshop has lots of books inside. What book do you want?' }, goal: 'Say that you want to buy a Chinese book — or just have a look.', tip: '想买 + 一本 + book. 看 = look.',
             replies: [
               { say: ['我想买一本中文书', '(我想买)一本中文书'], en: 'I want to buy a Chinese book.', label: 'Chinese book', next: 'bye1' },
-              { say: ['我不买，我想在里边看书', '我只想看'], en: "I'm not buying, I just want to look.", label: 'Just looking', next: 'bye2' },
+              { say: ['我不买，我想在里边看书', '我不买'], en: "I'm not buying, I just want to look.", label: 'Just looking', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '那个店的中文书很多，也很便宜！', english: 'That shop has lots of Chinese books, and they are cheap!' }, end: true },
           bye2: { npc: { hanzi: '好的！书店很大，你可以在里边看书。', english: 'OK! The shop is big — you can read inside.' }, end: true },
@@ -1026,7 +1026,7 @@
             replies: [{ say: ['没关系，请坐', '没关系'], en: "Never mind — please sit down.", next: 'n2' }] },
           n2: { npc: { hanzi: '桌子上有很多杯子。这些都是你的吗？', english: 'There are lots of cups on the table. Are these all yours?' }, goal: 'Say that they are all yours — or that some are yours and some are your little sister’s.', tip: '都 = all. 有些 … 有些 … = some … others …',
             replies: [
-              { say: ['(对，)都是我的'], en: "Yes, they're all mine.", label: 'All mine', next: 'n3' },
+              { say: ['(对，)都是我的', '桌子上的杯子都是我的'], en: "Yes, they're all mine.", label: 'All mine', next: 'n3' },
               { say: ['有些是我的，有些是我妹妹的'], en: "Some are mine, some are my sister's.", label: 'Some', next: 'n3' },
             ] },
           n3: { npc: { hanzi: '今天很热。我能喝一点儿水吗？', english: "It's hot today. Could I have a little water?" }, goal: 'Say of course, and give Xiao Li a cup — or say sorry, there is no water left.', tip: '能 / 可以 = can. 给你 = here you are. 没有水了 = the water is gone.',

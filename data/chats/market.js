@@ -299,7 +299,7 @@
               { say: ['不做，我去饭店吃', '我去饭店吃(晚饭)'], en: "No, I'm eating at a restaurant.", label: 'Restaurant', next: 'n2b' },
             ] },
           n2a: { npc: { hanzi: '我们有很多菜，也有米饭。你要买什么？', english: 'We have lots of vegetables, and rice too. What do you want to buy?' }, goal: 'Say that you want some vegetables and rice.', tip: '一些 = some. 和 = and.',
-            replies: [{ say: ['我要一些菜和米饭', '我要买一些菜', '一些菜和米饭'], en: 'Some vegetables and rice, please.', next: 'n3' }] },
+            replies: [{ say: ['我要一些菜和米饭', '我要买些菜', '一些菜和米饭'], en: 'Some vegetables and rice, please.', next: 'n3' }] },
           n2b: { npc: { hanzi: '饭店的菜很贵！你买一些水果吧？', english: 'Restaurant food is expensive! Why not buy some fruit?' }, goal: 'Say OK, you want a few apples — or no thanks.', tip: '几个 = a few. 不要 = no.',
             replies: [
               { say: ['好，我要几个苹果', '我要几个苹果'], en: "OK, I'll take a few apples.", label: 'Apples', next: 'n3' },
@@ -308,7 +308,7 @@
           n3: { npc: { hanzi: '好的，都是二十元。', english: 'OK, that is twenty yuan in all.' }, goal: 'Hand over a hundred yuan — or say it is too expensive.', tip: '元 is the written word for 块. 太…了 = too …',
             replies: [
               { say: ['给你一百块', '给你一百块钱'], en: 'Here is a hundred yuan.', label: 'Pay', next: 'n4a' },
-              { say: ['太贵了', '有点儿贵'], en: "That's too expensive.", label: 'Too expensive', next: 'n4b' },
+              { say: ['太贵了', '有点儿贵', '便宜一点儿吧'], en: "That's too expensive.", label: 'Too expensive', next: 'n4b' },
             ] },
           n4a: { npc: { hanzi: '一百块，找你八十块。给你！', english: "A hundred — here's eighty change. Here you are!" }, goal: 'Say thank you and goodbye.', tip: 'Thank you, then 再见.',
             replies: [{ say: ['谢谢，再见', '谢谢你，再见'], en: 'Thanks, goodbye.', next: 'bye1' }] },

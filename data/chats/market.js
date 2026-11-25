@@ -229,6 +229,173 @@
           bye2: { npc: { hanzi: '谢谢！明天再来！', english: 'Thanks! Come again tomorrow!' }, end: true },
         },
       },
+      // ════════════════ Level 1 (HSK 1 words only) ════════════════
+
+      // ───────────────────────── 9. Buying apples (YOU start) ─────────────────────────
+      {
+        id: 'apples', title: 'These or those?',
+        start: 'n1',
+        nodes: {
+          n1: { goal: 'Ask the shopkeeper whether he has apples.', tip: '有 + thing + 吗: 你有苹果吗？ Or ask whether he sells them: 卖苹果吗？',
+            replies: [{ say: ['(老板，)你有苹果吗', '你们有苹果吗', '你卖苹果吗'], en: 'Do you have apples?', next: 'n2' }] },
+          n2: { npc: { hanzi: '有！这些苹果很好吃，那些是新的，有点儿贵。你要哪些？', english: 'Yes! These apples are delicious; those are new ones, a bit expensive. Which do you want?' }, goal: 'Choose: these ones or those ones.', tip: '这些 = these; 那些 = those.',
+            replies: [
+              { say: ['我要这些', '这些(苹果)'], en: 'These ones.', label: 'These', next: 'n3a' },
+              { say: ['我要那些', '那些(苹果)'], en: 'Those ones.', label: 'Those', next: 'n3b' },
+            ] },
+          n3a: { npc: { hanzi: '好！这些很便宜。你要几个？', english: 'OK! These are cheap. How many do you want?' }, goal: 'Say how many you want: five, six or eight.', tip: '个 counts apples: 我要五个.',
+            replies: [{ say: ['我要[五|六|八]个', '[五|六|八]个'], en: 'I want that many.', next: 'n4' }] },
+          n3b: { npc: { hanzi: '那些很好，可是有点儿贵。你要几个？', english: 'Those are very good, but a bit expensive. How many do you want?' }, goal: 'Say that you only want two.', tip: '只 = only. Before a measure word, "two" is 两: 两个.',
+            replies: [{ say: ['我只要两个', '我要两个'], en: 'Just two.', next: 'n4' }] },
+          n4: { npc: { hanzi: '好的。你还要什么？我们还有鸡蛋和牛奶。', english: 'OK. What else would you like? We also have eggs and milk.' }, goal: 'Say that you also want some milk — or that you want nothing else.', tip: '还要 = also want. 一些 = some. 不要了 = no more.',
+            replies: [
+              { say: ['我还要一些牛奶', '还要(一些)牛奶'], en: 'I also want some milk.', label: 'Milk', next: 'bye1' },
+              { say: ['我还要几个鸡蛋', '还要(几个)鸡蛋'], en: 'I also want some eggs.', label: 'Eggs', next: 'bye1' },
+              { say: ['不要了，谢谢', '不要了'], en: 'Nothing else, thanks.', label: 'Nothing', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '好的，都给你！谢谢，再见！', english: 'OK, here it all is! Thanks, goodbye!' }, end: true },
+          bye2: { npc: { hanzi: '好的，谢谢！明天再来！', english: 'OK, thanks! Come again tomorrow!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── 10. Breakfast things (Zhang starts) ─────────────────────────
+      {
+        id: 'breakfast', title: 'Something for breakfast',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '早上好！你买早饭吗？我们有面包、鸡蛋和牛奶。', english: 'Good morning! Buying breakfast? We have bread, eggs and milk.' }, goal: 'Say what you want: bread, or two eggs.', tip: '要 + number + 个 + food. "Two" is 两 before a measure word.',
+            replies: [
+              { say: ['我要(一个)面包', '我想买(一个)面包'], en: 'I want some bread.', label: 'Bread', next: 'n2a' },
+              { say: ['我要两个鸡蛋', '我想买两个鸡蛋'], en: 'I want two eggs.', label: 'Eggs', next: 'n2b' },
+            ] },
+          n2a: { npc: { hanzi: '好的。你也要牛奶吗？', english: 'OK. Do you want milk too?' }, goal: 'Say that you want milk too — or that you do not drink milk.', tip: '也要 = also want. 不喝 = do not drink.',
+            replies: [
+              { say: ['我也要牛奶', '要，我也要牛奶'], en: 'Yes, milk too.', label: 'Milk too', next: 'n3' },
+              { say: ['我不喝牛奶', '不要，我不喝牛奶'], en: "I don't drink milk.", label: 'No milk', next: 'n3' },
+            ] },
+          n2b: { npc: { hanzi: '两个鸡蛋。你会做饭吗？', english: 'Two eggs. Can you cook?' }, goal: 'Say that you can cook — or that you cannot, your mum cooks.', tip: '会 = can (a skill). 做饭 = cook.',
+            replies: [
+              { say: ['我会做饭'], en: 'I can cook.', label: 'I can', next: 'n3' },
+              { say: ['我不会做饭，我妈妈做', '我不会，我妈妈做饭'], en: "I can't — my mum cooks.", label: "Mum cooks", next: 'n3' },
+            ] },
+          n3: { npc: { hanzi: '好。一共五块。', english: 'Good. Five yuan altogether.' }, goal: 'Ask whether you can pay with a hundred yuan — or hand over five yuan.', tip: '一百 = a hundred. 可以吗 = is that OK?',
+            replies: [
+              { say: ['我只有一百块，可以吗', '一百块可以吗'], en: 'I only have a hundred — is that OK?', label: 'A hundred', next: 'bye1' },
+              { say: ['给你五块(钱)', '给你，五块'], en: 'Here are five yuan.', label: 'Five yuan', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '可以，我找你九十五块。给你！', english: "Sure, here's ninety-five yuan change. Here you are!" }, end: true },
+          bye2: { npc: { hanzi: '谢谢！早饭很好吃，明天再来！', english: 'Thanks! Enjoy your breakfast — come again tomorrow!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── 11. Cooking dinner (Zhang starts) ─────────────────────────
+      {
+        id: 'dinner', title: 'What is for dinner?',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你好！今天晚上你做饭吗？', english: 'Hello! Are you cooking this evening?' }, goal: 'Say that you will cook — or that you will eat at a restaurant.', tip: '做饭 = cook. 去饭店吃 = eat at a restaurant.',
+            replies: [
+              { say: ['对，我要做饭', '我想做饭', '我做晚饭'], en: "Yes, I'm cooking.", label: 'Cooking', next: 'n2a' },
+              { say: ['不做，我去饭店吃', '我去饭店吃(晚饭)'], en: "No, I'm eating at a restaurant.", label: 'Restaurant', next: 'n2b' },
+            ] },
+          n2a: { npc: { hanzi: '我们有很多菜，也有米饭。你要买什么？', english: 'We have lots of vegetables, and rice too. What do you want to buy?' }, goal: 'Say that you want some vegetables and rice.', tip: '一些 = some. 和 = and.',
+            replies: [{ say: ['我要一些菜和米饭', '我要买一些菜', '一些菜和米饭'], en: 'Some vegetables and rice, please.', next: 'n3' }] },
+          n2b: { npc: { hanzi: '饭店的菜很贵！你买一些水果吧？', english: 'Restaurant food is expensive! Why not buy some fruit?' }, goal: 'Say OK, you want a few apples — or no thanks.', tip: '几个 = a few. 不要 = no.',
+            replies: [
+              { say: ['好，我要几个苹果', '我要几个苹果'], en: "OK, I'll take a few apples.", label: 'Apples', next: 'n3' },
+              { say: ['不要，谢谢'], en: 'No, thank you.', label: 'No thanks', next: 'bye2' },
+            ] },
+          n3: { npc: { hanzi: '好的，都是二十元。', english: 'OK, that is twenty yuan in all.' }, goal: 'Hand over a hundred yuan — or say it is too expensive.', tip: '元 is the written word for 块. 太…了 = too …',
+            replies: [
+              { say: ['给你一百块', '给你一百块钱'], en: 'Here is a hundred yuan.', label: 'Pay', next: 'n4a' },
+              { say: ['太贵了', '有点儿贵'], en: "That's too expensive.", label: 'Too expensive', next: 'n4b' },
+            ] },
+          n4a: { npc: { hanzi: '一百块，找你八十块。给你！', english: "A hundred — here's eighty change. Here you are!" }, goal: 'Say thank you and goodbye.', tip: 'Thank you, then 再见.',
+            replies: [{ say: ['谢谢，再见', '谢谢你，再见'], en: 'Thanks, goodbye.', next: 'bye1' }] },
+          n4b: { npc: { hanzi: '不贵！那十五元，好吗？', english: "It's not expensive! Fifteen yuan then, OK?" }, goal: 'Say OK and hand it over.', tip: '好 = OK. 给你 = here you are.',
+            replies: [{ say: ['好，给你', '好的，给你'], en: 'OK, here you are.', next: 'bye1' }] },
+          bye1: { npc: { hanzi: '谢谢！晚饭做好吃一点儿！', english: 'Thanks! Make a tasty dinner!' }, end: true },
+          bye2: { npc: { hanzi: '好的，再见！', english: 'OK, goodbye!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── 12. Shopping for someone (YOU start) ─────────────────────────
+      {
+        id: 'forwhom', title: 'Who is it for?',
+        start: 'n1',
+        nodes: {
+          n1: { goal: 'Ask whether he sells noodles.', tip: '卖 = sell: 你卖面条儿吗？',
+            replies: [{ say: ['(老板，)你卖面条儿吗', '你们卖面条儿吗', '有面条儿吗'], en: 'Do you sell noodles?', next: 'n2' }] },
+          n2: { npc: { hanzi: '卖！你给谁买？', english: 'Yes! Who are you buying them for?' }, goal: 'Say that you are buying them for your mum — or for your friends.', tip: '给 + person + 买 = "buy for someone".',
+            replies: [
+              { say: ['给我妈妈买', '我给(我)妈妈买'], en: "For my mum.", label: 'Mum', next: 'n3a' },
+              { say: ['给我的朋友们买', '我给朋友们买', '给朋友买'], en: 'For my friends.', label: 'Friends', next: 'n3b' },
+            ] },
+          n3a: { npc: { hanzi: '你妈妈也爱吃面条儿吗？', english: 'Does your mum love noodles too?' }, goal: 'Say that she loves them.', tip: '她 = she. 爱吃 = love eating.',
+            replies: [{ say: ['她很爱吃', '她非常爱吃(面条儿)', '她很喜欢'], en: 'She loves them.', next: 'n4' }] },
+          n3b: { npc: { hanzi: '你有几个朋友？', english: 'How many friends are there?' }, goal: 'Say that there are four of you — or many.', tip: '四个 = four (people). 很多 = many.',
+            replies: [
+              { say: ['我们有四个人', '四个(人)'], en: 'There are four of us.', label: 'Four', next: 'n4' },
+              { say: ['很多', '我有很多朋友'], en: 'Lots.', label: 'Lots', next: 'n4' },
+            ] },
+          n4: { npc: { hanzi: '好的，这些面条儿给你。十块钱。', english: 'OK, here are the noodles. Ten yuan.' }, goal: 'Hand over the money and say thank you.', tip: '给你 + amount, then 谢谢.',
+            replies: [{ say: ['给你十块(钱)，谢谢', '谢谢，给你十块(钱)'], en: 'Here is ten yuan, thanks.', next: 'bye' }] },
+          bye: { npc: { hanzi: '谢谢你！吃面条儿吧！', english: 'Thank you! Enjoy the noodles!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── 13. Fresh eggs (Zhang starts) ─────────────────────────
+      {
+        id: 'eggs', title: 'New eggs today',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你好！今天的鸡蛋都是新的。你要多少？', english: 'Hello! The eggs are all new today. How many do you want?' }, goal: 'Say that you want ten eggs — or that ten is too few and you want twenty.', tip: '个 counts eggs. 太少了 = too few.',
+            replies: [
+              { say: ['我要十个(鸡蛋)', '十个'], en: 'Ten, please.', label: 'Ten', next: 'n2' },
+              { say: ['十个太少了，我要二十个', '我要二十个(鸡蛋)'], en: 'Ten is too few — twenty, please.', label: 'Twenty', next: 'n2' },
+            ] },
+          n2: { npc: { hanzi: '好的。你还要些什么？这个大面包很好吃，你可以买一半。', english: 'OK. Anything else? This big loaf is delicious — you can buy half.' }, goal: 'Say that you will take half — or nothing else.', tip: '一半 = half. 不要了 = no more.',
+            replies: [
+              { say: ['好，我要一半', '我要一半(面包)'], en: "OK, I'll take half.", label: 'Half', next: 'n3' },
+              { say: ['不要了，谢谢', '不要了'], en: 'Nothing else, thanks.', label: 'Nothing', next: 'n3' },
+            ] },
+          n3: { npc: { hanzi: '好，都是二十元。', english: 'OK, twenty yuan in all.' }, goal: 'Hand over a hundred yuan — or the exact twenty.', tip: '元 = 块 (the written word). 给你 + amount.',
+            replies: [
+              { say: ['给你一百元', '给你一百块(钱)'], en: 'Here is a hundred yuan.', label: 'A hundred', next: 'bye1' },
+              { say: ['给你，二十元', '给你二十元'], en: 'Here is twenty yuan.', label: 'Exact', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '一百元，找你八十。谢谢，再见！', english: 'A hundred — eighty change. Thanks, bye!' }, end: true },
+          bye2: { npc: { hanzi: '谢谢！鸡蛋很新，明天再来！', english: 'Thanks! The eggs are fresh — come again tomorrow!' }, end: true },
+        },
+      },
+
+      // ════════════════ Level 2 starter (HSK 2 words) ════════════════
+
+      // ───────────────────────── 14. A birthday present (YOU start) ─────────────────────────
+      {
+        id: 'birthday', title: 'A birthday present',
+        start: 'n1',
+        nodes: {
+          n1: { goal: 'Tell the shopkeeper that tomorrow is your mum’s birthday and you want to buy some fruit.', tip: '生日 = birthday. 想 + 买 + thing.',
+            replies: [{ say: ['明天是我妈妈的生日，我想买一些水果', '我想给妈妈买一些水果'], en: "Tomorrow is my mum's birthday; I want to buy some fruit.", next: 'n2' }] },
+          n2: { npc: { hanzi: '送水果很好！你妈妈最喜欢吃什么？', english: 'Fruit is a lovely present! What does your mum like best?' }, goal: 'Say that she likes apples best — or watermelon.', tip: '最 = most: 她最喜欢…',
+            replies: [
+              { say: ['她最喜欢吃苹果', '她最喜欢苹果'], en: 'She likes apples best.', label: 'Apples', next: 'n3a' },
+              { say: ['她最喜欢吃西瓜', '她最喜欢西瓜'], en: 'She likes watermelon best.', label: 'Watermelon', next: 'n3b' },
+            ] },
+          n3a: { npc: { hanzi: '这些红色的苹果很甜。你要几个？', english: 'These red apples are very sweet. How many do you want?' }, goal: 'Say that you want six.', tip: '个 counts apples.',
+            replies: [{ say: ['我要六个', '六个'], en: 'Six, please.', next: 'n4' }] },
+          n3b: { npc: { hanzi: '这个西瓜很大，也很甜！', english: 'This watermelon is big, and very sweet!' }, goal: 'Say that you will take it.', tip: '就 = "then (that settles it)": 就要这个.',
+            replies: [{ say: ['我就要这个', '好，我要这个'], en: "I'll take this one.", next: 'n4' }] },
+          n4: { npc: { hanzi: '东西很多！我帮你拿吧？', english: "That's a lot to carry! Shall I help you?" }, goal: 'Say thank you, he is very kind — or that it is fine, you can carry it yourself.', tip: '帮 = help. 自己 = yourself: 我自己拿.',
+            replies: [
+              { say: ['谢谢，你真好'], en: "Thank you, that's very kind.", label: 'Yes please', next: 'bye1' },
+              { say: ['没关系，我自己拿', '我自己拿'], en: "It's fine, I'll carry it myself.", label: 'Myself', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '不客气！你妈妈生日快乐！', english: "You're welcome! Happy birthday to your mum!" }, end: true },
+          bye2: { npc: { hanzi: '好的！你妈妈生日快乐！欢迎再来！', english: 'OK! Happy birthday to your mum! Come again!' }, end: true },
+        },
+      },
     ],
   };
 })(window.MSC = window.MSC || {});

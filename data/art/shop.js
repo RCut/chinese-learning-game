@@ -225,14 +225,13 @@
 
   // ───────── level 1: reading and writing ─────────
   const INK = '#1d1a1f', GRID = '#d9564a';
-  A.draw('sh-hanzi', (g, c) => {                                // a wall chart: four red practice squares with 人 口 大 小
+  A.draw('sh-hanzi', (g, c) => {                                // a wall chart: one big 人 in a red practice square with guide lines
     g.px(7, 0, '#c9a227').px(8, 0, '#c9a227').line(4, 2, 7, 0, '#c9a227').line(11, 2, 8, 0, '#c9a227');
     g.rect(1, 2, 14, 13, '#fbf6e6').frame(1, 2, 14, 13, '#3f6fa6').hline(1, 2, 14, '#6f9bd0');
-    g.frame(2, 3, 6, 6, GRID).frame(8, 3, 6, 6, GRID).frame(2, 8, 6, 6, GRID).frame(8, 8, 6, 6, GRID);
-    g.line(5, 4, 3, 7, INK).line(5, 5, 6, 7, INK);                                           // 人
-    g.frame(9, 4, 4, 4, INK);                                                                // 口
-    g.hline(3, 10, 4, INK).line(5, 9, 3, 12, INK).line(5, 10, 6, 12, INK);                   // 大
-    g.vline(10, 9, 4, INK).px(9, 11, INK).px(12, 10, INK).px(11, 11, INK).px(9, 12, INK);  // 小
+    g.frame(3, 4, 10, 10, GRID);
+    for (let i = 4; i < 13; i += 2) { g.px(i, 8, '#f0b8b0'); g.px(7, i + 0, '#f0b8b0'); }                // dashed guide lines
+    g.line(8, 5, 4, 12, INK).line(7, 5, 3, 12, INK);                                                       // 人: the left-falling stroke
+    g.line(8, 8, 11, 12, INK).line(8, 9, 12, 12, INK);                                                     //     and the right-falling stroke
   });
   A.draw('sh-class', (g, c) => {                                // the class notice board: cork, pinned sheets, a little clock
     g.rect(1, 2, 14, 12, '#7a4a2b').rect(2, 3, 12, 10, '#c89a64');
@@ -249,12 +248,12 @@
     g.hline(3, 5, 4, '#9aa3ab').hline(3, 7, 3, '#9aa3ab').hline(9, 5, 4, '#9aa3ab').hline(9, 7, 4, '#9aa3ab');
     g.rect(2, 2, 12, 1, '#b8453a');
   });
-  A.draw('sh-practice', (g, c) => {                             // a practice sheet: red squares, one character written, a pencil
-    g.rect(1, 4, 14, 11, '#fbf6e6').hline(1, 4, 14, '#ffffff').hline(1, 14, 14, '#d9d1b8');
-    for (const x of [2, 7]) for (const y of [5, 10]) g.frame(x, y, 5, 4, GRID);
-    g.line(3, 6, 5, 8, INK).line(5, 6, 3, 8, INK);                                           // a stroke-made 乂 in the first square
-    g.hline(8, 7, 3, '#e0b0a8');                                                             // the next one, half traced
-    g.line(10, 13, 14, 9, '#e8b04a').px(14, 9, '#f2c4a8').px(10, 13, INK);                     // pencil
+  A.draw('sh-practice', (g, c) => {                             // a practice sheet: red squares with 一 and 二 written in, a pencil
+    g.rect(1, 3, 14, 12, '#fbf6e6').hline(1, 3, 14, '#ffffff').hline(1, 14, 14, '#d9d1b8');
+    g.frame(2, 4, 6, 7, GRID).frame(8, 4, 6, 7, GRID);
+    g.hline(3, 7, 4, INK);                                                                   // 一
+    g.hline(10, 6, 2, INK).hline(9, 8, 4, INK);                                              // 二
+    g.line(4, 13, 10, 12, '#e8b04a').px(10, 12, '#f2c4a8').px(4, 13, INK);                       // pencil
   });
   A.draw('sh-computer', (g, c) => {                             // a little desktop computer: screen, stand, keyboard
     g.rect(2, 1, 12, 9, '#3d4a55').rect(3, 2, 10, 7, '#a9dbe6').hline(3, 2, 10, '#e6f6fa');

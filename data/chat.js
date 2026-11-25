@@ -1252,12 +1252,12 @@
         start: 'n1',
         nodes: {
           n1: { npc: { hanzi: '请问，去酒店怎么走？', english: 'Excuse me, how do I get to the hotel?' }, goal: 'Tell Xiao Li to go straight ahead first.', tip: '往前走 = go forward.',
-            replies: [{ say: ['往前走', '你往前走', '请往前走'], en: 'Go straight ahead.', next: 'n2' }] },
+            replies: [{ say: ['往前走', '你往前走', '请往前走', '往前走，过去就是那间酒店'], en: 'Go straight ahead.', next: 'n2' }] },
           n2: { npc: { hanzi: '好。再往哪儿走？', english: 'OK. Where next?' }, goal: 'Tell him to turn {dir.en}.', tip: '往 + direction + 走: 往{dir}走. (左 = left, 右 = right)',
             replies: [{ say: ['再往{dir}走', '往{dir}走', '往{dir}'], en: 'Turn {dir.en}.', next: 'n3' }] },
           n3: { npc: { hanzi: '远吗？', english: 'Is it far?' }, goal: 'Say that it is not far — the hotel is in front of the metro.', tip: '不远 = not far; 前面 = in front; 酒店在地铁站前面.',
             replies: [
-              { say: ['不远，酒店在地铁站前面', '不远，就在前面', '不远', '不远，那间酒店走路就到', '不远，过去就是酒店', '不远，走这条路就到'], en: "Not far — it's in front of the metro station.", label: 'Not far', next: 'n4' },
+              { say: ['不远，酒店在地铁站前面', '不远，就在前面', '不远'], en: "Not far — it's in front of the metro station.", label: 'Not far', next: 'n4' },
               { say: ['有一点远', '有点远', '有点儿远'], en: "It's a bit far.", label: 'A bit far', next: 'n4' },
             ] },
           n4: { npc: { hanzi: '谢谢你！我路上小心。', english: "Thank you! I'll be careful on the way." }, goal: 'Say you are welcome.', tip: '不客气.',

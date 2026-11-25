@@ -302,7 +302,8 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
     (st.objects || []).forEach((o) => { if (![[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => seen.has(`${o.x + dx},${o.y + dy}`))) errors.push(`${w}: object ${o.id} cannot be reached`); });
     // not too cramped: at most 35% of the walkable tiles may hold something
     let free = 0; (st.map || []).forEach((row, y) => [...row].forEach((ch, x) => { if (tileOk(x, y)) free++; }));
-    if (solid.size > free * 0.35) warn.push(`${w}: ${solid.size} things on ${free} walkable tiles — may feel cramped`);
+    const onFloor = [...solid.keys()].filter((k) => { const [x, y] = k.split(',').map(Number); return tileOk(x, y); }).length;   // things on stall tables don't use floor
+    if (onFloor > free * 0.35) warn.push(`${w}: ${onFloor} things on ${free} walkable tiles — may feel cramped`);
     console.log(`${w}: ${st.cols}×${st.rows}, ${(st.objects || []).length} objects, ${st.entities.filter((e) => e.kind !== 'door').length} people, ${doorsHere.length} doors`);
   });
   // destinations on the quest screen must exist

@@ -401,17 +401,17 @@
       // ───────────────────────── Milk tea (奶茶, 红茶, 绿茶, 还是) ─────────────────────────
       {
         id: 'milktea', title: 'Milk tea or tea?',
-        slots: { tea: [{ hanzi: '红茶', en: 'black tea' }, { hanzi: '绿茶', en: 'green tea' }] },
         start: 'n1',
         nodes: {
-          n1: { npc: { hanzi: '欢迎！今天有奶茶，也有{tea}。你要奶茶还是{tea}？', english: 'Welcome! Today we have milk tea and also {tea.en}. Milk tea or {tea.en}?' }, goal: 'Say that you want milk tea — or the {tea.en}.', tip: 'A 还是 B? = "A or B?" Answer with one: 我要…',
+          n1: { npc: { hanzi: '欢迎！今天有奶茶，也有红茶和绿茶。你要哪个？', english: 'Welcome! Today we have milk tea, and also black tea and green tea. Which one?' }, goal: 'Say which you want: milk tea, black tea or green tea.', tip: '奶茶 = milk tea (lit. "milk-tea"); 红茶 = red tea = black tea; 绿茶 = green tea. 我要…',
             replies: [
               { say: ['我要奶茶', '奶茶，谢谢', '给我奶茶'], en: 'I want milk tea.', label: 'Milk tea', next: 'n2a' },
-              { say: ['我要{tea}', '{tea}，谢谢', '给我{tea}'], en: 'I want {tea.en}.', label: '{tea.en}', next: 'n2b' },
+              { say: ['我要红茶', '红茶，谢谢', '给我红茶'], en: 'I want black tea.', label: 'Black tea', next: 'n2b' },
+              { say: ['我要绿茶', '绿茶，谢谢', '给我绿茶'], en: 'I want green tea.', label: 'Green tea', next: 'n2b' },
             ] },
           n2a: { npc: { hanzi: '好的，奶茶一杯。你要大杯还是小杯？', english: 'OK, one milk tea. Large or small?' }, goal: 'Say whether you want a large cup or a small one.', tip: '大杯 = large cup (杯 is the measure word); 小杯 = small.',
             replies: [{ say: ['我要大杯', '大杯', '大杯，谢谢'], en: 'A large one.', label: 'Large', next: 'n3' }, { say: ['我要小杯', '小杯', '小杯，谢谢'], en: 'A small one.', label: 'Small', next: 'n3' }] },
-          n2b: { npc: { hanzi: '好的，{tea}一杯。你要热的还是冷的？', english: 'OK, one {tea.en}. Hot or cold?' }, goal: 'Say that you want it hot — or cold.', tip: '热的 = a hot one; 冷的 = a cold one.',
+          n2b: { npc: { hanzi: '好的，一杯。你要热的还是冷的？', english: 'OK, one cup. Hot or cold?' }, goal: 'Say that you want it hot — or cold.', tip: '热的 = a hot one; 冷的 = a cold one.',
             replies: [{ say: ['我要热的', '热的', '热的，谢谢'], en: 'A hot one.', label: 'Hot', next: 'n3' }, { say: ['我要冷的', '冷的', '冷的，谢谢'], en: 'A cold one.', label: 'Cold', next: 'n3' }] },
           n3: { npc: { hanzi: '好了，给你。八块。', english: 'Here you are. Eight yuan.' }, goal: 'Say thank you and that it looks good.', tip: '不错 = not bad / good.',
             replies: [{ say: ['谢谢，不错', '谢谢，这个不错', '谢谢'], en: 'Thanks, that looks good.', next: 'bye' }] },
@@ -428,7 +428,7 @@
             replies: [{ say: ['谢谢！我忘了', '谢谢，我忘在这儿了', '啊，我忘了，谢谢'], en: 'Thanks! I forgot it.', next: 'n2' }] },
           n2: { npc: { hanzi: '你看看，里面的东西都在吗？', english: 'Have a look — are all the things inside still there?' }, goal: 'Say that your phone is inside — and everything is fine.', tip: '里面 = inside; 手机 = phone; 都 = all.',
             replies: [
-              { say: ['我的手机在里面', '手机在里面，都在', '都在，谢谢'], en: 'My phone is inside, and everything is there.', label: 'All there', next: 'bye1' },
+              { say: ['我的手机在里面', '手机在里面，都在', '都在，谢谢', '我拿出手机看看，都在', '包里面都在'], en: 'My phone is inside, and everything is there.', label: 'All there', next: 'bye1' },
               { say: ['我的钱不在里面', '钱不在里面', '钱没有了'], en: 'My money is not inside.', label: 'No money', next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '太好了！下次别忘了。', english: "Great! Don't forget it next time." }, end: true },
@@ -439,15 +439,14 @@
       // ───────────────────────── Tickets (票, 门票, 周, 跟) ─────────────────────────
       {
         id: 'tickets', title: 'Two free tickets',
-        slots: { what: [{ hanzi: '电影票', en: 'cinema tickets' }, { hanzi: '门票', en: 'entrance tickets' }] },
         start: 'n1',
         nodes: {
-          n1: { npc: { hanzi: '我有两张{what}，这周我没时间去。你要吗？', english: "I have two {what.en}, but I have no time to go this week. Do you want them?" }, goal: 'Say that you do — and thank him.', tip: '要 = want; 太好了 / 谢谢.',
+          n1: { npc: { hanzi: '我有两张门票，这周我没时间去。你要吗？', english: "I have two entrance tickets, but I have no time to go this week. Do you want them?" }, goal: 'Say that you do — and thank him.', tip: '要 = want; 门票 = entrance ticket; 太好了 / 谢谢.',
             replies: [
-              { say: ['我要，谢谢', '要，太好了', '太好了，谢谢'], en: 'Yes please, thank you.', label: 'Yes', next: 'n2' },
+              { say: ['我要，谢谢', '要，太好了', '太好了，谢谢', '我要门票，谢谢你的票'], en: 'Yes please, thank you.', label: 'Yes', next: 'n2' },
               { say: ['不要，谢谢', '我不要，谢谢'], en: 'No thanks.', label: 'No thanks', next: 'bye2' },
             ] },
-          n2: { npc: { hanzi: '你跟谁去？', english: 'Who will you go with?' }, goal: 'Say that you will go with a friend.', tip: '跟 + person + 去.',
+          n2: { npc: { hanzi: '你跟谁去？', english: 'Who will you go with?' }, goal: 'Say that you will go with a friend — or with Mum.', tip: '跟 + person + 去.',
             replies: [{ say: ['我跟朋友去', '我跟朋友一起去', '跟朋友去'], en: "I'll go with a friend.", label: 'A friend', next: 'bye1' }, { say: ['我跟妈妈去', '我跟妈妈一起去', '跟妈妈去'], en: "I'll go with Mum.", label: 'Mum', next: 'bye1' }] },
           bye1: { npc: { hanzi: '好，玩得高兴！', english: 'Good — have fun!' }, end: true },
           bye2: { npc: { hanzi: '好吧，下周我再问问别人。', english: "OK, next week I'll ask someone else." }, end: true },

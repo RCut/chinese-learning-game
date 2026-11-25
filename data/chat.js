@@ -1275,9 +1275,10 @@
             replies: [
               { say: ['好，我下来', '好，我就下来', '我下来'], en: "OK, I'm coming down.", label: 'Come down', next: 'n2a' },
               { say: ['你上来吧', '请你上来', '你上来'], en: 'You come up.', label: 'Come up', next: 'n2b' },
+              { say: ['你站在门口等我，我下去', '我下去，你在门口等', '好，我出来了'], en: "Wait at the door — I'll go down.", label: 'Go down', next: 'n2a' },
             ] },
           n2a: { npc: { hanzi: '好！我在门口等你。', english: "OK! I'll wait for you at the door." }, goal: 'Say you will be right there.', tip: '就来 = "coming right away".',
-            replies: [{ say: ['我就来', '我就来了', '我来了', '好，我出来了', '我上去拿包，就下来', '你站在门口等我', '你在门口等，我下去'], en: "I'm coming right away.", next: 'bye1' }] },
+            replies: [{ say: ['我就来', '我就来了', '我来了', '我上去拿包，就下来'], en: "I'm coming right away.", next: 'bye1' }] },
           n2b: { npc: { hanzi: '你家在几楼？', english: 'Which floor are you on?' }, goal: 'Say you live on the third floor.', tip: '楼 = floor: 三楼.',
             replies: [{ say: ['我家在三楼', '三楼', '在三楼'], en: "I'm on the third floor.", next: 'bye2' }] },
           bye1: { npc: { hanzi: '好，一会儿见！', english: 'OK, see you in a moment!' }, end: true },
@@ -1353,10 +1354,10 @@
           n1: { npc: { hanzi: '你知道吗？明天是我的生日！', english: 'Guess what? Tomorrow is my birthday!' }, goal: 'Wish Xiao Li a happy birthday.', tip: '生日快乐 = happy birthday.',
             replies: [{ say: ['生日快乐', '小李，生日快乐', '你生日快乐'], en: 'Happy birthday!', next: 'n2' }] },
           n2: { npc: { hanzi: '谢谢！你送我什么？', english: 'Thanks! What will you give me?' }, goal: 'Say that you give him {gift.en}.', tip: '送 = give as a gift: 我送你{gift}.',
-            replies: [{ say: ['我送你{gift}', '我送你{gift}，生日快乐'], en: "I'll give you {gift.en}.", next: 'n3' }] },
+            replies: [{ say: ['我送你{gift}', '我送你{gift}，生日快乐', '我准备了{gift}送你'], en: "I'll give you {gift.en}.", next: 'n3' }] },
           n3: { npc: { hanzi: '太好了！我准备请朋友来家里。你来吗？', english: 'Great! I am getting ready to invite friends over. Will you come?' }, goal: 'Say that you will certainly come — or that you are sorry, you cannot.', tip: '一定 isn\'t needed: 我去 / 对不起，我不能去.',
             replies: [
-              { say: ['我去', '好，我去', '我会去', '我去，这周我有时间', '我去，我也准备了{gift}'], en: "I'll come.", label: 'Come', next: 'bye1' },
+              { say: ['我去', '好，我去', '我会去', '我去，这周我有时间'], en: "I'll come.", label: 'Come', next: 'bye1' },
               { say: ['对不起，我不能去', '不好意思，我不能去'], en: "Sorry, I can't.", label: "Can't", next: 'bye2' },
             ] },
           bye1: { npc: { hanzi: '太好了！明天见！', english: 'Great! See you tomorrow!' }, end: true },
@@ -1415,7 +1416,7 @@
             ] },
           n2: { npc: { hanzi: '离这儿远吗？', english: 'Is it far from here?' }, goal: 'Say that it is not far, it is close.', tip: '离 = away from; 近 = near: 离这儿很近.',
             replies: [
-              { say: ['不远，离这儿很近', '离这儿很近', '很近'], en: 'Not far — close to here.', label: 'Close', next: 'n3' },
+              { say: ['不远，离这儿很近', '离这儿很近', '很近', '很近，走这条路就到'], en: 'Not far — close to here.', label: 'Close', next: 'n3' },
               { say: ['有点远，坐公交车吧', '有点远'], en: "It's a bit far.", label: 'Far', next: 'n3' },
             ] },
           n3: { npc: { hanzi: '好的。我是从机场回来的，东西很多。', english: "OK. I'm coming back from the airport and have a lot of things." }, goal: 'Say that you can help — carry it.', tip: '拿 = carry/take: 我帮你拿.',

@@ -131,7 +131,7 @@
     if (!r || r.paid) return;
     r.paid = true;
     MSC.economy.spend(r.total, 'your café order');
-    if (!S.story.questDone) { S.story.questDone = true; MSC.toast.show('✅ Quest complete: you ordered lunch!', 4500); }
+    if (!S.story.questDone) { S.story.questDone = true; MSC.log.say('✅ Quest complete: you ordered lunch!'); }
   };
 
   MSC.barista = B;

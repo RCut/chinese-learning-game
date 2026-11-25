@@ -127,7 +127,7 @@
     const typing = S.chatMode === 'recall';
     if (typing) { const inp = document.getElementById('chat-input'); if (inp) cur.st.recall = inp.value; }
     const user = CH.userSyllables(cur, S.chatMode);
-    if (!user.length) { MSC.toast.show(typing ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
+    if (!user.length) { MSC.log.say(typing ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
     if (!typing) MSC.vocab.discoverText(cur.st.tray.map((t) => t.h).join(''));
     submit(cur, CH.match(cur, user));
   };

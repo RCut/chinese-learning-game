@@ -24,8 +24,7 @@ async function tap(p, sel) {
   for (let attempt = 0; attempt < 4; attempt++) {
     try { await p.click(sel, { timeout: 2500 }); return; } catch (e) {
       if (attempt === 3) throw e;
-      if (await p.isVisible('#onboard [data-click="close-onboard"]')) await p.click('#onboard [data-click="close-onboard"]').catch(() => {});
-      if (await p.isVisible('#toasts-clear')) await p.click('#toasts-clear').catch(() => {});
+      await p.keyboard.press('Escape');                                  // the notification list may be open on top
       await p.waitForTimeout(150);
     }
   }

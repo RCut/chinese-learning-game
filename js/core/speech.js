@@ -74,7 +74,7 @@
   sp.toggleRate = () => {
     S.rate = S.rate === 0.85 ? 0.65 : 0.85;
     document.getElementById('rate-btn').textContent = `${S.rate}×`;
-    MSC.toast.show(`Voice speed: ${S.rate}×`);
+    MSC.log.say(`Voice speed: ${S.rate}×`);
   };
 
   MSC.speech = sp;

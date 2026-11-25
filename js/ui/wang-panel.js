@@ -115,14 +115,14 @@
   A['wang-tutorial'] = () => MSC.writer.begin(WR.hasLesson() ? WR.continueSession() : WR.startTutorial());
   A['wang-continue'] = () => MSC.writer.begin(WR.continueSession());
   A['wang-new'] = () => { view = 'offer'; picked = new Set(); WR.offer(); const o = WR.offer(); if (o && o.chars.length <= D.lessonSize) picked = new Set(o.chars); refresh(true); };
-  A['wang-leave'] = () => { if (WR.abandonLesson()) { view = 'offer'; picked = new Set(); WR.offer(); refresh(true); MSC.toast.show('Lesson left — pick new characters.'); } };
+  A['wang-leave'] = () => { if (WR.abandonLesson()) { view = 'offer'; picked = new Set(); WR.offer(); refresh(true); MSC.log.say('Lesson left — pick new characters.'); } };
   A['wang-back'] = () => { view = 'menu'; afterTutorial = false; refresh(true); };
   A['wang-rules'] = () => { view = 'rules'; refresh(true); };
   A['wang-pick'] = (c) => {
     const need = Math.min(D.lessonSize, WR.offer().chars.length);
     if (picked.has(c)) picked.delete(c);
     else if (picked.size < need) { picked.add(c); MSC.speech.say(c); }
-    else { MSC.toast.show(`You have ${need} already — tap one to put it back.`); return; }
+    else { MSC.log.say(`You have ${need} already — tap one to put it back.`); return; }
     refresh(false);
   };
   A['wang-random'] = () => { const s = WR.startLesson(WR.randomPick()); view = 'menu'; MSC.writer.begin(s); };
@@ -135,18 +135,17 @@
     MSC.writer.begin(s);
   };
   A['wang-review'] = () => {
-    if (!WR.masteredChars().length) { MSC.toast.show('Nothing to review yet — learn some characters first.'); return; }
+    if (!WR.masteredChars().length) { MSC.log.say('Nothing to review yet — learn some characters first.'); return; }
     MSC.writer.begin(WR.reviewSession());
   };
   A['wall-open'] = (word) => { A.tab('notebook'); A['open-word'](word); };
-  A['open-notebook-word'] = A['wall-open'];
   A['go-wang'] = () => { A.tab('stage'); MSC.stage.go('wang'); };
 
   // ───────────── lesson complete: wall + notebook ─────────────
   MSC.on('writing-complete', ({ kind, chars }) => {
     chars.forEach((c) => MSC.vocab.discover(WR.wordFor(c)));        // new words are added; existing ones simply gain "How to write"
-    MSC.toast.html(`✍️ You can now write ${chars.map((c) =>
-      `<button type="button" class="toast-chip hz" data-click="open-notebook-word" data-arg="${U.esc(WR.wordFor(c))}">${U.esc(c)}</button>`).join(' ')}`, 'act', 9000);
+    MSC.log.html(`✍️ You can now write ${chars.map((c) =>
+      `<button type="button" class="log-zh log-chip hz" data-click="log-open" data-arg="${U.esc(WR.wordFor(c))}">${U.esc(c)}</button>`).join(' ')}`, 'act');
     lastDone = chars;
     if (kind === 'tutorial') { afterTutorial = true; view = 'offer'; picked = new Set(); WR.makeOffer(); } else { afterTutorial = false; view = 'done'; }
     MSC.emit('writing-changed');

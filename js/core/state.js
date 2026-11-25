@@ -67,7 +67,7 @@
       S.discoverCount++;
       MSC.progress.save();
       MSC.emit('stats');
-      if (MSC.toast) MSC.toast.word(entry);
+      if (MSC.log) MSC.log.word(entry);
       return true;
     },
     discoverText(text) { MSC.dict.wordsIn(text).forEach((h) => MSC.vocab.discover(h)); },
@@ -78,6 +78,6 @@
     S.xp += n;
     MSC.progress.save();
     MSC.emit('stats');
-    if (MSC.toast) MSC.toast.show(`+${n} XP — ${why}`);
+    if (MSC.log) MSC.log.say(`+${n} XP — ${why}`);
   };
 })(window.MSC = window.MSC || {});

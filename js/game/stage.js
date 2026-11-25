@@ -294,7 +294,7 @@
   ST.interact = () => {
     const adj = ST.adjacent();
     if (adj) ST.activate(adj.id, true);
-    else MSC.toast.show('Walk up to someone or something first.');
+    else MSC.log.say('Walk up to someone or something first.');
   };
 
   MSC.stage = ST;

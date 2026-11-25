@@ -24,11 +24,11 @@
 
   E.spend = (amount, what) => {
     MSC.setMoney(S.money - amount);
-    MSC.toast.show(`💳 Paid ¥${amount} for ${what}. You have ¥${S.money} left.`, 4500);
+    MSC.log.say(`💳 Paid ¥${amount} for ${what}. You have ¥${S.money} left.`);
   };
   E.earn = (amount, what) => {
     MSC.setMoney(S.money + amount);
-    MSC.toast.show(`💰 +¥${amount} — ${what}. You now have ¥${S.money}.`, 4500);
+    MSC.log.say(`💰 +¥${amount} — ${what}. You now have ¥${S.money}.`);
   };
 
   MSC.economy = E;

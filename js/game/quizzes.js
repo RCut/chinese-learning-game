@@ -22,7 +22,7 @@
         wrong: q.wrong, success: U.fillLine(q.success, vars),
         grammarHint: q.grammarHint, clue: U.fill(q.clue, { item: target.hanzi, pinyin: MSC.dict.sentencePinyin(target.hanzi) }),
         xp: q.xp, xpLabel: 'Checked the café menu', repeatLabel: q.repeatLabel,
-        onSolved() { if (!S.story.menuChecked) { S.story.menuChecked = true; MSC.toast.show('✅ Menu checked — now you can order from Barista Lin.', 4500); } },
+        onSolved() { if (!S.story.menuChecked) { S.story.menuChecked = true; MSC.log.say('✅ Menu checked — now you can order from Barista Lin.'); } },
       };
     },
 

@@ -564,4 +564,7 @@
       },
     ],
   };
+  // every talkable NPC registers its conversation set here: MSC.data.chats[npcId] = { npc, xpTurn, xpFinish, lines, dialogues }
+  MSC.data.chats = MSC.data.chats || {};
+  MSC.data.chats[MSC.data.chat.npc.id] = MSC.data.chat;
 })(window.MSC = window.MSC || {});

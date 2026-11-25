@@ -12,7 +12,7 @@ const vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {} };
 vm.createContext(ctx);
-['data/dictionary.js', 'data/characters.js', 'data/world.js', 'data/menu.js', 'data/quests.js', 'data/ui-text.js', 'data/writing.js', 'data/strokes.js', 'data/chat.js', 'js/core/pattern.js', 'js/core/util.js', 'js/core/dictionary.js']
+require('./data-files.js').all()
   .forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f }));
 const MSC = ctx.window.MSC;
 const errors = [];
@@ -98,22 +98,22 @@ Object.keys(MSC.data.characters).forEach((c) => { if (!used.has(c)) warn.push(`c
   console.log(`HSK 1–2: ${hsk.length} words (${hsk.filter((e) => e.hsk === 1).length} at level 1, ${hsk.filter((e) => e.hsk === 2).length} at level 2)`);
 })();
 
-// ── chat (Xiao Li) ──
-const chatCoverage = (function checkChat() {
-  const C = MSC.data.chat, PT = MSC.pattern, D = MSC.dict;
+// ── chats (Xiao Li, the market shopkeeper … — every set in MSC.data.chats) ──
+function checkChat(C, who) {
+  const PT = MSC.pattern, D = MSC.dict;
   const hasZh = (t) => /[㐀-鿿]/.test(t || '');
   const covered = new Set();
   const seg = (where, text) => {
     D.segment(text).forEach((t) => {
-      if (t.kind === 'unknown') errors.push(`chat ${where}: "${t.hanzi}" is not in the dictionary (in "${text}")`);
+      if (t.kind === 'unknown') errors.push(`${who} chat ${where}: "${t.hanzi}" is not in the dictionary (in "${text}")`);
       else if (t.kind === 'word') covered.add(t.hanzi);
       else if (t.kind === 'number') t.parts.forEach((p) => covered.add(p));
     });
   };
-  if (!C.dialogues || C.dialogues.length < 5) errors.push(`chat needs at least 5 dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
+  if (!C.dialogues || C.dialogues.length < 5) errors.push(`${who}: chat needs at least 5 dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
   const syls = (text) => D.syllables(text);
   C.dialogues.forEach((d) => {
-    const id = `chat ${d.id}`;
+    const id = `${who} chat ${d.id}`;
     const nodes = d.nodes || {};
     if (!nodes[d.start]) { errors.push(`${id}: start node "${d.start}" does not exist`); return; }
     // graph: next ids exist, everything reachable, everything can reach an ending, and the dialogue really branches
@@ -122,7 +122,7 @@ const chatCoverage = (function checkChat() {
       const w = `${id}.${nid}`;
       if (n.end) {
         ends++;
-        if (!n.npc) errors.push(`${w}: an ending needs Xiao Li's closing line (npc)`);
+        if (!n.npc) errors.push(`${w}: an ending needs the NPC's closing line (npc)`);
         if (n.replies && n.replies.length) errors.push(`${w}: an ending must not have replies`);
         return;
       }
@@ -130,7 +130,7 @@ const chatCoverage = (function checkChat() {
       if (!n.tip) errors.push(`${w}: tip is required (it is the first Hint)`);
       if (!n.replies || !n.replies.length) { errors.push(`${w}: needs at least one reply`); return; }
       if (n.replies.length > 1) branching++;
-      if (nid !== d.start && !n.npc) errors.push(`${w}: only the start node may leave out Xiao Li's line`);
+      if (nid !== d.start && !n.npc) errors.push(`${w}: only the start node may leave out the NPC's line`);
       n.replies.forEach((r, i) => {
         if (!nodes[r.next]) errors.push(`${w}.replies[${i}]: next "${r.next}" does not exist`);
         if (!r.say || !r.say.length) errors.push(`${w}.replies[${i}]: no accepted answers (say)`);
@@ -174,10 +174,12 @@ const chatCoverage = (function checkChat() {
   });
   const hsk = MSC.data.dictionary.filter((e) => e.hsk);
   const hit = hsk.filter((e) => covered.has(e.hanzi));
-  console.log(`Chat: ${C.dialogues.length} dialogues use ${hit.length} of ${hsk.length} HSK words (${Math.round((100 * hit.length) / hsk.length)}%)`);
+  console.log(`${who}: ${C.dialogues.length} dialogues use ${hit.length} of ${hsk.length} HSK words (${Math.round((100 * hit.length) / hsk.length)}%)`);
   if (process.env.SHOW_UNCOVERED) console.log('uncovered HSK words: ' + hsk.filter((e) => !covered.has(e.hanzi)).map((e) => e.hanzi).join(' '));
   return { hit: hit.length, total: hsk.length, missing: hsk.filter((e) => !covered.has(e.hanzi)).map((e) => e.hanzi) };
-})();
+}
+const chatCoverage = checkChat(MSC.data.chat, 'Xiao Li');
+Object.entries(MSC.data.chats || {}).forEach(([id, set]) => { if (set !== MSC.data.chat) checkChat(set, id); });
 
 // ── all Chinese text in the other data files must be segmentable ──
 function walk(node, trail, out) {
@@ -197,6 +199,101 @@ texts.forEach(([where, text]) => {
   const clean = text.replace(/\{[A-Za-z]+\}/g, '');   // placeholders are filled at run time
   MSC.dict.segment(clean).forEach((t) => { if (t.kind === 'unknown' && !(where.startsWith('writing') && writingChars.has(t.hanzi))) errors.push(`${where}: "${t.hanzi}" is not in the dictionary  (in "${text}")`); });
 });
+// ── stages (data/stages/*.js) ──
+(function checkStages() {
+  const Wd = MSC.data.world, D = MSC.dict;
+  const stages = Object.values(Wd.stages || {});
+  if (!Wd.stages || !Wd.stages[Wd.start]) { errors.push(`world.start "${Wd.start}" is not a stage`); return; }
+  const ids = new Map();
+  const claim = (id, where) => { if (ids.has(id)) errors.push(`${where}: id "${id}" is also used in ${ids.get(id)} (ids must be unique across all stages)`); ids.set(id, where); };
+  stages.forEach((st) => {
+    const w = `stage ${st.id}`;
+    if (!st.map || st.map.length !== st.rows) errors.push(`${w}: map has ${st.map ? st.map.length : 0} rows, rows says ${st.rows}`);
+    (st.map || []).forEach((row, y) => { if (row.length !== st.cols) errors.push(`${w}: map row ${y} has ${row.length} columns, cols says ${st.cols}`); });
+    const cls = { ...Wd.tileClasses, ...(st.tileClasses || {}) };
+    const blockedT = [...Wd.blockedTiles, ...(st.blockedTiles || [])];
+    new Set((st.map || []).join('')).forEach((ch) => { if (!cls[ch]) errors.push(`${w}: tile letter "${ch}" has no tileClasses entry`); });
+    if (!st.name || !st.hanzi) errors.push(`${w}: name and hanzi are required`);
+    if (!['street', 'shop', 'market', 'cafe'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe`);
+    const inMap = (x, y) => x >= 0 && y >= 0 && x < st.cols && y < st.rows && (st.map[y] || '')[x] !== undefined;
+    const tileOk = (x, y) => inMap(x, y) && !blockedT.includes(st.map[y][x]);
+    const solid = new Map();
+    const place = (t, kind) => {
+      claim(t.id, `${w} ${kind}`);
+      if (!inMap(t.x, t.y)) { errors.push(`${w} ${kind} ${t.id}: (${t.x},${t.y}) is outside the map`); return; }
+      if (!tileOk(t.x, t.y) && kind !== 'object') errors.push(`${w} ${kind} ${t.id}: stands on a blocked tile (${st.map[t.y][t.x]})`);
+      const k = `${t.x},${t.y}`;
+      if (solid.has(k)) errors.push(`${w}: ${t.id} and ${solid.get(k)} are on the same tile (${k})`);
+      solid.set(k, t.id);
+    };
+    (st.objects || []).forEach((o) => {
+      place(o, 'object');
+      if (!o.emoji) errors.push(`${w} object ${o.id}: emoji is required`);
+      if (!o.hanzi || !D.get(o.hanzi)) errors.push(`${w} object ${o.id}: hanzi "${o.hanzi}" must be a dictionary word`);
+      (o.text || []).forEach((l, i) => {
+        if (!l.hanzi || !l.english) errors.push(`${w} object ${o.id}.text[${i}]: hanzi and english are required`);
+        D.segment(l.hanzi || '').forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.text[${i}]: "${t.hanzi}" is not in the dictionary`); });
+      });
+      if (o.note) D.segment(o.note).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.note: "${t.hanzi}" is not in the dictionary`); });
+    });
+    const doorsHere = [];
+    st.entities.forEach((e) => {
+      const door = e.kind === 'door';
+      place(e, door ? 'door' : 'person');
+      ['name', 'hanzi', 'emoji', 'badge', 'pill'].forEach((k) => { if (!e[k]) errors.push(`${w} ${e.id}: ${k} is required`); });
+      if (door) {
+        doorsHere.push(e);
+        if (!Wd.stages[e.to]) errors.push(`${w} door ${e.id}: leads to unknown stage "${e.to}"`);
+        else {
+          const to = Wd.stages[e.to], a = e.arrive;
+          if (!a) {                                   // arrive left out: a free tile beside the door that leads back must exist
+            const back = (to.entities || []).find((t) => t.kind === 'door' && t.to === st.id);
+            const blockedTo = [...Wd.blockedTiles, ...(to.blockedTiles || [])];
+            const free = (x, y) => x >= 0 && y >= 0 && x < to.cols && y < to.rows && !blockedTo.includes(to.map[y][x]) && ![...(to.entities || []), ...(to.objects || [])].some((t) => t.x === x && t.y === y);
+            if (!back) errors.push(`${w} door ${e.id}: ${e.to} has no door back to ${st.id}`);
+            else if (![[0, 1], [0, -1], [-1, 0], [1, 0]].some(([dx, dy]) => free(back.x + dx, back.y + dy))) errors.push(`${w} door ${e.id}: no free tile beside ${back.id} in ${e.to} to arrive on`);
+          } else {
+            const blockedTo = [...Wd.blockedTiles, ...(to.blockedTiles || [])];
+            if (a.x < 0 || a.y < 0 || a.x >= to.cols || a.y >= to.rows || blockedTo.includes(to.map[a.y][a.x])) errors.push(`${w} door ${e.id}: arrive (${a.x},${a.y}) is not walkable in ${e.to}`);
+            else if ([...(to.entities || []), ...(to.objects || [])].some((t) => t.x === a.x && t.y === a.y)) errors.push(`${w} door ${e.id}: arrive (${a.x},${a.y}) is occupied in ${e.to}`);
+            else if ((to.entities || []).some((t) => t.kind === 'door' && t.x === a.x && t.y === a.y)) errors.push(`${w} door ${e.id}: arrive (${a.x},${a.y}) is on a door in ${e.to} (you would bounce straight back)`);
+          }
+        }
+      } else if (!e.stand) errors.push(`${w} ${e.id}: stand {x,y} is required for people`);
+      else if (!tileOk(e.stand.x, e.stand.y)) errors.push(`${w} ${e.id}: stand (${e.stand.x},${e.stand.y}) is not walkable`);
+    });
+    // doors: every stage leads back to the street; the street leads to every other stage
+    if (st.id !== Wd.start && !doorsHere.some((d) => d.to === Wd.start)) errors.push(`${w}: needs a door back to ${Wd.start}`);
+    if (st.id === Wd.start) stages.filter((o) => o.id !== st.id).forEach((o) => { if (!doorsHere.some((d) => d.to === o.id)) errors.push(`${w}: needs a door to ${o.id}`); });
+    // everything must be reachable from where the player starts (doors are only entered, never crossed)
+    const seen = new Set([`${st.playerStart.x},${st.playerStart.y}`]), queue = [[st.playerStart.x, st.playerStart.y]];
+    if (!tileOk(st.playerStart.x, st.playerStart.y)) errors.push(`${w}: playerStart is not walkable`);
+    const isDoorAt = (x, y) => doorsHere.some((d) => d.x === x && d.y === y);
+    while (queue.length) {
+      const [cx, cy] = queue.shift();
+      [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dx, dy]) => {
+        const nx = cx + dx, ny = cy + dy, k = `${nx},${ny}`;
+        if (!tileOk(nx, ny) || seen.has(k)) return;
+        const s2 = solid.get(k);
+        if (s2 && !isDoorAt(nx, ny)) return;
+        seen.add(k);
+        if (!isDoorAt(nx, ny)) queue.push([nx, ny]);
+      });
+    }
+    doorsHere.forEach((d) => { if (!seen.has(`${d.x},${d.y}`)) errors.push(`${w}: door ${d.id} cannot be reached`); });
+    st.entities.filter((e) => e.kind !== 'door' && e.stand).forEach((e) => { if (!seen.has(`${e.stand.x},${e.stand.y}`)) errors.push(`${w}: ${e.id} cannot be reached (stand ${e.stand.x},${e.stand.y})`); });
+    (st.objects || []).forEach((o) => { if (![[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dx, dy]) => seen.has(`${o.x + dx},${o.y + dy}`))) errors.push(`${w}: object ${o.id} cannot be reached`); });
+    // not too cramped: at most 35% of the walkable tiles may hold something
+    let free = 0; (st.map || []).forEach((row, y) => [...row].forEach((ch, x) => { if (tileOk(x, y)) free++; }));
+    if (solid.size > free * 0.35) warn.push(`${w}: ${solid.size} things on ${free} walkable tiles — may feel cramped`);
+    console.log(`${w}: ${st.cols}×${st.rows}, ${(st.objects || []).length} objects, ${st.entities.filter((e) => e.kind !== 'door').length} people, ${doorsHere.length} doors`);
+  });
+  // destinations on the quest screen must exist
+  (MSC.data.ui.destinations || []).forEach((d) => { if (!ids.has(d.id)) errors.push(`ui.destinations: "${d.id}" is not on any stage`); });
+  // every chat NPC and quiz id used by the game must stand somewhere
+  Object.keys(MSC.data.chats || {}).forEach((id) => { if (!ids.has(id)) errors.push(`chat set "${id}" has no person with that id on any stage`); });
+})();
+
 // Objectives must be English only.
 ['gateObjective', 'brokeObjective', 'roundDone'].forEach((k) => {
   if (/[㐀-鿿]/.test(MSC.data.quests.barista[k])) errors.push(`barista.${k} must not contain Chinese`);

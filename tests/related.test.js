@@ -2,7 +2,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {} }; vm.createContext(ctx);
-['data/dictionary.js', 'data/characters.js', 'js/core/util.js', 'js/core/dictionary.js'].forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx));
+[...require('../tools/data-files.js').vocab(), 'js/core/util.js', 'js/core/dictionary.js'].forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx));
 const D = ctx.window.MSC.dict;
 let fails = 0;
 const ok = (name, cond, extra = '') => { if (!cond) { fails++; console.log('FAIL', name, extra); } };

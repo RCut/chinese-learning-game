@@ -2,7 +2,7 @@
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const root = path.join(__dirname, '..');
 const ctx = { window: {}, console }; vm.createContext(ctx);
-['data/dictionary.js', 'data/characters.js', 'data/chat.js', 'js/core/util.js', 'js/core/dictionary.js', 'js/core/pinyin.js', 'js/core/pattern.js']
+require('../tools/data-files.js').chat()
   .forEach((f) => vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx, { filename: f }));
 const MSC = ctx.window.MSC;
 MSC.state = {}; MSC.on = () => {}; MSC.emit = () => {};
@@ -39,14 +39,14 @@ const tilesCover = (cur, v) => {
   D.segment(v).filter((t) => t.kind === 'word' || t.kind === 'number').forEach((t) => { need[t.hanzi] = (need[t.hanzi] || 0) + 1; });
   return Object.keys(need).every((h) => (have[h] || 0) >= need[h]);
 };
-function exhaust(d) {
+function exhaust(d, npcId) {
   let combos = [{}];
   Object.keys(d.slots || {}).forEach((nm) => { combos = combos.flatMap((c) => d.slots[nm].map((v) => ({ ...c, [nm]: v.hanzi, [`${nm}.en`]: v.en }))); });
   combos.forEach((vars) => {
     const stack = [[]];
     while (stack.length) {
       const trail = stack.pop();
-      CH.start(d, vars);
+      CH.start(d, vars, npcId);
       for (const [ri, vi] of trail) {
         const cur = S.chat.cur, r = cur.replies[ri], v = r.variants[vi];
         const m = CH.match(cur, D.syllables(v).map(MSC.pinyin.fromNum));
@@ -54,15 +54,26 @@ function exhaust(d) {
         CH.advance(m);
       }
       const cur = S.chat.cur;
-      if (cur.end) { ok(`${d.id}: ending has Xiao Li's closing line`, !!cur.npc && S.chat.finished); paths++; continue; }
+      if (cur.end) { ok(`${d.id}: ending has the NPC's closing line`, !!cur.npc && S.chat.finished); paths++; continue; }
       ok(`${d.id}.${cur.id}: tile bank can build every accepted phrasing`, cur.replies.every((r) => r.variants.every((v) => tilesCover(cur, v))), cur.tiles.join(''));
       ok(`${d.id}.${cur.id}: bank is not enormous`, cur.tiles.length <= 16, String(cur.tiles.length));
       cur.replies.forEach((r, ri) => r.variants.forEach((v, vi) => { phrasings++; stack.push([...trail, [ri, vi]]); }));
     }
   });
 }
-C.dialogues.forEach(exhaust);
-console.log(`played ${paths} complete paths through ${C.dialogues.length} conversations (${phrasings} accepted phrasings)`);
+// every NPC set in MSC.data.chats gets the same treatment (Xiao Li, the shopkeeper …)
+Object.entries(MSC.data.chats).forEach(([npcId, set]) => {
+  paths = 0; phrasings = 0;
+  ok(`${npcId}: at least 5 dialogues`, set.dialogues.length >= 5, String(set.dialogues.length));
+  set.dialogues.forEach((d) => ok(`${npcId}/${d.id} branches`, Object.values(d.nodes).some((n) => (n.replies || []).length > 1)));
+  const seenSet = new Set(); let rep = 0, last = null;
+  for (let i = 0; i < 400; i++) { CH.begin(npcId); if (S.chat.dlg.id === last) rep++; last = S.chat.dlg.id; seenSet.add(last); }
+  ok(`${npcId}: never repeats back to back`, rep === 0, String(rep));
+  ok(`${npcId}: every conversation appears`, seenSet.size === set.dialogues.length, `${seenSet.size}/${set.dialogues.length}`);
+  ok(`${npcId}: S.chat.set is this NPC's set`, S.chat.set === set && S.chat.npcId === npcId);
+  set.dialogues.forEach((d) => exhaust(d, npcId));
+  console.log(`${npcId}: played ${paths} complete paths through ${set.dialogues.length} conversations (${phrasings} accepted phrasings)`);
+});
 
 // ── wrong answers ──
 CH.begin();

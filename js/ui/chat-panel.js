@@ -8,7 +8,8 @@
  */
 (function (MSC) {
   const U = MSC.util, D = MSC.dict, S = MSC.state, P = MSC.panel, UI = MSC.ui, CH = MSC.chat;
-  const C = MSC.data.chat;
+  const SETS = MSC.data.chats;
+  const mine = () => S.chat && S.chat.set;           // the conversation set of whoever you are talking to
   const HINT_LABEL = ['💡 Hint', '💡 More', '👁 Answer'];
   const SHOWN = 4;      // how many earlier lines stay on screen
 
@@ -52,10 +53,9 @@
       <div class="row"><button class="btn btn-ghost btn-sm" data-click="chat-clear">Clear</button><button class="btn btn-ghost btn-sm" data-click="chat-shuffle" title="Shuffle tiles">🔀</button></div>`;
   }
 
-  function render() {
-    const ch = S.chat;
-    if (!ch) CH.begin();
-    const c = S.chat, cur = c.cur;
+  function render(npcId) {
+    if (!S.chat || S.chat.npcId !== npcId) CH.begin(npcId);
+    const c = S.chat, cur = c.cur, C = c.set;
     const log = c.log.slice(-SHOWN).map(bubble).join('');
     const more = c.log.length > SHOWN ? '<div class="sub" style="text-align:center">…</div>' : '';
     const top = P.head(C.npc.emoji, C.npc.name, C.npc.hanzi, U.esc(C.npc.blurb),
@@ -65,14 +65,14 @@
     if (c.finished) {
       return `<div class="stack">${top}${topic}<div class="chat-log">${more}${log}</div>
         <div class="box">${UI.sentence(cur.npc, { size: 'lg' })}</div>
-        <div class="box green"><div class="box-title">🎉 Conversation finished!</div><div class="box-sm">You built ${c.turns} phrase${c.turns === 1 ? '' : 's'} in Chinese. Every time you come back, Xiao Li has something new to say.</div></div>
+        <div class="box green"><div class="box-title">🎉 Conversation finished!</div><div class="box-sm">You built ${c.turns} phrase${c.turns === 1 ? '' : 's'} in Chinese. Every time you come back, ${U.esc(C.npc.name)} has something new to say.</div></div>
         <div class="actions"><button class="btn btn-primary grow" data-click="chat-new">Talk again ↺</button></div></div>`;
     }
 
     const st = cur.st;
     const npc = cur.npc
       ? `<div class="box">${UI.sentence(cur.npc, { size: 'lg' })}</div>`
-      : '<div class="box"><div class="box-sm">💬 Xiao Li is waiting for <b>you</b> to speak first.</div></div>';
+      : `<div class="box"><div class="box-sm">💬 ${U.esc(C.npc.name)} is waiting for <b>you</b> to speak first.</div></div>`;
     const modes = ['tiles', 'recall', 'speak'].map((m) => `<button type="button" class="${S.chatMode === m ? 'on' : ''}" data-click="chat-mode" data-arg="${m}">${{ tiles: '🧩 Build', recall: '✍️ Type', speak: '🎙️ Speak' }[m]}</button>`).join('');
     return `<div class="stack">${top}${topic}
       <div class="chat-log">${more}${log}</div>
@@ -86,7 +86,7 @@
       <div id="feedback" class="stack" style="gap:8px">${st.reaction ? `<div class="box amber">${UI.sentence({ hanzi: st.reaction.hanzi, english: st.reaction.english }, { size: 'sm' })}</div>` : ''}${hintBoxes(cur)}</div>
     </div>`;
   }
-  P.screens[C.npc.id] = render;
+  Object.keys(SETS).forEach((id) => { P.screens[id] = () => render(id); });
 
   const refresh = (toEnd) => {
     P.render(false);
@@ -99,10 +99,10 @@
   const live = () => (S.chat && !S.chat.finished ? S.chat.cur : null);
 
   A['chat-new'] = () => {
-    CH.begin();
+    CH.begin(S.chat ? S.chat.npcId : S.active);
     P.render(true);
-    const id = S.chat.dlg.id;
-    setTimeout(() => { if (S.chat && S.chat.dlg.id === id && !S.chat.log.length && S.chat.cur.npc && S.active === C.npc.id) MSC.speech.say(S.chat.cur.npc.hanzi); }, 250);
+    const id = S.chat.dlg.id, npc = S.chat.npcId;
+    setTimeout(() => { if (S.chat && S.chat.dlg.id === id && !S.chat.log.length && S.chat.cur.npc && S.active === npc) MSC.speech.say(S.chat.cur.npc.hanzi); }, 250);
   };
   A['chat-mode'] = (m) => { if (MSC.recognizer.active()) MSC.recognizer.stop(); S.mic.recording = false; S.mic.msg = ''; S.chatMode = m; refresh(false); };
   A['chat-add'] = (i) => {
@@ -161,9 +161,9 @@
 
   function submit(cur, m) {
     if (m.reply) {
-      quietXP(C.xpTurn);
+      quietXP(mine().xpTurn);
       const next = CH.advance(m);
-      if (S.chat.finished) MSC.addXP(C.xpFinish, 'Finished a conversation');
+      if (S.chat.finished) MSC.addXP(mine().xpFinish, 'Finished a conversation');
       if (next.npc) MSC.speech.say(next.npc.hanzi);
       refresh(true);
     } else {
@@ -176,11 +176,11 @@
   document.addEventListener('keydown', (e) => { if (e.target && e.target.id === 'chat-input' && e.key === 'Enter') A['chat-send'](); });
   document.addEventListener('input', (e) => { if (e.target && e.target.id === 'chat-input' && live()) live().st.recall = e.target.value; });
 
-  // say Xiao Li's opening line once you have walked up to her/him (the name is spoken first)
+  // say the NPC's opening line once you have walked up (the name is spoken first)
   MSC.on('enter', (id) => {
-    if (id !== C.npc.id) return;
+    if (!SETS[id]) return;
     const dlg = () => S.chat && S.chat.dlg.id;
     const id0 = dlg();
-    setTimeout(() => { if (S.active === C.npc.id && dlg() === id0 && S.chat && !S.chat.log.length && S.chat.cur.npc) MSC.speech.say(S.chat.cur.npc.hanzi); }, 1100);
+    setTimeout(() => { if (S.active === id && dlg() === id0 && S.chat && !S.chat.log.length && S.chat.cur.npc) MSC.speech.say(S.chat.cur.npc.hanzi); }, 1100);
   });
 })(window.MSC = window.MSC || {});

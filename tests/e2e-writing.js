@@ -8,7 +8,7 @@ const S = (p, fn) => p.evaluate(fn);
 (async () => {
   const b = await chromium.launch();
   const p = await H.open(b);
-  await p.click('.pill:has-text("Master Wang")'); await p.waitForTimeout(500);
+  await H.goTo(p, 'wang');
 
   console.log('— tutorial');
   ok('Wang available at the start (quest not done)', await S(p, () => !MSC.state.story.menuChecked && MSC.state.active === 'wang'));

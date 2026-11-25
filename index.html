@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/stage-street.css" />
+  <link rel="stylesheet" href="css/stage-cafe.css" />
+  <link rel="stylesheet" href="css/stage-shop.css" />
+  <link rel="stylesheet" href="css/stage-market.css" />
 </head>
 <body>
   <header class="app-header">
@@ -44,9 +48,9 @@
   <main class="main">
     <section id="view-stage" class="stage-layout">
       <div class="card stage-card">
-        <h2 class="stage-title">☕ Café &amp; Station Corner</h2>
+        <h2 class="stage-title" id="stage-title">📍 Street</h2>
         <div id="pills" class="pills"></div>
-        <div class="board-wrap"><div id="board" class="board"></div></div>
+        <div class="board-wrap"><div id="board" class="board"></div><div id="stage-fade" class="stage-fade" aria-hidden="true"><span class="stage-fade-title"></span></div></div>
         <div class="dpad">
           <button data-click="move" data-arg="-1,0" aria-label="Left">◀</button>
           <button data-click="move" data-arg="0,-1" aria-label="Up">▲</button>
@@ -91,12 +95,22 @@
   <!-- DATA: edit these files to change content -->
   <script src="data/dictionary.js"></script>
   <script src="data/characters.js"></script>
+  <script src="data/vocab/core.js"></script>
+  <script src="data/vocab/street.js"></script>
+  <script src="data/vocab/cafe.js"></script>
+  <script src="data/vocab/shop.js"></script>
+  <script src="data/vocab/market.js"></script>
   <script src="data/world.js"></script>
+  <script src="data/stages/street.js"></script>
+  <script src="data/stages/cafe.js"></script>
+  <script src="data/stages/shop.js"></script>
+  <script src="data/stages/market.js"></script>
   <script src="data/menu.js"></script>
   <script src="data/quests.js"></script>
   <script src="data/ui-text.js"></script>
   <script src="data/writing.js"></script>
   <script src="data/chat.js"></script>
+  <script src="data/chats/market.js"></script>
   <script src="data/strokes.js"></script>
   <!-- CORE -->
   <script src="js/core/util.js"></script>
@@ -106,6 +120,7 @@
   <script src="js/core/pattern.js"></script>
   <script src="js/core/state.js"></script>
   <script src="js/core/speech.js"></script>
+  <script src="js/core/sfx.js"></script>
   <!-- UI -->
   <script src="js/ui/toast.js"></script>
   <script src="js/ui/gestures.js"></script>

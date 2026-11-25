@@ -1,0 +1,4 @@
+/* Styles for the cafe stage only (tiles, scenery). Shared board styles are in styles.css. */
+.tile-cafe-table { background: radial-gradient(circle at 50% 40%, #c9955c, #a9733f 70%); box-shadow: inset 0 0 0 2px rgba(74,46,22,.35), 0 2px 0 rgba(0,0,0,.15); border-radius: 8px; }
+.tile-cafe-rug { background: #e8c9a0 repeating-linear-gradient(45deg, rgba(185,28,28,.14) 0 6px, transparent 6px 12px); box-shadow: inset 0 0 0 1px rgba(185,28,28,.15); }
+.tile-cafe-window { background: linear-gradient(180deg, #bfe3f5, #e9f6fc); box-shadow: inset 0 0 0 3px #6b4423, inset 0 -3px 0 rgba(255,255,255,.6); }

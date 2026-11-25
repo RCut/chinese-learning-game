@@ -12,7 +12,10 @@ css/styles.css        all styling
 data/                 ← CONTENT. Edit these; no game code needed.
   dictionary.js       every word/phrase: hanzi, pinyin, english, category, related, note
   characters.js       one entry per character: meaning + components (radicals)
-  world.js            the map, scenery and the interactive entities
+  world.js            shared stage settings (fade time, tile letters) — the places themselves are in stages/
+  stages/             street.js · cafe.js · shop.js · market.js — one file per place: map, scenery, objects, people, doors
+  vocab/              extra words (+ their characters) per place, same format as dictionary.js / characters.js
+  chats/              conversations of other talkable people (market.js = the shopkeeper), same format as chat.js
   menu.js             café drinks/food (prices, measure words, hints) and fruit-stall items
   quests.js           all dialogue, objectives, hints and reactions
   ui-text.js          quest tracker, destinations, first-time tip
@@ -20,7 +23,7 @@ data/                 ← CONTENT. Edit these; no game code needed.
   chat.js             Xiao Li: the branching conversations (patterns for every accepted answer, random slots)
   strokes.js          GENERATED stroke-order data for those characters (tools/build-strokes.js)
 
-js/core/              pure logic, no DOM
+js/core/              pure logic, no DOM (sfx.js = the short arrival sounds, synthesised)
   util.js             helpers, tone-mark conversion, number → hanzi
   stroke-match.js     compares a drawn stroke with the reference stroke (order / direction / shape)
   pattern.js          answer patterns for the chat: (optional)  [a|b]  {slot}
@@ -30,7 +33,7 @@ js/core/              pure logic, no DOM
   speech.js           text-to-speech
 js/ui/                toast.js · gestures.js (tap / hold / 🔊) · text.js (sentence rendering) · panel.js · notebook.js
                       stroke-board.js (SVG writing canvas) · writer.js (the writing tray) · wang-panel.js · howto.js · chat-panel.js
-js/game/              economy.js (wallet, prices) · stage.js (board) · barista.js (orders) · quizzes.js
+js/game/              economy.js (wallet, prices) · stage.js (places, doors, fade) · barista.js (orders) · quizzes.js
                       writing.js (Master Wang's lessons, mastery, review — no DOM)
                       chat.js (Xiao Li's conversations: random start, matching, branching — no DOM)
 js/main.js            start-up and header controls
@@ -68,9 +71,23 @@ dictionary (dialogue pinyin is generated from the dictionary, so a word must exi
 - **Popups:** every toast has a ✕ and can be swiped away (hold one to keep reading); "Clear all" appears when two or more
   stack up. The first-time tip swipes away too, and the notebook's phone bottom sheet closes with a swipe down.
 
+## Places (stages)
+
+The game has four places: the **street** (hub), **Barista Lin's café**, **Master Wang's shop** and the **market**. Walk through a
+door (or tap it, or its button above the board) and the screen fades to black and back (0.5 s in total) with a short arrival
+sound — street ambience when you go out, a soft jingle when you go into a shop. Every place has a door back to the street.
+
+- **People and doors** get a name tag on the board and a button above it (the buttons follow the place you are in).
+  Tapping a button for someone in another place walks you there through the doors.
+- **Simple objects** (a tree, a bench, a teapot, a stall…) have no button or tag: walk up to one, or tap it, and its word goes
+  into the notebook; signs and price boards can be read there. They are plain data — see the header of `data/world.js`.
+- **Add an object:** one line in the place's `objects` list (+ the word in `data/vocab/<place>.js` if it isn't in the dictionary).
+  `node tools/check-data.js` checks the map shape, that everything is reachable, door pairs, unique ids and dictionary coverage.
+- **Add a place:** a new file in `data/stages/` (+ a `<script>` tag in `index.html`), a door from the street and one back.
+
 ## Master Wang — learning to write (王师傅)
 
-Wang's stall is on the street from the first minute (no quest needed).
+Wang's shop is on the street from the first minute (no quest needed): walk through the 字画店 door.
 
 - **First visit:** a short tutorial with 一 and 十, then straight into choosing a lesson. Both count as mastered.
 - **Lesson:** Wang offers 8 random unlearned characters (from the lowest tier that still has some); the player picks 4
@@ -103,6 +120,7 @@ node tests/validator.test.js             # proves the validator flags each conte
 node tests/related.test.js               # the "related words" panel only shows genuinely related words
 node tests/e2e-popups.js                 # browser: every popup dismisses with ✕ or a swipe (desktop + phone)
 node tests/chat.test.js                  # chat engine: plays every path of every conversation (3,000+ paths)
+node tests/e2e-stages.js                 # browser: doors, 0.5 s fade, sounds, buttons per place, every object teaches its word, labels, phone
 node tests/e2e-speak.js                  # browser: speech input (mocked recogniser) shows what was heard as a tappable line
 node tests/e2e-chat.js                   # browser: talking to Xiao Li — tiles, typing, hints, branching, a new chat each visit
 node tests/e2e-writing.js                # browser: tutorial, a full lesson, wall, notebook (needs playwright)
@@ -121,7 +139,7 @@ Master Wang's** (`data/writing.js` has 235 characters, tiered by stroke count). 
 with `hsk`, make sure each of its characters has an entry in `data/characters.js` and in the Wang pool, and rebuild the
 stroke data (see "Adding characters").
 
-## Xiao Li (小李) — conversation practice
+## Xiao Li (小李) and the market shopkeeper — conversation practice
 
 Walk up to Xiao Li (right side of the street, or the **Xiao Li** button) and a **new random conversation** starts —
 never the same one twice in a row. There are **24 branching conversations** (some start with Xiao Li, some with you),
@@ -134,6 +152,7 @@ phone calls, home, daily routine, polite address, asking questions, handwriting�
   conversation branches. Random slots (a hobby, a name, the weather) make the same conversation differ between visits.
 - **Hints on demand:** 💡 Hint → the pattern to use → the words you need, word by word → example answers. A wrong answer opens
   the next level by itself, never the answer. Tone slips are called out ("right words, tones are a little different").
+- **The market shopkeeper** (Zhang 张老板, in the market) works exactly the same way, with 8 conversations about buying things (`data/chats/market.js`); any new talkable person registers as `MSC.data.chats.<id>` and needs a person with that id on a stage.
 - **Adding a conversation:** copy one in `data/chat.js`. Replies are *patterns*: `(是，)我是学生` (optional part),
   `我[想|要]喝茶` (alternatives), `{drink}` (random slot). The validator checks that every word exists in the dictionary,
   every path ends, every conversation really branches, no answer is accepted by two different branches, and goals are English-only.

@@ -55,8 +55,8 @@
       </div>
       <div class="stack" style="gap:8px">
         ${UT.destinations.map((d) => {
-          const emoji = MSC.data.world.entities.find((e) => e.id === d.id).emoji;
-          return `<button class="dest ${d.id === nextId ? 'focus' : ''}" data-click="go" data-arg="${d.id}"><span class="row"><span style="font-size:22px">${emoji}</span><span><b>${U.esc(d.title)}</b><small>${U.esc(d.subtitle)}</small></span></span><b style="font-size:12px">Go →</b></button>`;
+          const emoji = MSC.stage.find(d.id).ent.emoji;
+          return `<button class="dest ${d.id === nextId ? 'focus' : ''}" data-click="go" data-arg="${d.id}"><span class="row"><span style="font-size:22px">${emoji}</span><span><b>${U.esc(d.title)}</b><small>${U.esc(MSC.data.world.stages[MSC.stage.find(d.id).stage].name)} · ${U.esc(d.subtitle)}</small></span></span><b style="font-size:12px">Go →</b></button>`;
         }).join('')}
       </div></div>`;
   }
@@ -160,7 +160,7 @@
       ? `<div class="row" style="flex-wrap:wrap"><button class="btn btn-ghost btn-sm" data-click="renew-quiz" data-arg="${key}">↻ ${U.esc(quiz.repeatLabel)}</button>${key === 'menu' ? '<button class="btn btn-ok btn-sm" data-click="go" data-arg="barista">Go order lunch →</button>' : ''}</div>` : '';
     const correct = quiz.items.find((i) => i.correct);
     return `<div class="stack">
-      ${head(quiz.emoji || MSC.data.world.entities.find((e) => e.id === key).emoji, quiz.title, quiz.hanzi, `<span class="kicker">${U.esc(quiz.badge)}</span>`)}
+      ${head(quiz.emoji || MSC.stage.find(key).ent.emoji, quiz.title, quiz.hanzi, `<span class="kicker">${U.esc(quiz.badge)}</span>`)}
       ${boardHtml(quiz)}
       <div class="box"><div class="sub" style="margin-bottom:6px;font-weight:600">${U.esc(quiz.instruction)}</div>${UI.sentence(quiz.prompt, { size: 'lg' })}</div>
       <div class="stack" style="gap:8px">${opts}</div>
@@ -169,13 +169,25 @@
     </div>`;
   }
 
+  // ───────────────────────── simple objects (a tree, a bench, a sign…) ─────────────────────────
+  function renderObject(o) {
+    const e = D.get(o.hanzi);
+    const sub = e ? `<span class="kicker">${U.esc(e.category)}</span>` : '';
+    const body = o.text && o.text.length
+      ? `<div class="box green"><div class="sign-lines">${o.text.map((l) => UI.sentence(l, { size: 'md' })).join('')}</div></div>`
+      : `<div class="box">${UI.sentence({ hanzi: o.hanzi, english: e ? e.english : '' }, { size: 'lg' })}</div>`;
+    return `<div class="stack">${head(o.emoji, e ? U.capitalize(e.english.split(/[\/;(]/)[0].trim()) : o.hanzi, o.hanzi, sub)}
+      ${body}${o.note ? `<div class="box amber box-sm">${UI.richText(o.note)}</div>` : ''}
+      <div class="sub">Nothing to do here — just learn the word. It is in your notebook now.</div></div>`;
+  }
+
   // ───────────────────────── render ─────────────────────────
   P.render = (resetScroll, toFeedback) => {
     const el = panelEl();
     const top = resetScroll ? 0 : el.scrollTop;
     const before = S.discoverCount;
     const a = S.active;
-    el.innerHTML = a === 'barista' ? renderBarista() : a && QZ.has(a) ? renderQuiz(a) : a && P.screens[a] ? P.screens[a]() : renderWelcome();
+    el.innerHTML = a === 'barista' ? renderBarista() : a && QZ.has(a) ? renderQuiz(a) : a && P.screens[a] ? P.screens[a]() : a && MSC.stage.find(a) && MSC.stage.find(a).type === 'object' ? renderObject(MSC.stage.find(a).ent) : renderWelcome();
     el.scrollTop = top;
     if (S.discoverCount > before && a) MSC.toast.onboarding();
     if (toFeedback) P.revealFeedback();

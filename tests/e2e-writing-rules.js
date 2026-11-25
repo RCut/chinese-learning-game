@@ -74,9 +74,9 @@ const next = async (p) => { await H.waitNext(p); await p.click('#w-next'); await
   await H.writeChar(p, order[1]); await H.waitNext(p);
   ok('second char (no hints) is mastered', /Mastered/.test(await msg(p)), await msg(p));
   await p.click('#w-next'); await p.waitForTimeout(150);
-  for (let i = 2; i < 4; i++) { const c = (await cur()).c; order.push(c); await H.writeChar(p, c); await next(p); }
-  ok('review order = practised longest ago first', order.join() === ['一', '十', '人', '大'].join(), order.join());
-  ok('passed characters had their date refreshed; the failed one did not', await p.evaluate(() => MSC.state.writing.mastered['十'].last > 5000 && MSC.state.writing.mastered['一'].last < 2000));
+  for (let i = 2; i < 6; i++) { const c = (await cur()).c; order.push(c); await H.writeChar(p, c); await next(p); }
+  ok('review covers each learned character once (random order, up to 10)', [...order].sort().join() === (await p.evaluate(() => MSC.writing.masteredChars().sort().join())) && new Set(order).size === order.length, order.join());
+  ok('passed characters had their date refreshed; the failed one did not', await p.evaluate((o) => MSC.state.writing.mastered[o[1]].last > 5000 && MSC.state.writing.mastered[o[0]].last < 2000, order));
   void mid;
 
   console.log('— practice from the notebook');
@@ -94,6 +94,16 @@ const next = async (p) => { await H.waitNext(p); await p.click('#w-next'); await
   console.log('— persistence');
   await p.reload(); await p.waitForTimeout(300);
   ok('mastery and handwriting survive a reload', await p.evaluate(() => MSC.writing.isMastered('口') && MSC.state.writing.best['口'].seal === 'gold' && MSC.state.writing.tutorialDone));
+
+  console.log('— review packs');
+  ok('review = random pack of 10 from all learned characters', await p.evaluate(() => {
+    const w = MSC.state.writing, saved = JSON.stringify(w.mastered);
+    MSC.data.writing.pool.slice(0, 30).forEach((c, i) => { w.mastered[c.char] = { last: 1000 + i }; });
+    const packs = new Set(); let ok = true;
+    for (let i = 0; i < 8; i++) { const s = MSC.writing.reviewSession(); const cs = s.slots().map((x) => x.c); ok = ok && cs.length === 10 && new Set(cs).size === 10 && cs.every((c) => MSC.writing.isMastered(c)); packs.add(cs.join()); }
+    w.mastered = JSON.parse(saved);
+    return ok && packs.size > 1;
+  }));
 
   console.log('— offers');
   ok('offer is 8 cards from tier 1', await p.evaluate(() => { const o = MSC.writing.makeOffer(); return o.chars.length === 8 && o.chars.every((c) => MSC.writing.info(c).tier === 1); }));

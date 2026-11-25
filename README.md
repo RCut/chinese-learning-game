@@ -79,7 +79,7 @@ Wang's stall is on the street from the first minute (no quest needed).
   goes back through Guided once and is checked again, without limit or penalty. Leaving mid-lesson keeps progress.
 - **Only when all 4 are mastered:** the characters hang on Wang's wall (in the player's own handwriting) and their
   linked words are added to — or gain "How to write" in — the notebook, with one summary notice.
-- **Review:** the 4 mastered characters practised longest ago, mastery check only. Failing never removes anything.
+- **Review:** a random pack of up to 10 of everything you have mastered (not the lesson groups), mastery check only. Failing never removes anything.
 - **Notebook:** "How to write" shows the animated stroke order (play / loop / step), stroke count, highlighted
   component, Wang's mnemonic, your best handwriting next to the reference, and Practice (memory mode; it never changes
   mastery, only replaces your handwriting with a better attempt).

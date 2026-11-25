@@ -52,7 +52,7 @@
     return `<div class="stack">${head()}
       <div class="box">${UI.sentence(line, { size: 'lg' })}</div>
       <div class="stack" style="gap:8px">${lessonBtn}
-        <div class="actions"><button class="btn btn-ghost grow" data-click="wang-review">🔁 Review <span class="num sub">(${Math.min(mastered, D.lessonSize)})</span></button>
+        <div class="actions"><button class="btn btn-ghost grow" data-click="wang-review">🔁 Review <span class="num sub">(${Math.min(mastered, D.reviewSize)})</span></button>
           <button class="btn btn-ghost grow" data-click="wang-rules">📜 Stroke rules <span class="num sub">(${rulesCount}/${D.rules.length})</span></button></div></div>
       ${wall()}</div>`;
   }

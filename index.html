@@ -67,15 +67,15 @@
         <div class="card nb-card">
           <div class="nb-top">
             <div>
-              <h2>📒 My Vocabulary (<span id="nb-total" class="num">0</span>)</h2>
-              <div class="sub">New words you meet are added automatically. Tap a card to hear it and open its details.</div>
-              <div class="sub" id="hsk-progress" style="margin-top:6px"></div>
+              <h2><span id="nb-title">My Vocabulary</span> (<span id="nb-total" class="num">0</span>)</h2>
+              <div class="sub" id="nb-hint"></div>
             </div>
             <div class="search">
               <input id="vocab-search" class="field" type="search" placeholder="Search English, pinyin, hanzi…" />
               <button class="btn btn-ghost btn-sm" data-click="clear-search">Reset</button>
             </div>
           </div>
+          <div id="nb-head" class="nb-head"></div>
           <div id="cats" class="cats"></div>
           <div id="vgrid" class="vgrid"></div>
         </div>
@@ -86,6 +86,8 @@
 
   <div id="writer-backdrop" class="writer-backdrop"></div>
   <section id="writer" class="writer" role="dialog" aria-modal="true" aria-label="Writing practice"></section>
+  <div id="practice-backdrop" class="writer-backdrop" data-click="pr-close"></div>
+  <section id="practice" class="practice" role="dialog" aria-modal="true" aria-label="Practice"></section>
 
   <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
 
@@ -118,6 +120,7 @@
   <script src="data/menu.js"></script>
   <script src="data/quests.js"></script>
   <script src="data/ui-text.js"></script>
+  <script src="data/phrases.js"></script>
   <script src="data/writing.js"></script>
   <script src="data/chat.js"></script>
   <script src="data/chats/market.js"></script>
@@ -129,6 +132,8 @@
   <script src="js/core/stroke-match.js"></script>
   <script src="js/core/pattern.js"></script>
   <script src="js/core/state.js"></script>
+  <script src="js/core/mastery.js"></script>
+  <script src="js/core/phrases.js"></script>
   <script src="js/core/speech.js"></script>
   <script src="js/core/sfx.js"></script>
   <!-- UI -->
@@ -152,6 +157,7 @@
   <script src="js/ui/chat-panel.js"></script>
   <script src="js/ui/howto.js"></script>
   <script src="js/ui/notebook.js"></script>
+  <script src="js/ui/practice.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

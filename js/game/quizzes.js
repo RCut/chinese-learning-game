@@ -100,6 +100,11 @@
     if (item.correct) {
       const first = !st.solved;
       st.solved = true;
+      if (first) {                                                    // picking the right reply: a recognition use of its words
+        const f = MSC.stage.find(key);
+        const words = MSC.dict.segment(item.hanzi).flatMap((t) => (t.kind === 'word' ? [t.hanzi] : t.kind === 'number' ? t.parts : []));
+        MSC.mastery.record(words, MSC.mastery.quality({ hint: st.hint, mistakes: st.attempts, recognition: true }), f ? f.stage : key);
+      }
       let reply = quiz.success;
       if (first) {
         if (key === 'cart') {

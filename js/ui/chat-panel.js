@@ -161,6 +161,7 @@
 
   function submit(cur, m) {
     if (m.reply) {
+      MSC.mastery.useText(m.variant, { hint: cur.st.hint, mistakes: cur.st.attempts, tiles: S.chatMode === 'tiles' }, S.chat.npcId);
       quietXP(mine().xpTurn);
       const next = CH.advance(m);
       if (S.chat.finished) MSC.addXP(mine().xpFinish, 'Finished a conversation');

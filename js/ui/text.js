@@ -38,6 +38,7 @@
   UI.gloss = (hanzi) => D.segment(hanzi).filter((t) => t.kind !== 'text').map((t) => D.tokenEnglish(t)).filter(Boolean).join(' · ');
 
   UI.sentence = (line, opts = {}) => {
+    if (opts.discover !== false && MSC.phrases) MSC.phrases.scan(line.hanzi);     // meeting a phrase in a line adds it to the phrase book
     const size = opts.size || 'md';
     const tier = S.displayMode;
     const main = D.segment(line.hanzi).map(tokenHtml).join('');

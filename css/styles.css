@@ -406,3 +406,47 @@ button:disabled { cursor: default; }
 .scenery-sign { text-shadow: 0 1px 1px rgba(0,0,0,.6); }
 .dest-ic { display: inline-flex; width: 30px; justify-content: center; }
 .dest-ic .px { height: 26px; }
+
+/* ───────── notebook: tabs, HSK-only, mastery, phrases ───────── */
+.nb-head { padding: 10px 0 0; display: flex; flex-direction: column; gap: 8px; }
+.nb-tabs { min-width: 230px; }
+.toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #44403c; cursor: pointer; user-select: none; }
+.toggle input { width: 16px; height: 16px; accent-color: var(--terra); }
+.lvl-progs { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.lvl-prog { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.lvl-name { font-weight: 800; color: #57534e; }
+.lvl-bar { position: relative; width: 120px; height: 8px; border-radius: 999px; background: #e7e5e4; overflow: hidden; }
+.lvl-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; }
+.lvl-bar i.met { background: #fcd34d; } .lvl-bar i.learned { background: #10b981; }
+.mbar { flex: 1; height: 5px; border-radius: 999px; background: #e7e5e4; overflow: hidden; min-width: 40px; }
+.mbar i { display: block; height: 100%; background: #f59e0b; border-radius: 999px; }
+.mbar i.ok { background: #10b981; }
+.mpct { font-size: 10.5px; font-weight: 800; color: #92400e; min-width: 32px; text-align: right; }
+.mpct.ok { color: #047857; }
+.mbox { margin-top: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fafaf9; font-size: 12.5px; }
+.mbox .mbar { margin-top: 6px; height: 7px; }
+.tag.extra { background: #f5f5f4; color: #78716c; }
+.vgrid.as-chapters { display: flex; flex-direction: column; gap: 14px; }
+.chapter h4 { margin: 0; font-size: 14px; }
+.pgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; margin-top: 8px; }
+.pcard { padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fafaf9; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+.pcard:hover { border-color: #fbbf24; } .pcard.sel { border-color: var(--terra); box-shadow: 0 0 0 2px rgba(217,107,67,.25); }
+.pcard .wl-hz { font-size: 16px; }
+.locked { padding: 8px 2px; }
+.phrase-chip .hz { font-size: 14px; }
+
+/* ───────── practice sheet (bottom sheet on phones, side panel on wide screens — like the writing tray) ───────── */
+.practice { position: fixed; left: 0; right: 0; bottom: 0; z-index: 52; display: flex; flex-direction: column; gap: 10px; max-height: 92vh; overflow-y: auto; padding: 12px 14px calc(14px + env(safe-area-inset-bottom)); background: #fff; border-radius: 20px 20px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.3); transform: translateY(105%); transition: transform .22s ease; visibility: hidden; }
+.practice.open { transform: none; visibility: visible; }
+@media (min-width: 900px) { .practice { left: auto; right: 16px; top: 72px; bottom: 16px; width: 440px; max-height: none; border-radius: 16px; transform: translateX(115%); } .practice.open { transform: none; } }
+.pr-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pr-body { display: flex; flex-direction: column; gap: 12px; }
+.pq { font-size: 15px; text-align: center; }
+.pgap { font-size: 26px; font-weight: 700; text-align: center; letter-spacing: .04em; }
+.popts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.popt { padding: 12px 10px; border-radius: 12px; border: 2px solid var(--line); background: #fff; font-size: 15px; font-weight: 700; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.popt:hover { border-color: #fbbf24; } .popt.ok { border-color: #10b981; background: #ecfdf5; } .popt.bad { border-color: #f43f5e; background: #fff1f2; }
+.popt small { font-size: 12px; font-weight: 600; color: #57534e; }
+.py-opt { font-size: 18px; }
+.pr-msg { min-height: 20px; font-size: 13px; font-weight: 700; text-align: center; color: #44403c; }
+body.practice-open { overflow: hidden; }

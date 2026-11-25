@@ -28,6 +28,10 @@
     inputMode: 'tiles',
     mic: { recording: false, transcript: '', msg: '', unavailable: false },
     writing: { tutorialDone: false, mastered: {}, best: {}, rules: [], offer: null, lesson: null },   // Master Wang (see js/game/writing.js)
+    mastery: {},           // word / 'p:<phrase id>' → uses (see js/core/mastery.js)
+    phraseSet: new Set(),  // phrases met (ids)
+    hskOnly: false,        // notebook: show HSK words only
+    nbTab: 'words',        // notebook: 'words' | 'phrases'
     selectedWord: null,    // notebook detail pane
     category: 'All',
   };
@@ -42,6 +46,8 @@
         S.xp = Number(saved.xp) || 0;
         S.tipSeen = !!saved.tipSeen;
         if (saved.writing && typeof saved.writing === 'object') Object.assign(S.writing, saved.writing);
+        if (saved.mastery && typeof saved.mastery === 'object') S.mastery = saved.mastery;
+        if (Array.isArray(saved.phrases)) saved.phrases.forEach((id) => S.phraseSet.add(id));
         (saved.words || []).forEach((h) => {
           if (MSC.dict.get(h) && !S.vocabSet.has(h)) { S.vocab.push(h); S.vocabSet.add(h); }
         });
@@ -50,7 +56,7 @@
     save() {
       try {
         const starters = new Set(MSC.dict.all().filter((e) => e.starter).map((e) => e.hanzi));
-        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)) }));
+        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)), mastery: S.mastery, phrases: [...S.phraseSet] }));
       } catch (e) { /* storage unavailable: progress simply isn't kept */ }
     },
   };

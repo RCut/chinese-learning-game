@@ -60,6 +60,7 @@
       };
       h.addEventListener('pointerup', up); h.addEventListener('pointercancel', up);
     });
+    $('w-mean').addEventListener('click', () => $('w-mean').classList.remove('veiled'));
     $('w-say').addEventListener('click', () => { if (cur) MSC.speech.say(cur.c, $('w-say')); });
   }
 
@@ -105,6 +106,7 @@
     $('w-hz').classList.toggle('mystery', hidden);
     $('w-py').textContent = info.pinyin;
     $('w-mean').textContent = info.meaning;
+    $('w-mean').classList.toggle('veiled', session.kind === 'review');       // review: the translation is a giveaway — tap to show
     $('w-phase').textContent = PHASE[cur.k];
     $('w-slots').innerHTML = session.slots().map((s) => `<span class="w-slot ${s.state}">${s.state === 'done' ? '✓' : s.state === 'missed' ? '·' : ''}</span>`).join('');
     $('w-seal').innerHTML = '';
@@ -172,6 +174,7 @@
 
   function finishChar() {
     run.done = true;
+    $('w-mean').classList.remove('veiled');
     board.clearHints();
     const seal = WR.grade(run);
     const scored = cur.k === 'check';

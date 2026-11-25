@@ -199,6 +199,14 @@ texts.forEach(([where, text]) => {
   const clean = text.replace(/\{[A-Za-z]+\}/g, '');   // placeholders are filled at run time
   MSC.dict.segment(clean).forEach((t) => { if (t.kind === 'unknown' && !(where.startsWith('writing') && writingChars.has(t.hanzi))) errors.push(`${where}: "${t.hanzi}" is not in the dictionary  (in "${text}")`); });
 });
+// ── emoji must render everywhere ──
+// Platforms that stop at Emoji 11 (Windows 10, older Android/ChromeOS) show a blank box for anything newer, so stage data may only use emoji up to
+// Emoji 11 (2018). The ranges below cover everything introduced in Emoji 12–15 (a few are over-cautious on purpose).
+const NEW_EMOJI = [[0x1FA70, 0x1FAFF], [0x1F6D5, 0x1F6D7], [0x1F6DC, 0x1F6DF], [0x1F6FA, 0x1F6FC], [0x1F7E0, 0x1F7F0], [0x1F90C, 0x1F90F], [0x1F93F, 0x1F93F],
+  [0x1F971, 0x1F971], [0x1F972, 0x1F972], [0x1F977, 0x1F979], [0x1F97B, 0x1F97B], [0x1F9A3, 0x1F9AF], [0x1F9BA, 0x1F9BF],
+  [0x1F9C3, 0x1F9CF], [0x1F94F, 0x1F94F], [0x1F9A7, 0x1F9A7]];
+const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = ch.codePointAt(0); return NEW_EMOJI.some(([lo, hi]) => c >= lo && c <= hi); });
+
 // ── stages (data/stages/*.js) ──
 (function checkStages() {
   const Wd = MSC.data.world, D = MSC.dict;
@@ -220,6 +228,8 @@ texts.forEach(([where, text]) => {
     const solid = new Map();
     const place = (t, kind) => {
       claim(t.id, `${w} ${kind}`);
+      const bad = unsafeEmoji(t.emoji);
+      if (bad.length) errors.push(`${w} ${kind} ${t.id}: emoji ${bad.join('')} is too new (shows as a blank box on many devices) — pick one from Emoji 11 or older`);
       if (!inMap(t.x, t.y)) { errors.push(`${w} ${kind} ${t.id}: (${t.x},${t.y}) is outside the map`); return; }
       if (!tileOk(t.x, t.y) && kind !== 'object') errors.push(`${w} ${kind} ${t.id}: stands on a blocked tile (${st.map[t.y][t.x]})`);
       const k = `${t.x},${t.y}`;
@@ -235,6 +245,13 @@ texts.forEach(([where, text]) => {
         D.segment(l.hanzi || '').forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.text[${i}]: "${t.hanzi}" is not in the dictionary`); });
       });
       if (o.note) D.segment(o.note).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.note: "${t.hanzi}" is not in the dictionary`); });
+    });
+    (st.scenery || []).forEach((sc, i) => {
+      const bad = unsafeEmoji(sc.text);
+      if (bad.length) errors.push(`${w} scenery[${i}]: emoji ${bad.join('')} is too new — pick one from Emoji 11 or older`);
+      if (/\p{Extended_Pictographic}/u.test(sc.text || '') && !['scenery-sign', 'scenery-banner'].includes(sc.className)) errors.push(`${w} scenery[${i}]: "${sc.text}" is a decorative emoji nobody can learn from — make it an object (with its word) or remove it`);
+      const zhPart = (sc.text || '').replace(/[^㐀-鿿]/g, '');
+      if (zhPart) D.segment(zhPart).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} scenery[${i}]: "${t.hanzi}" is not in the dictionary`); });
     });
     const doorsHere = [];
     st.entities.forEach((e) => {

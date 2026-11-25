@@ -19,6 +19,13 @@
     return `<span class="zt ${isNew ? 'zt-new' : ''} ${tier === 1 ? 'py' : ''}" data-zh-interactive="1" data-speak="${U.esc(hanzi)}" data-tip-zh="${U.esc(tipZh)}" data-tip-en="${U.esc(D.tokenEnglish(tok))}">${U.esc(tier === 1 ? py : hanzi)}</span>`;
   }
 
+  /** Chinese in a board sign: tap to hear it, hold for the meaning — without adding anything to the notebook (nothing is "learned" by a sign you haven't looked at). */
+  UI.signHtml = (text) => D.segment(text).map((tok) => {
+    if (tok.kind === 'text') return U.esc(tok.text);
+    if (tok.kind === 'unknown') return U.esc(tok.hanzi);
+    return `<span class="zt sign-zt" data-zh-interactive="1" data-speak="${U.esc(tok.hanzi)}" data-tip-zh="${U.esc(`${tok.hanzi} (${D.tokenPinyin(tok)})`)}" data-tip-en="${U.esc(D.tokenEnglish(tok))}">${U.esc(tok.hanzi)}</span>`;
+  }).join('');
+
   /** Mixed English/Chinese text (hints). Chinese runs become tappable tokens. */
   UI.richText = (text) => D.segment(text).map(tokenHtml).join('');
 

@@ -69,7 +69,7 @@
     const tiles = [];
     for (let y = 0; y < st.rows; y++) for (let x = 0; x < st.cols; x++) tiles.push(`<div class="tile ${tileClass(st.map[y][x])}"></div>`);
     const scenery = (st.scenery || []).map((s) =>
-      `<div class="cell scenery" style="--x:${s.x};--y:${s.y}">${s.className === 'road-dash' ? '<i class="road-dash"></i>' : `<span class="${s.className || ''}">${U.esc(s.text)}</span>`}</div>`).join('');
+      `<div class="cell scenery" style="--x:${s.x};--y:${s.y}">${s.className === 'road-dash' ? '<i class="road-dash"></i>' : `<span class="${s.className || ''}">${MSC.ui.signHtml(s.text || '')}</span>`}</div>`).join('');
     const objects = (st.objects || []).map((o) =>
       `<div class="cell thing" id="obj-${o.id}" style="--x:${o.x};--y:${o.y}"><span class="thing-emoji">${o.emoji}</span></div>`).join('');
     const entities = st.entities.map((e) =>
@@ -104,7 +104,12 @@
     const st = stage();
     st.entities.forEach((e) => {
       const l = document.querySelector(`[data-ent-label="${e.id}"]`);
-      if (l) l.textContent = label(e);
+      if (l) {
+        l.textContent = label(e);
+        l.setAttribute('data-zh-interactive', '1');                       // hold a name tag for its meaning (a tap still walks there)
+        l.setAttribute('data-tip-zh', `${e.hanzi} (${D.sentencePinyin(e.hanzi)})`);
+        l.setAttribute('data-tip-en', e.name);
+      }
       const el = document.getElementById(`ent-${e.id}`);
       if (el) el.classList.toggle('active', S.active === e.id);
     });

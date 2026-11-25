@@ -90,10 +90,15 @@ const labelCheck = (p) => p.evaluate(() => {
       await p.evaluate((x) => MSC.stage.show(x.stage), { stage: id });          // fresh position each time
       await p.evaluate((oid) => { const f = MSC.stage.find(oid); MSC.stage.walkTo(f.ent.x, f.ent.y); }, o.id);
       await p.waitForFunction((oid) => MSC.state.active === oid, o.id, { timeout: 15000 }).catch(() => {});
-      const r = await p.evaluate((x) => ({ active: MSC.state.active, known: MSC.vocab.has(x.hanzi), card: document.querySelector('#panel .sentence-main') ? document.querySelector('#panel .sentence-main').textContent : '' }), o);
-      if (r.active === o.id && r.known && r.card) learned++; else bad.push(`${o.id}:${JSON.stringify(r)}`);
+      const r = await p.evaluate((x) => ({ active: MSC.state.active, known: MSC.vocab.has(x.hanzi), card: document.querySelector('#panel .sentence-main') ? document.querySelector('#panel .sentence-main').textContent : '', said: (window.__said || []).slice(-3) }), o);
+      // the card shows the word first, and what is spoken is that same word (never a different line)
+      if (r.active === o.id && r.known && r.card === o.hanzi && r.said.includes(o.hanzi)) learned++; else bad.push(`${o.id}:${JSON.stringify(r)}`);
     }
-    ok(`${id}: walking up to each object opens its card and adds the word to the notebook`, learned === objs.length, bad.slice(0, 3).join('; '));
+    ok(`${id}: walking up to each object opens its card (word first), speaks that word and adds it to the notebook`, learned === objs.length, bad.slice(0, 3).join('; '));
+    const signs = await p.evaluate((sid) => MSC.data.world.stages[sid].scenery.filter((x) => /[㐀-鿿]/.test(x.text || '')).length, id);
+    const tagged = await p.evaluate((sid) => { MSC.stage.show(sid); return document.querySelectorAll('.scenery .sign-zt').length; }, id);
+    ok(`${id}: Chinese on board signs is tappable with a tooltip (${signs} signs)`, !signs || tagged > 0);
+    ok(`${id}: name tags can be held for their meaning`, await p.$$eval('.entity-label', (l) => l.every((x) => x.getAttribute('data-tip-en') && x.getAttribute('data-zh-interactive') === '1')));
     ok(`${id}: no object is listed among the buttons above the board`, !(await pills(p)).some((t) => objs.some((o) => t.includes(o.hanzi))));
   }
 

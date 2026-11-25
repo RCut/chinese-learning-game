@@ -15,7 +15,6 @@
     barista: {
       title: 'Barista Lin',
       hanzi: '林老板',
-      emoji: '👩‍🍳',
 
       gate: {
         hanzi: '你好！欢迎光临！请先看菜单，看看今天有什么。',
@@ -69,7 +68,6 @@
     menu: {
       title: 'Café Menu',
       hanzi: '菜单',
-      emoji: '📋',
       badge: 'Menu board',
       customer: { hanzi: '我要{item}。', english: 'I’d like the {itemEn}.' },
       instruction: 'A customer asks for something. Find it on the menu.',
@@ -85,7 +83,6 @@
     signpost: {
       title: 'Signpost',
       hanzi: '路牌',
-      emoji: '🪧',
       badge: 'Street sign',
       directions: [
         { hanzi: '左边', english: 'on the left', arrow: '⬅️' },
@@ -115,7 +112,6 @@
     cart: {
       title: 'Fruit Stall',
       hanzi: '水果摊',
-      emoji: '🍎',
       badge: 'Fruit stall',
       greeting: { hanzi: '你好！{fruit}一个{unit}。你要几个？', english: 'Hi! {PluralEn} are ¥{unitNum} each. How many would you like?' },
       instruction: 'You’d like two. Pick the right reply.',
@@ -138,7 +134,6 @@
     passerby: {
       title: 'Lost Traveler',
       hanzi: '路人',
-      emoji: '🧳',
       badge: 'Traveler · tip ¥{tip}',
       tip: 10,
       instruction: 'Listen to the traveler’s question and pick the right reply.',

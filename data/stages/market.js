@@ -13,7 +13,6 @@
     id: 'market', name: 'Market', hanzi: '市场', sound: 'market',
     cols: 18, rows: 10,
     // A awning along the roof (blocked) · T path of worn tiles from the door · L stall table (products sit on these)
-    tileClasses: { A: 'tile-awning', T: 'tile-mk-path' },
     blockedTiles: ['A'],
     map: [
       'WAAAAAAAAAAAAAAAAW',
@@ -85,7 +84,7 @@
       item('mk-crab', 16, 6, '🦀', '螃蟹'),
 
       // ── front counter, left: the till and weighing things ──
-      { id: 'mk-price', x: 3, y: 7, emoji: '🏷️', hanzi: '价钱', text: [{ hanzi: '多少钱？', english: 'How much is it?' }, { hanzi: '便宜一点，可以吗？', english: 'A little cheaper, OK?' }] },
+      { id: 'mk-price', x: 3, y: 7, hanzi: '价钱', text: [{ hanzi: '多少钱？', english: 'How much is it?' }, { hanzi: '便宜一点，可以吗？', english: 'A little cheaper, OK?' }] },
       item('mk-till', 4, 7, '🧾', '收银台', 'Pay at the 收银台 — and ask for 找钱 (change). — 找钱 means to give change.'),
       item('mk-scale', 5, 7, '⚖️', '秤', 'Shops weigh your food on the 秤 and sell it by the 斤 (about 500 g).'),
       item('mk-basket', 6, 7, '🧺', '篮子'),
@@ -106,9 +105,9 @@
       item('mk-lantern4', 0, 2, '🏮', '灯笼'),
     ],
     entities: [
-      { id: 'door-market-out', kind: 'door', name: 'Outside', hanzi: '外面', emoji: '🚪', x: 9, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
-      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 7, y: 5, stand: { x: 7, y: 6 }, badge: 'badge-rose', pill: 'pill-stone' },
-      { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', emoji: '👨‍🍳', x: 8, y: 7, stand: { x: 8, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
+      { id: 'door-market-out', kind: 'door', name: 'Outside', hanzi: '外面', x: 9, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
+      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', x: 7, y: 5, stand: { x: 7, y: 6 }, badge: 'badge-rose', pill: 'pill-stone' },
+      { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', x: 8, y: 7, stand: { x: 8, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
     ],
   };
 })(window.MSC = window.MSC || {});

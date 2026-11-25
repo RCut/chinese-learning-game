@@ -26,7 +26,7 @@
 (function (MSC) {
   MSC.data = MSC.data || {};
   MSC.data.chat = {
-    npc: { id: 'friend', name: 'Xiao Li', hanzi: '小李', emoji: '🙋', blurb: 'A friendly student who loves to chat' },
+    npc: { id: 'friend', name: 'Xiao Li', hanzi: '小李', blurb: 'A friendly student who loves to chat' },
     xpTurn: 8,
     xpFinish: 20,
     lines: {

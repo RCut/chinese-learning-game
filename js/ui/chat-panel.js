@@ -58,7 +58,7 @@
     const c = S.chat, cur = c.cur, C = c.set;
     const log = c.log.slice(-SHOWN).map(bubble).join('');
     const more = c.log.length > SHOWN ? '<div class="sub" style="text-align:center">…</div>' : '';
-    const top = P.head(C.npc.emoji, C.npc.name, C.npc.hanzi, U.esc(C.npc.blurb),
+    const top = P.head(C.npc.sprite || C.npc.id, C.npc.name, C.npc.hanzi, U.esc(C.npc.blurb),
       '<button class="btn btn-ghost btn-sm" data-click="chat-new" title="Start a different conversation">🔄 New chat</button>');
     const topic = `<div class="kicker">Topic · ${U.esc(c.dlg.title)}</div>`;
 

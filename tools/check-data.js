@@ -250,7 +250,6 @@ texts.forEach(([where, text]) => {
     };
     (st.objects || []).forEach((o) => {
       place(o, 'object');
-      if (!o.emoji) errors.push(`${w} object ${o.id}: emoji is required`);
       if (!o.hanzi || !D.get(o.hanzi)) errors.push(`${w} object ${o.id}: hanzi "${o.hanzi}" must be a dictionary word`);
       (o.text || []).forEach((l, i) => {
         if (!l.hanzi || !l.english) errors.push(`${w} object ${o.id}.text[${i}]: hanzi and english are required`);
@@ -269,7 +268,7 @@ texts.forEach(([where, text]) => {
     st.entities.forEach((e) => {
       const door = e.kind === 'door';
       place(e, door ? 'door' : 'person');
-      ['name', 'hanzi', 'emoji', 'badge', 'pill'].forEach((k) => { if (!e[k]) errors.push(`${w} ${e.id}: ${k} is required`); });
+      ['name', 'hanzi', 'badge', 'pill'].forEach((k) => { if (!e[k]) errors.push(`${w} ${e.id}: ${k} is required`); });
       if (door) {
         doorsHere.push(e);
         if (!Wd.stages[e.to]) errors.push(`${w} door ${e.id}: leads to unknown stage "${e.to}"`);

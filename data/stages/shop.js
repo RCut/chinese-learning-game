@@ -51,7 +51,7 @@
     ],
     entities: [
       { id: 'door-shop-out', kind: 'door', name: 'Outside', hanzi: '外面', emoji: '🚪', x: 8, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
-      { id: 'wang', name: 'Master Wang', hanzi: '王师傅', emoji: '🖌️', x: 7, y: 3, stand: { x: 7, y: 4 }, badge: 'badge-ink', pill: 'pill-ink' },
+      { id: 'wang', name: 'Master Wang', hanzi: '王师傅', emoji: '👨‍🎨', x: 7, y: 3, stand: { x: 7, y: 4 }, badge: 'badge-ink', pill: 'pill-ink' },
     ],
   };
 })(window.MSC = window.MSC || {});

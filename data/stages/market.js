@@ -107,7 +107,7 @@
     ],
     entities: [
       { id: 'door-market-out', kind: 'door', name: 'Outside', hanzi: '外面', emoji: '🚪', x: 9, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },
-      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 7, y: 4, stand: { x: 7, y: 3 }, badge: 'badge-rose', pill: 'pill-stone' },
+      { id: 'cart', name: 'Fruit Stall', hanzi: '水果摊', emoji: '🍎', x: 7, y: 5, stand: { x: 7, y: 6 }, badge: 'badge-rose', pill: 'pill-stone' },
       { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', emoji: '👨‍🍳', x: 8, y: 7, stand: { x: 8, y: 6 }, badge: 'badge-amber', pill: 'pill-amber' },
     ],
   };

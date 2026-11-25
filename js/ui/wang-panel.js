@@ -12,7 +12,7 @@
   let afterTutorial = false;
   let lastDone = [];
 
-  const head = () => P.head('🖌️', 'Master Wang', '王师傅', 'Calligraphy &amp; seals');
+  const head = () => P.head('👨‍🎨', 'Master Wang', '王师傅', 'Calligraphy &amp; seals');
 
   function sign(c, { button = true } = {}) {
     const best = st().best[c];

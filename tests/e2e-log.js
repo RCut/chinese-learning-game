@@ -61,6 +61,7 @@ async function run(p, label) {
   await p.evaluate(() => MSC.actions.tab('stage'));
 
   console.log(`— ${label}: the first-time tip lives in the log`);
+  await p.waitForTimeout(400);                                            // let any word the notebook pane just logged arrive first
   await p.evaluate(() => { MSC.state.tipSeen = false; MSC.log.tip(); });
   ok('the tip is a log message and the log opens once', (await isOpen(p)) && /Quick tip/.test(await p.$eval('#log-list .log-item', (e) => e.textContent)));
   await p.evaluate(() => MSC.log.tip());

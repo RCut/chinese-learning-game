@@ -7,7 +7,7 @@
   MSC.data = MSC.data || {};
   MSC.data.chats = MSC.data.chats || {};
   MSC.data.chats.grocer = {
-    npc: { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', emoji: '👨‍🍳', blurb: 'The grocer: practise buying food, prices and bargaining' },
+    npc: { id: 'grocer', name: 'Shopkeeper Zhang', hanzi: '张老板', blurb: 'The grocer: practise buying food, prices and bargaining' },
     xpTurn: 8,
     xpFinish: 20,
     lines: {

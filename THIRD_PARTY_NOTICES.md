@@ -15,3 +15,9 @@ and clearly marking any modification. This repository does both:
   in `tools/build-strokes.js`.
 
 Have the licensing terms reviewed before a public release.
+
+## Phaser (`vendor/phaser.min.js`)
+
+Phaser 3.80.1, MIT licence, Copyright (c) 2024 Richard Davey, Phaser Studio Inc. (`vendor/PHASER_LICENSE.md`). It draws the game board.
+
+The pixel art is original, drawn in code in this repository (`data/art`).

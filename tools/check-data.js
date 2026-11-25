@@ -199,13 +199,26 @@ texts.forEach(([where, text]) => {
   const clean = text.replace(/\{[A-Za-z]+\}/g, '');   // placeholders are filled at run time
   MSC.dict.segment(clean).forEach((t) => { if (t.kind === 'unknown' && !(where.startsWith('writing') && writingChars.has(t.hanzi))) errors.push(`${where}: "${t.hanzi}" is not in the dictionary  (in "${text}")`); });
 });
-// ── emoji must render everywhere ──
-// Platforms that stop at Emoji 11 (Windows 10, older Android/ChromeOS) show a blank box for anything newer, so stage data may only use emoji up to
-// Emoji 11 (2018). The ranges below cover everything introduced in Emoji 12–15 (a few are over-cautious on purpose).
-const NEW_EMOJI = [[0x1FA70, 0x1FAFF], [0x1F6D5, 0x1F6D7], [0x1F6DC, 0x1F6DF], [0x1F6FA, 0x1F6FC], [0x1F7E0, 0x1F7F0], [0x1F90C, 0x1F90F], [0x1F93F, 0x1F93F],
-  [0x1F971, 0x1F971], [0x1F972, 0x1F972], [0x1F977, 0x1F979], [0x1F97B, 0x1F97B], [0x1F9A3, 0x1F9AF], [0x1F9BA, 0x1F9BF],
-  [0x1F9C3, 0x1F9CF], [0x1F94F, 0x1F94F], [0x1F9A7, 0x1F9A7]];
-const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = ch.codePointAt(0); return NEW_EMOJI.some(([lo, hi]) => c >= lo && c <= hi); });
+// ── art (data/art/*.js) ──
+(function checkArt() {
+  const A = MSC.art, used = new Set();
+  Object.values(MSC.data.world.stages || {}).forEach((st) => {
+    (st.objects || []).concat(st.entities).forEach((t) => used.add(t.sprite || t.id));
+    (st.scenery || []).forEach((s) => s.className && used.add(s.className));
+  });
+  used.add('player'); used.add('bubble'); used.add('compass');
+  A.order.forEach((k) => {
+    const d = A.defs[k];
+    if (d.w !== 16 || ![16, 24].includes(d.h)) errors.push(`art ${k}: ${d.w}×${d.h} — sprites are 16 wide and 16 or 24 tall`);
+    if (d.meta.rowsOk === false) errors.push(`art ${k}: ASCII rows are not all the same length`);
+    if (!d.p.some(Boolean)) errors.push(`art ${k}: is empty`);
+    if (!used.has(k)) warn.push(`art ${k}: not used by any stage thing`);
+  });
+  Object.entries(A.tiles).forEach(([k, vs]) => vs.forEach((v, i) => { if (!v.p.every(Boolean)) errors.push(`tile ${k}#${i}: ground tiles must be fully painted (no transparent pixels)`); }));
+  const people = ['player', 'barista', 'wang', 'friend', 'passerby', 'grocer'];
+  people.forEach((k) => { if (!A.has(k)) errors.push(`art: person "${k}" is missing`); });
+  console.log(`art: ${A.order.length} sprites, ${Object.keys(A.tiles).length} ground tiles`);
+})();
 
 // ── stages (data/stages/*.js) ──
 (function checkStages() {
@@ -218,9 +231,8 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
     const w = `stage ${st.id}`;
     if (!st.map || st.map.length !== st.rows) errors.push(`${w}: map has ${st.map ? st.map.length : 0} rows, rows says ${st.rows}`);
     (st.map || []).forEach((row, y) => { if (row.length !== st.cols) errors.push(`${w}: map row ${y} has ${row.length} columns, cols says ${st.cols}`); });
-    const cls = { ...Wd.tileClasses, ...(st.tileClasses || {}) };
     const blockedT = [...Wd.blockedTiles, ...(st.blockedTiles || [])];
-    new Set((st.map || []).join('')).forEach((ch) => { if (!cls[ch]) errors.push(`${w}: tile letter "${ch}" has no tileClasses entry`); });
+    new Set((st.map || []).join('')).forEach((ch) => { if (!MSC.art.tileFor(st.id, ch)) errors.push(`${w}: tile letter "${ch}" has no ground art (A.tile in data/art)`); });
     if (!st.name || !st.hanzi) errors.push(`${w}: name and hanzi are required`);
     if (!['street', 'shop', 'market', 'cafe'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe`);
     const inMap = (x, y) => x >= 0 && y >= 0 && x < st.cols && y < st.rows && (st.map[y] || '')[x] !== undefined;
@@ -228,8 +240,8 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
     const solid = new Map();
     const place = (t, kind) => {
       claim(t.id, `${w} ${kind}`);
-      const bad = unsafeEmoji(t.emoji);
-      if (bad.length) errors.push(`${w} ${kind} ${t.id}: emoji ${bad.join('')} is too new (shows as a blank box on many devices) — pick one from Emoji 11 or older`);
+      if (t.emoji) errors.push(`${w} ${kind} ${t.id}: remove \`emoji\` — things are pixel art now (draw it in data/art/${st.id}.js as "${t.sprite || t.id}")`);
+      if (!MSC.art.has(t.sprite || t.id)) errors.push(`${w} ${kind} ${t.id}: no art called "${t.sprite || t.id}" (draw it in data/art/${st.id}.js)`);
       if (!inMap(t.x, t.y)) { errors.push(`${w} ${kind} ${t.id}: (${t.x},${t.y}) is outside the map`); return; }
       if (!tileOk(t.x, t.y) && kind !== 'object') errors.push(`${w} ${kind} ${t.id}: stands on a blocked tile (${st.map[t.y][t.x]})`);
       const k = `${t.x},${t.y}`;
@@ -238,7 +250,6 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
     };
     (st.objects || []).forEach((o) => {
       place(o, 'object');
-      if (!o.emoji) errors.push(`${w} object ${o.id}: emoji is required`);
       if (!o.hanzi || !D.get(o.hanzi)) errors.push(`${w} object ${o.id}: hanzi "${o.hanzi}" must be a dictionary word`);
       (o.text || []).forEach((l, i) => {
         if (!l.hanzi || !l.english) errors.push(`${w} object ${o.id}.text[${i}]: hanzi and english are required`);
@@ -247,9 +258,9 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
       if (o.note) D.segment(o.note).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.note: "${t.hanzi}" is not in the dictionary`); });
     });
     (st.scenery || []).forEach((sc, i) => {
-      const bad = unsafeEmoji(sc.text);
-      if (bad.length) errors.push(`${w} scenery[${i}]: emoji ${bad.join('')} is too new — pick one from Emoji 11 or older`);
-      if (/\p{Extended_Pictographic}/u.test(sc.text || '') && !['scenery-sign', 'scenery-banner'].includes(sc.className)) errors.push(`${w} scenery[${i}]: "${sc.text}" is a decorative emoji nobody can learn from — make it an object (with its word) or remove it`);
+      if (/\p{Extended_Pictographic}/u.test(sc.text || '')) errors.push(`${w} scenery[${i}]: no emoji in the game any more — sign text is Chinese only ("${sc.text}")`);
+      if (sc.text && !['scenery-sign', 'scenery-banner'].includes(sc.className)) errors.push(`${w} scenery[${i}]: only signs (className scenery-sign) may carry text`);
+      if (!sc.text && !['road-dash', 'zebra', 'shelter'].includes(sc.className)) errors.push(`${w} scenery[${i}]: texture must be road-dash, zebra or shelter — anything else is a thing: make it an object`);
       const zhPart = (sc.text || '').replace(/[^㐀-鿿]/g, '');
       if (zhPart) D.segment(zhPart).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} scenery[${i}]: "${t.hanzi}" is not in the dictionary`); });
     });
@@ -257,7 +268,7 @@ const unsafeEmoji = (str) => [...String(str || '')].filter((ch) => { const c = c
     st.entities.forEach((e) => {
       const door = e.kind === 'door';
       place(e, door ? 'door' : 'person');
-      ['name', 'hanzi', 'emoji', 'badge', 'pill'].forEach((k) => { if (!e[k]) errors.push(`${w} ${e.id}: ${k} is required`); });
+      ['name', 'hanzi', 'badge', 'pill'].forEach((k) => { if (!e[k]) errors.push(`${w} ${e.id}: ${k} is required`); });
       if (door) {
         doorsHere.push(e);
         if (!Wd.stages[e.to]) errors.push(`${w} door ${e.id}: leads to unknown stage "${e.to}"`);

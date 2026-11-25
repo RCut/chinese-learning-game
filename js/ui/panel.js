@@ -17,9 +17,11 @@
   const HINT_LABEL = ['💡 Hint', '💡 More', '👁 Answer'];
 
   // ───────────────────────── shared pieces ─────────────────────────
+  /** a sprite key → its pixel portrait; anything else (e.g. a one-off symbol) is shown as text */
+  const avatar = (x) => (MSC.art.has(x) ? MSC.art.img(x, 3, true) : U.esc(x));
   const head = (emoji, title, hanzi, sub, extra) => `
     <div class="pane-head">
-      <div class="row"><div class="avatar">${emoji}</div>
+      <div class="row"><div class="avatar">${avatar(emoji)}</div>
         <div><h3>${U.esc(title)} ${hanzi ? `<span class="hz">(${U.esc(hanzi)})</span>` : ''}</h3><div class="sub">${sub}</div></div></div>
       <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 Quest</button></div>
     </div>`;
@@ -46,7 +48,7 @@
     const done = { menu: S.story.menuChecked, order: S.story.questDone };
     const nextId = !done.menu ? 'menu' : !done.order ? 'barista' : null;
     return `<div class="stack">
-      <div class="pane-head"><div class="row"><div class="avatar">🧭</div>
+      <div class="pane-head"><div class="row"><div class="avatar">${avatar('compass')}</div>
         <div><div class="kicker">${UT.welcome.kicker}</div><h3>${UT.welcome.title}</h3></div></div>
         <div class="sub">Wallet <b class="num" style="color:#047857">¥${S.money}</b></div></div>
       <div class="box amber stack" style="gap:8px">
@@ -55,22 +57,22 @@
       </div>
       <div class="stack" style="gap:8px">
         ${UT.destinations.map((d) => {
-          const emoji = MSC.stage.find(d.id).ent.emoji;
-          return `<button class="dest ${d.id === nextId ? 'focus' : ''}" data-click="go" data-arg="${d.id}"><span class="row"><span style="font-size:22px">${emoji}</span><span><b>${U.esc(d.title)}</b><small>${U.esc(MSC.data.world.stages[MSC.stage.find(d.id).stage].name)} · ${U.esc(d.subtitle)}</small></span></span><b style="font-size:12px">Go →</b></button>`;
+          const ent = MSC.stage.find(d.id).ent;
+          return `<button class="dest ${d.id === nextId ? 'focus' : ''}" data-click="go" data-arg="${d.id}"><span class="row"><span class="dest-ic">${MSC.art.img(ent.sprite || ent.id, 2, true)}</span><span><b>${U.esc(d.title)}</b><small>${U.esc(MSC.data.world.stages[MSC.stage.find(d.id).stage].name)} · ${U.esc(d.subtitle)}</small></span></span><b style="font-size:12px">Go →</b></button>`;
         }).join('')}
       </div></div>`;
   }
 
   // ───────────────────────── Barista Lin ─────────────────────────
   function renderBaristaGate() {
-    return `<div class="stack">${head('👩‍🍳', 'Barista Lin', '林老板', `Wallet <b class="num">¥${S.money}</b>`)}
+    return `<div class="stack">${head('barista', 'Barista Lin', '林老板', `Wallet <b class="num">¥${S.money}</b>`)}
       <div class="box">${UI.sentence(QD.barista.gate, { size: 'lg' })}</div>
       <div class="box amber stack" style="gap:8px"><div class="box-sm"><b>Objective:</b> ${U.esc(QD.barista.gateObjective)}</div>
         <button class="btn btn-primary btn-block" data-click="go" data-arg="menu">📋 Go to the menu</button></div></div>`;
   }
 
   function renderBaristaBroke() {
-    return `<div class="stack">${head('👩‍🍳', 'Barista Lin', '林老板', `Wallet <b class="num">¥${S.money}</b>`)}
+    return `<div class="stack">${head('barista', 'Barista Lin', '林老板', `Wallet <b class="num">¥${S.money}</b>`)}
       <div class="box">${UI.sentence(QD.barista.broke, { size: 'lg' })}</div>
       <div class="box amber stack" style="gap:8px"><div class="box-sm"><b>Objective:</b> ${U.esc(QD.barista.brokeObjective)}</div>
         <button class="btn btn-primary btn-block" data-click="go" data-arg="passerby">🧳 Find the traveler</button></div></div>`;
@@ -129,7 +131,7 @@
       ? `<div class="eval">${st.eval.map((it) => `<span class="ev ${it.status}"><span>${U.esc(it.label)}</span><small>${it.status === 'correct' ? '✓ ' : it.status === 'wrong' ? '✕ ' : ''}${U.esc(it.detail)}</small></span>`).join('')}</div>` : '';
 
     return `<div class="stack">
-      ${head('👩‍🍳', 'Barista Lin', '林老板', `Wallet <b class="num" style="color:#047857">¥${S.money}</b>`, `<div class="row" style="gap:4px">${pills}</div>`)}
+      ${head('barista', 'Barista Lin', '林老板', `Wallet <b class="num" style="color:#047857">¥${S.money}</b>`, `<div class="row" style="gap:4px">${pills}</div>`)}
       <div class="box">${UI.sentence(step.npc, { size: 'lg' })}</div>
       <div class="box amber row between" style="min-height:62px"><div><span class="kicker" style="color:#92400e">Your goal</span><div style="font-weight:700;font-size:13px">${U.esc(goalText)}</div></div>${nextBtn}</div>
       <div class="tabs3">${modes}</div>
@@ -160,7 +162,7 @@
       ? `<div class="row" style="flex-wrap:wrap"><button class="btn btn-ghost btn-sm" data-click="renew-quiz" data-arg="${key}">↻ ${U.esc(quiz.repeatLabel)}</button>${key === 'menu' ? '<button class="btn btn-ok btn-sm" data-click="go" data-arg="barista">Go order lunch →</button>' : ''}</div>` : '';
     const correct = quiz.items.find((i) => i.correct);
     return `<div class="stack">
-      ${head(quiz.emoji || MSC.stage.find(key).ent.emoji, quiz.title, quiz.hanzi, `<span class="kicker">${U.esc(quiz.badge)}</span>`)}
+      ${head(key, quiz.title, quiz.hanzi, `<span class="kicker">${U.esc(quiz.badge)}</span>`)}
       ${boardHtml(quiz)}
       <div class="box"><div class="sub" style="margin-bottom:6px;font-weight:600">${U.esc(quiz.instruction)}</div>${UI.sentence(quiz.prompt, { size: 'lg' })}</div>
       <div class="stack" style="gap:8px">${opts}</div>
@@ -178,7 +180,7 @@
     const sign = o.text && o.text.length
       ? `<div class="box green"><div class="kicker" style="margin-bottom:4px">The sign says</div><div class="sign-lines">${o.text.map((l) => UI.sentence(l, { size: 'md', speaker: true })).join('')}</div></div>` : '';
     const body = word + sign;
-    return `<div class="stack">${head(o.emoji, e ? U.capitalize(e.english.split(/[\/;(]/)[0].trim()) : o.hanzi, o.hanzi, sub)}
+    return `<div class="stack">${head(o.sprite || o.id, e ? U.capitalize(e.english.split(/[\/;(]/)[0].trim()) : o.hanzi, o.hanzi, sub)}
       ${body}${o.note ? `<div class="box amber box-sm">${UI.richText(o.note)}</div>` : ''}
       <div class="sub">Nothing to do here — just learn the word. It is in your notebook now.</div></div>`;
   }

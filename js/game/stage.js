@@ -11,7 +11,6 @@
   const W = MSC.data.world;
   const ST = {};
   let walkTimer = null;
-  let playerEl = null;
   let busy = false;           // a stage change is in progress
   let pending = null;         // an entity we are on our way to in another stage
 
@@ -48,7 +47,6 @@
   const doorAt = (x, y) => stage().entities.find((e) => isDoor(e) && e.x === x && e.y === y) || null;
   const thingAt = (x, y) => stage().entities.concat(stage().objects || []).find((e) => e.x === x && e.y === y) || null;
   const blocked = () => [...W.blockedTiles, ...(stage().blockedTiles || [])];
-  const tileClass = (ch) => (stage().tileClasses && stage().tileClasses[ch]) || W.tileClasses[ch] || '';
 
   const label = (ent) => {
     const py = D.sentencePinyin(ent.hanzi);
@@ -65,27 +63,24 @@
     board.style.setProperty('--ar-m', `${st.cols} / ${st.rows + 1}`);
     board.dataset.stage = st.id;
     const title = document.getElementById('stage-title');
-    if (title) title.textContent = `📍 ${st.name}`;
-    const tiles = [];
-    for (let y = 0; y < st.rows; y++) for (let x = 0; x < st.cols; x++) tiles.push(`<div class="tile ${tileClass(st.map[y][x])}"></div>`);
-    const scenery = (st.scenery || []).map((s) =>
-      `<div class="cell scenery" style="--x:${s.x};--y:${s.y}">${s.className === 'road-dash' ? '<i class="road-dash"></i>' : `<span class="${s.className || ''}">${MSC.ui.signHtml(s.text || '')}</span>`}</div>`).join('');
-    const objects = (st.objects || []).map((o) =>
-      `<div class="cell thing" id="obj-${o.id}" style="--x:${o.x};--y:${o.y}"><span class="thing-emoji">${o.emoji}</span></div>`).join('');
-    const entities = st.entities.map((e) =>
-      `<div class="cell entity ${isDoor(e) ? 'door' : ''}" id="ent-${e.id}" style="--x:${e.x};--y:${e.y}"><span class="entity-emoji">${e.emoji}</span><span class="entity-label ${e.badge}" data-ent-label="${e.id}"></span></div>`).join('');
-    board.innerHTML = `<div class="tiles">${tiles.join('')}</div>${scenery}${objects}
-      <div class="cell player" id="player" style="--x:${S.player.x};--y:${S.player.y}"><span class="player-bubble">💬</span><span class="player-emoji">${W.playerEmoji}</span></div>${entities}`;
-    playerEl = document.getElementById('player');
+    if (title) title.textContent = st.name;
+    // HTML on top of the canvas: name tags (people and doors) and Chinese board signs. The drawing itself is Phaser's (js/ui/board.js).
+    const scenery = (st.scenery || []).filter((s) => s.text).map((s) =>
+      `<div class="cell scenery" style="--x:${s.x};--y:${s.y}"><span class="${s.className || ''}">${MSC.ui.signHtml(s.text)}</span></div>`).join('');
+    const tags = st.entities.map((e) =>
+      `<div class="cell entity ${isDoor(e) ? 'door' : ''}" id="ent-${e.id}" style="--x:${e.x};--y:${e.y}"><span class="entity-label ${e.badge}" data-ent-label="${e.id}"></span></div>`).join('');
+    document.getElementById('board-dom').innerHTML = scenery + tags;
+    MSC.board.build(st, S.player);
     // the buttons above the board: the people and doors of THIS stage (simple objects have no button)
     document.getElementById('pills').innerHTML = st.entities.map((e) =>
-      `<button class="pill ${e.pill}" data-click="go" data-arg="${e.id}">${e.emoji} ${U.esc(e.name)}</button>`).join('');
+      `<button class="pill ${e.pill}" data-click="go" data-arg="${e.id}">${MSC.art.img(e.sprite || e.id, 2, true)}<span>${U.esc(e.name)}</span></button>`).join('');
   }
 
   ST.build = () => {
     const first = W.stages[W.start];
     S.stage = S.stage || W.start;
     if (!S.stageInit) { S.player = { ...first.playerStart }; S.stageInit = true; }
+    MSC.board.init(document.getElementById('board-gl'));
     buildBoard();
     const board = document.getElementById('board');
     board.addEventListener('click', (e) => {
@@ -110,13 +105,10 @@
         l.setAttribute('data-tip-zh', `${e.hanzi} (${D.sentencePinyin(e.hanzi)})`);
         l.setAttribute('data-tip-en', e.name);
       }
-      const el = document.getElementById(`ent-${e.id}`);
-      if (el) el.classList.toggle('active', S.active === e.id);
     });
-    (st.objects || []).forEach((o) => { const el = document.getElementById(`obj-${o.id}`); if (el) el.classList.toggle('active', S.active === o.id); });
-    playerEl.style.setProperty('--x', S.player.x);
-    playerEl.style.setProperty('--y', S.player.y);
-    playerEl.classList.toggle('near', !!ST.adjacent());
+    MSC.board.setPlayer(S.player.x, S.player.y);
+    MSC.board.setActive(S.active);
+    MSC.board.setNear(!!ST.adjacent());
     fitLabels();
   };
 

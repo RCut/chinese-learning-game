@@ -1416,8 +1416,8 @@
             ] },
           n2: { npc: { hanzi: '离这儿远吗？', english: 'Is it far from here?' }, goal: 'Say that it is not far, it is close.', tip: '离 = away from; 近 = near: 离这儿很近.',
             replies: [
-              { say: ['不远，离这儿很近', '离这儿很近', '很近', '很近，走这条路就到'], en: 'Not far — close to here.', label: 'Close', next: 'n3' },
-              { say: ['有点远，坐公交车吧', '有点远'], en: "It's a bit far.", label: 'Far', next: 'n3' },
+              { say: ['离这儿很近', '很近', '走这条路就到'], en: 'Not far — close to here.', label: 'Close', next: 'n3' },
+              { say: ['有点远'], en: "It's a bit far.", label: 'Far', next: 'n3' },
             ] },
           n3: { npc: { hanzi: '好的。我是从机场回来的，东西很多。', english: "OK. I'm coming back from the airport and have a lot of things." }, goal: 'Say that you can help — carry it.', tip: '拿 = carry/take: 我帮你拿.',
             replies: [{ say: ['我帮你拿', '我来帮你拿', '我帮你拿吧'], en: "I'll help you carry it.", next: 'bye' }] },
@@ -1434,8 +1434,8 @@
             replies: [{ say: ['可以，哪个字', '好，哪个字', '可以，是哪个', '好，你过来', '可以，你要知道什么意思'], en: 'Sure — which character?', next: 'n2' }] },
           n2: { npc: { hanzi: '这个！我还是不懂。', english: "This one! I still don't understand." }, goal: 'Say do not worry, and you will explain it slowly.', tip: '没关系 = no problem. 慢 = slow: 我慢慢说.',
             replies: [
-              { say: ['没关系，我慢慢说', '我慢慢说', '好，我慢慢说', '这样写，不是那样写'], en: "No problem, I'll explain slowly.", label: 'Explain', next: 'n3' },
-              { say: ['我也不懂', '对不起，我也不懂'], en: "I don't understand it either.", label: "Don't know", next: 'bye2' },
+              { say: ['没关系，我慢慢说', '我慢慢说', '这样写，不是那样写'], en: "No problem, I'll explain slowly.", label: 'Explain', next: 'n3' },
+              { say: ['我也不懂'], en: "I don't understand it either.", label: "Don't know", next: 'bye2' },
             ] },
           n3: { npc: { hanzi: '我懂了！你教完了吗？', english: 'I get it! Have you finished teaching me?' }, goal: 'Say that you have finished.', tip: '完 = finished: 教完了.',
             replies: [{ say: ['教完了', '我教完了', '完了'], en: "I've finished.", next: 'bye1' }] },

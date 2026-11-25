@@ -17,7 +17,7 @@ const ok = (n, c, x = '') => { console.log(c ? '  ok  ' : '  FAIL', n, c ? '' : 
       this.stop = () => {};
     };
   });
-  const dismiss = async () => { for (const s of ['#onboard [data-click="close-onboard"]', '#toasts-clear']) if (await p.isVisible(s)) await p.click(s).catch(() => {}); };
+  const dismiss = () => p.keyboard.press('Escape');                       // fold the notification list away if it is open
   const say = (t) => p.evaluate((x) => { window.__heard = x; }, t);
 
   console.log('— Xiao Li: speaking');

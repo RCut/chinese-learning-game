@@ -46,6 +46,10 @@
   </header>
 
   <main class="main">
+    <section id="log" class="log" aria-label="Notifications" aria-live="polite">
+      <div class="log-bar"><span class="log-ic" aria-hidden="true">🔔</span><div id="log-latest" class="log-latest"></div><span id="log-n" class="log-n"></span><button type="button" id="log-toggle" class="log-toggle" data-click="log-toggle" aria-expanded="false" aria-label="Show or hide all notifications">▾</button></div>
+      <div class="log-pop"><div id="log-list" class="log-list"></div><div class="log-foot"><button type="button" class="btn btn-ghost btn-sm" data-click="log-clear">Clear log</button></div></div>
+    </section>
     <section id="view-stage" class="stage-layout">
       <div class="card stage-card">
         <h2 class="stage-title" id="stage-title">📍 Street</h2>
@@ -88,9 +92,6 @@
   <section id="writer" class="writer" role="dialog" aria-modal="true" aria-label="Writing practice"></section>
 
   <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
-  <div id="toasts" aria-live="polite">
-    <div id="onboard" role="status"><div class="grow"><b id="onboard-title"></b><span id="onboard-body"></span></div><button data-click="close-onboard" aria-label="Close">✕</button></div>
-  </div>
 
   <!-- DATA: edit these files to change content -->
   <script src="data/dictionary.js"></script>
@@ -122,7 +123,7 @@
   <script src="js/core/speech.js"></script>
   <script src="js/core/sfx.js"></script>
   <!-- UI -->
-  <script src="js/ui/toast.js"></script>
+  <script src="js/ui/log.js"></script>
   <script src="js/ui/gestures.js"></script>
   <script src="js/ui/text.js"></script>
   <script src="js/ui/stroke-board.js"></script>

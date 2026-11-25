@@ -47,16 +47,7 @@
     else if (k === 'e') { e.preventDefault(); MSC.stage.interact(); }
   });
 
-  // Popups sit just below the (sticky) header, whatever height it has: it wraps to two rows on phones.
-  function trackHeader() {
-    const h = document.querySelector('.app-header');
-    const set = () => document.documentElement.style.setProperty('--hdr', `${Math.round(h.getBoundingClientRect().height)}px`);
-    set();
-    if (window.ResizeObserver) new ResizeObserver(set).observe(h); else window.addEventListener('resize', set);
-  }
-
   window.addEventListener('DOMContentLoaded', () => {
-    trackHeader();
     MSC.progress.load();
     MSC.economy.init();
     MSC.speech.initVoices();

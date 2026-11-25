@@ -5,7 +5,7 @@ let fails = 0;
 const ok = (n, c, x = '') => { console.log(c ? '  ok  ' : '  FAIL', n, c ? '' : x); if (!c) fails++; };
 const wait = (p, ms) => p.waitForTimeout(ms);
 
-async function clear(p) { for (const s of ['#onboard [data-click="close-onboard"]', '#toasts-clear']) if (await p.isVisible(s)) await p.click(s).catch(() => {}); }
+const clear = (p) => p.keyboard.press('Escape');                          // fold the notification list away if it is open
 const where = (p) => p.evaluate(() => ({ stage: MSC.state.stage, x: MSC.state.player.x, y: MSC.state.player.y, active: MSC.state.active }));
 const pills = (p) => p.$$eval('#pills .pill', (b) => b.map((x) => x.textContent.trim()));
 

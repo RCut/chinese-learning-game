@@ -62,7 +62,9 @@ Four places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
 
 ## Interface notes
 
-- Every popup has a ✕ and can be swiped away (hold to keep reading); "Clear all" appears when several stack up.
+- **Notification log:** nothing pops up over the game. Every message (new words, money, quest progress, tips, small errors) goes to one
+  frame above the stage: collapsed it is a single row with the latest message, expanded (▾) a scrollable list of the last ~100.
+  Every Chinese word or character in it is a button that opens that word in the notebook.
 - The writing tray is a bottom sheet on phones (swipe down to close) and a side panel on desktop.
 - Layout never jumps while you act: hint and feedback areas keep their slots.
 
@@ -91,7 +93,7 @@ data/                   CONTENT — edit these, no game code needed
 js/core/                pure logic (no DOM): util, dictionary (segmentation, related words), pinyin, pattern, stroke-match,
                         state (state, saving, word discovery), speech (TTS), sfx (synthesised arrival sounds)
 js/game/                game logic: stage (places, walking, doors, fade), barista, quizzes, economy, chat, writing (lessons, mastery)
-js/ui/                  rendering and input: panel, text (sentences), gestures, toast, notebook, chat-panel, wang-panel, writer
+js/ui/                  rendering and input: panel, text (sentences), gestures, log (notification log), notebook, chat-panel, wang-panel, writer
                         (writing tray), stroke-board (SVG canvas), howto, recognizer (speech input)
 js/main.js              start-up, header controls, keyboard
 
@@ -147,7 +149,7 @@ node tests/chat.test.js           # plays every path of every conversation, for 
 node tests/e2e-stages.js          # doors, 0.5 s fade, sounds, buttons per place, every object teaches its word, labels, phone
 node tests/e2e-chat.js            # talking to Xiao Li and the shopkeeper: tiles, typing, hints, branching
 node tests/e2e-speak.js           # speech input (mocked recogniser)
-node tests/e2e-popups.js          # every popup dismisses with ✕ or a swipe
+node tests/e2e-log.js             # the notification log: one row / scrollable list, clickable words, no popups left
 node tests/e2e-writing.js         # tutorial, a lesson, wall, notebook
 node tests/e2e-writing-rules.js   # feedback, hints, review, practice, offers, phone touch
 ```

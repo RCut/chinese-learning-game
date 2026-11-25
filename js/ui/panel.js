@@ -107,7 +107,7 @@
   function renderBarista() {
     if (!S.story.menuChecked) return renderBaristaGate();
     if (S.round && !S.round.paid && S.money < S.round.total) {
-      S.round = null; MSC.toast.show('You spent some money, so Barista Lin has changed your order.', 4500);
+      S.round = null; MSC.log.say('You spent some money, so Barista Lin has changed your order.');
     }
     if (!S.round) B.newRound();
     if (!S.round) return renderBaristaBroke();
@@ -189,7 +189,7 @@
     const a = S.active;
     el.innerHTML = a === 'barista' ? renderBarista() : a && QZ.has(a) ? renderQuiz(a) : a && P.screens[a] ? P.screens[a]() : a && MSC.stage.find(a) && MSC.stage.find(a).type === 'object' ? renderObject(MSC.stage.find(a).ent) : renderWelcome();
     el.scrollTop = top;
-    if (S.discoverCount > before && a) MSC.toast.onboarding();
+    if (S.discoverCount > before && a) MSC.log.tip();
     if (toFeedback) P.revealFeedback();
   };
 
@@ -244,7 +244,7 @@
         user = MSC.pinyin.parse(st.recall);
       } else user = MSC.pinyin.parse(st.tray.join(''));
     }
-    if (!user.length) { MSC.toast.show(S.inputMode === 'recall' ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
+    if (!user.length) { MSC.log.say(S.inputMode === 'recall' ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
     const res = B.check(step, user, S.inputMode === 'recall');
     MSC.speech.say(st.reaction.hanzi);
     if (res.ok && res.first) {
@@ -290,7 +290,7 @@
   };
   A['send-quiz'] = (key) => {
     const st = QZ.state(key);
-    if (st.selected === null) { MSC.toast.show('Pick an answer first.'); return; }
+    if (st.selected === null) { MSC.log.say('Pick an answer first.'); return; }
     const res = QZ.submit(key);
     MSC.speech.say(st.reaction.hanzi);
     P.render(false, true);

@@ -190,7 +190,7 @@
         const done = Object.keys(results).length;
         if (!done) return;
         const kept = Object.values(results).filter(Boolean).length;
-        MSC.toast.show(`Review done: ${kept} of ${done} written from memory.`, 5000);
+        MSC.log.say(`Review done: ${kept} of ${done} written from memory.`);
         MSC.emit('writing-changed');
       },
     };

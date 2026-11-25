@@ -81,7 +81,7 @@ const S = (p, fn) => p.evaluate(fn);
 
   console.log('— wall + notebook');
   ok('lesson-complete view shows 4 signs', (await p.$$('.sign')).length === 4);
-  ok('summary toast with tappable characters', (await p.$$('.toast.act .toast-chip')).length === 4);
+  ok('the log gets a summary message with tappable characters', (await p.$$('#log-list .log-item:first-child .log-chip')).length === 4);
   await p.click('.sign >> nth=0'); await p.waitForTimeout(500);
   const word = await p.evaluate(() => MSC.state.selectedWord);
   ok('tapping a sign opens its word in the notebook', (await p.$eval('#view-notebook', (e) => !e.classList.contains('hidden'))) && !!word, word);

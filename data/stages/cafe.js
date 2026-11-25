@@ -23,8 +23,8 @@
       { x: 4, y: 0, text: '☕ 咖啡店', className: 'scenery-sign' },
     ],
     objects: [
-      { id: 'cf-machine', x: 2, y: 1, emoji: '☕', hanzi: '咖啡机', note: 'Barista Lin makes your 咖啡 with this.' },
-      { id: 'cf-cups', x: 6, y: 1, emoji: '🍵', hanzi: '杯子', note: 'Count cups with 杯: 一杯咖啡 is one cup of coffee.' },
+      { id: 'cf-machine', x: 1, y: 1, emoji: '☕', hanzi: '咖啡机', note: 'Barista Lin makes your 咖啡 with this.' },
+      { id: 'cf-cups', x: 7, y: 1, emoji: '🍵', hanzi: '杯子', note: 'Count cups with 杯: 一杯咖啡 is one cup of coffee.' },
       { id: 'cf-milk', x: 8, y: 1, emoji: '🥛', hanzi: '牛奶', note: 'Fresh 牛奶 for the 咖啡.' },
       { id: 'cf-cake', x: 9, y: 1, emoji: '🍰', hanzi: '蛋糕', note: 'A slice of 蛋糕 goes nicely with 咖啡.' },
       { id: 'cf-clock', x: 11, y: 1, emoji: '🕰️', hanzi: '钟', note: 'The 钟 on the wall: a clock.' },
@@ -44,7 +44,7 @@
       { id: 'cf-fridge', x: 14, y: 6, emoji: '❄️', hanzi: '冰箱', note: 'The 冰箱 keeps the 牛奶 cold: 冰 is ice, so it is the ice-box.' },
       { id: 'cf-plant', x: 1, y: 8, emoji: '🌱', hanzi: '植物', note: 'A 植物 in the corner: a plant.' },
       { id: 'cf-plant-2', x: 13, y: 8, emoji: '🌿', hanzi: '植物', note: 'A 植物 in the corner: a plant.' },
-      { id: 'cf-hours', x: 9, y: 8, emoji: '🕘', hanzi: '营业时间', text: [{ hanzi: '营业时间', english: 'Opening hours' }, { hanzi: '早上九点', english: 'From nine in the morning' }] },
+      { id: 'cf-hours', x: 11, y: 8, emoji: '🕘', hanzi: '营业时间', text: [{ hanzi: '营业时间', english: 'Opening hours' }, { hanzi: '早上九点', english: 'From nine in the morning' }] },
     ],
     entities: [
       { id: 'door-cafe-out', kind: 'door', name: 'Outside', hanzi: '外面', emoji: '🚪', x: 7, y: 8, to: 'street', badge: 'badge-stone', pill: 'pill-stone' },

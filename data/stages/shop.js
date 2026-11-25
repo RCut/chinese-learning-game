@@ -9,8 +9,8 @@
     map: [
       'WWWWWWWWWWWWWWWW',
       'WHPPPPPPPPPPPPHW',
-      'WHPPPPPPPPPPPPHW',
       'WHPPTTPPPTTPPPHW',
+      'WHPPPPPPPPPPPPHW',
       'WPPPPPKKKKPPPPPW',
       'WPPPPPKKKKPPTTPW',
       'WPPTTPPPPPPPPPPW',
@@ -22,10 +22,10 @@
     scenery: [],
     objects: [
       // the four treasures of the study sit on Master Wang's big work table
-      { id: 'sh-brush', x: 4, y: 3, emoji: '🖌️', hanzi: '毛笔', note: 'The brush, 毛笔, is one of the Four Treasures of the Study 文房四宝: brush, ink, paper and inkstone.' },
-      { id: 'sh-ink', x: 5, y: 3, emoji: '⚫', hanzi: '墨', note: 'Ink sticks are ground with water on an inkstone to make fresh ink.' },
-      { id: 'sh-inkstone', x: 9, y: 3, emoji: '⬛', hanzi: '砚台', note: 'The inkstone is where the ink is ground and kept.' },
-      { id: 'sh-xuan', x: 10, y: 3, emoji: '📃', hanzi: '宣纸', note: '宣纸 is soft, absorbent paper made in Xuan (Anhui) — the classic paper for brush and ink.' },
+      { id: 'sh-brush', x: 4, y: 2, emoji: '🖌️', hanzi: '毛笔', note: 'The brush, 毛笔, is one of the Four Treasures of the Study 文房四宝: brush, ink, paper and inkstone.' },
+      { id: 'sh-ink', x: 5, y: 2, emoji: '⚫', hanzi: '墨', note: 'Ink sticks are ground with water on an inkstone to make fresh ink.' },
+      { id: 'sh-inkstone', x: 9, y: 2, emoji: '⬛', hanzi: '砚台', note: 'The inkstone is where the ink is ground and kept.' },
+      { id: 'sh-xuan', x: 10, y: 2, emoji: '📃', hanzi: '宣纸', note: '宣纸 is soft, absorbent paper made in Xuan (Anhui) — the classic paper for brush and ink.' },
       // shelves
       { id: 'sh-book1', x: 1, y: 1, emoji: '📕', hanzi: '书', note: 'A book. 书 is also the first character of 书架 (bookshelf) and 书法 (calligraphy).' },
       { id: 'sh-bookshelf', x: 1, y: 2, emoji: '📚', hanzi: '书架' },

@@ -104,7 +104,7 @@
     ch.log.push({ who: 'me', hanzi: match.variant, english: match.reply.en });
     ch.turns++;
     ch.cur = buildNode(match.reply.next);
-    if (ch.cur.end) { ch.finished = true; S.chatDone++; if (MSC.levels && ch.npcId === 'friend') MSC.levels.flag('chatted'); }
+    if (ch.cur.end) { ch.finished = true; S.chatDone++; if (MSC.levels && ch.npcId === 'friend') MSC.levels.flag('chatted'); if (MSC.levels && ch.set && ch.set.family) MSC.levels.flag('family'); }
     return ch.cur;
   };
 

@@ -20,7 +20,9 @@
  *                        `arrive` (optional) = where you appear in the other stage. Left out, you appear on a free tile beside
  *                        that stage's door back to this one — so doors can be moved without editing the other stage's file.
  *              People and doors get a name tag on the board and a button above it; objects do not.
- *   sound      what plays when you arrive here: 'street' | 'shop' | 'market' | 'cafe'
+ *   sound      what plays when you arrive here: 'street' | 'shop' | 'market' | 'cafe' | 'home'
+ *   objects may also have  listen: ['四块', '十块'], listenTitle: '…'  → a "what did you hear?" moment on its card (never scores),
+ *              and  level: n  (see data/levels.js — by default an object appears at its word's HSK level, non-HSK words at level 2)
  *
  * Pictures are pixel art drawn in code (js/core/art.js, data/art/*.js) — never emoji. A thing's picture is the art called `sprite`,
  * or, if that is left out, the art called by its id. Ground tiles come from the map letters (data/art too). Ids must be unique across ALL stages.

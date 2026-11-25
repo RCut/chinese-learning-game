@@ -21,6 +21,7 @@
         { id: 'ordered', text: 'Order lunch from Barista Lin' },
         { id: 'chatted', text: 'Finish a conversation with Xiao Li' },
         { id: 'wrote', text: 'Finish a writing lesson with Master Wang' },
+        { id: 'family', text: 'Meet Xiao Ming’s family (finish a chat at his home)' },
       ],
       unlockTitle: 'Level 2 unlocked!',
       unlockText: 'HSK 2 words are now around town: new things to learn in every place, new conversations, new café items and new characters at Master Wang’s. Go back and explore!',

@@ -117,7 +117,8 @@ function checkChat(C, who) {
       else if (t.kind === 'number') t.parts.forEach((p) => covered.add(p));
     });
   };
-  if (!C.dialogues || C.dialogues.length < 5) errors.push(`${who}: chat needs at least 5 dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
+  const minD = C.family ? 2 : 5;                                          // a family member at Xiao Ming's home only needs a couple
+  if (!C.dialogues || C.dialogues.length < minD) errors.push(`${who}: chat needs at least ${minD} dialogues (has ${C.dialogues ? C.dialogues.length : 0})`);
   const syls = (text) => D.syllables(text);
   C.dialogues.forEach((d) => {
     const id = `${who} chat ${d.id}`;
@@ -216,26 +217,40 @@ Object.entries(MSC.data.chats || {}).forEach(([id, set]) => { if (set !== MSC.da
   console.log(`phrases: ${P.list.length} in ${P.chapters.length} chapters (${Object.entries(per).map(([l, n]) => `${l === '0' ? 'no HSK word' : `HSK ${l}`} ${n}`).join(', ')}; ${withExtras} use extra words)`);
 })();
 
-// ── coverage: where can each HSK word be met (seen) and used (said by the player)? — a report, not an error ──
+// ── coverage: where can each HSK word be met (seen) and used (said by the player), counting only content of that level
+//    or below (data/levels.js rules)? — a report, not an error. SHOW_COVERAGE=1 lists the gaps.
 (function coverage() {
   const D = MSC.dict, PT = MSC.pattern;
-  const seen = new Map(), used = new Map(), extras = new Set();
-  const words = (text) => D.segment(text || '').filter((t) => t.kind === 'word').map((t) => t.hanzi);
-  const mark = (map, text, where) => words(text).forEach((w) => { if (!map.has(w)) map.set(w, new Set()); map.get(w).add(where); if (!D.level(w)) extras.add(w); });
-  Object.entries(MSC.data.chats || {}).forEach(([npc, set]) => set.dialogues.forEach((d) => Object.entries(d.nodes).forEach(([nid, n]) => {
-    const where = `${npc}:${d.id}.${nid}`;
-    if (n.npc) mark(seen, PT.fill(n.npc.hanzi, {}), where);
-    (n.replies || []).forEach((r) => (r.say || []).forEach((pat) => PT.expand(pat.replace(/\{[\w.]+\}/g, '')).forEach((v) => { mark(used, v, where); mark(seen, v, where); })));
-  })));
-  Object.values(MSC.data.world.stages).forEach((st) => (st.objects || []).forEach((o) => { mark(seen, o.hanzi, st.id); (o.text || []).forEach((l) => mark(seen, l.hanzi, st.id)); }));
-  [...(MSC.data.menu.drinks || []), ...(MSC.data.menu.foods || [])].forEach((m) => { mark(seen, m.hanzi, 'cafe'); mark(used, m.hanzi, 'cafe'); });
+  const wordsOf = (text) => D.segment(text || '').filter((t) => t.kind === 'word').map((t) => t.hanzi);
+  const top = (texts) => Math.max(1, ...texts.flatMap(wordsOf).map((w) => D.level(w)));
+  const items = [];             // { level, where, seen: [texts], used: [texts] }
+  Object.entries(MSC.data.chats || {}).forEach(([npc, set]) => set.dialogues.forEach((d) => {
+    const nodes = Object.entries(d.nodes), all = [];
+    nodes.forEach(([, n]) => { if (n.npc) all.push(n.npc.hanzi.replace(/\{[\w.]+\}/g, '')); (n.replies || []).forEach((r) => (r.say || []).forEach((pat) => PT.expand(pat.replace(/\{[\w.]+\}/g, '')).forEach((v) => all.push(v)))); });
+    const level = d.level || top(all);
+    nodes.forEach(([nid, n]) => {
+      const used = []; (n.replies || []).forEach((r) => (r.say || []).forEach((pat) => PT.expand(pat.replace(/\{[\w.]+\}/g, '')).forEach((v) => used.push(v))));
+      items.push({ level, where: `${npc}:${d.id}`, seen: [n.npc ? n.npc.hanzi : '', ...used], used });
+    });
+  }));
+  Object.values(MSC.data.world.stages).forEach((st) => (st.objects || []).forEach((o) => items.push({ level: o.level || D.level(o.hanzi) || 2, where: st.id, seen: [o.hanzi, ...(o.text || []).map((l) => l.hanzi)], used: [] })));
+  [...(MSC.data.menu.drinks || []), ...(MSC.data.menu.foods || [])].forEach((m) => items.push({ level: m.level || 1, where: 'cafe', seen: [m.hanzi], used: [m.hanzi] }));
+  (MSC.data.phrases ? MSC.data.phrases.list : []).forEach((p) => items.push({ level: top([p.hanzi]), where: 'phrase-book', seen: [p.hanzi], used: [p.hanzi] }));
   Object.entries(MSC.data.hsk.levels).forEach(([l, ws]) => {
+    const seen = new Map(), used = new Map(), extras = new Set(), all = new Set();
+    items.filter((it) => it.level <= Number(l)).forEach((it) => {
+      it.seen.forEach((t) => wordsOf(t).forEach((w) => { all.add(w); if (!D.level(w)) extras.add(w); if (!seen.has(w)) seen.set(w, new Set()); seen.get(w).add(it.where); }));
+      it.used.forEach((t) => wordsOf(t).forEach((w) => { if (!used.has(w)) used.set(w, new Set()); used.get(w).add(it.where); }));
+    });
     const n0 = ws.filter((w) => !seen.has(w)), u0 = ws.filter((w) => !used.has(w)), u3 = ws.filter((w) => (used.get(w) || new Set()).size >= 3);
-    console.log(`coverage HSK ${l}: ${ws.length - n0.length}/${ws.length} words appear in the game, ${ws.length - u0.length} can be used by the player, ${u3.length} in 3+ places`);
-    if (process.env.SHOW_COVERAGE) { console.log(`  never seen: ${n0.join(' ')}`); console.log(`  never used: ${u0.filter((w) => seen.has(w)).join(' ')}`); }
+    console.log(`coverage at level ${l}: ${ws.length - n0.length}/${ws.length} HSK ${l} words appear, ${ws.length - u0.length} can be used by the player, ${u3.length} in 3+ places · extras ${Math.round((100 * extras.size) / Math.max(1, all.size))}% of the words met (target ≤ 20%)`);
+    if (process.env.SHOW_COVERAGE) {
+      console.log(`  never met at level ${l}: ${n0.join(' ')}`);
+      console.log(`  met but never used: ${u0.filter((w) => seen.has(w)).join(' ')}`);
+      console.log(`  used in only 1–2 places: ${ws.filter((w) => used.has(w) && used.get(w).size < 3).join(' ')}`);
+      console.log(`  extras met at level ${l}: ${[...extras].join(' ')}`);
+    }
   });
-  const all = new Set([...seen.keys()]);
-  console.log(`extras: ${extras.size} of ${all.size} different words in the game's content are not HSK words (${Math.round((100 * extras.size) / all.size)}%; target ≤ 20%)`);
 })();
 
 // ── all Chinese text in the other data files must be segmentable ──
@@ -291,7 +306,7 @@ texts.forEach(([where, text]) => {
     const blockedT = [...Wd.blockedTiles, ...(st.blockedTiles || [])];
     new Set((st.map || []).join('')).forEach((ch) => { if (!MSC.art.tileFor(st.id, ch)) errors.push(`${w}: tile letter "${ch}" has no ground art (A.tile in data/art)`); });
     if (!st.name || !st.hanzi) errors.push(`${w}: name and hanzi are required`);
-    if (!['street', 'shop', 'market', 'cafe'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe`);
+    if (!['street', 'shop', 'market', 'cafe', 'home'].includes(st.sound)) errors.push(`${w}: sound must be street | shop | market | cafe | home`);
     const inMap = (x, y) => x >= 0 && y >= 0 && x < st.cols && y < st.rows && (st.map[y] || '')[x] !== undefined;
     const tileOk = (x, y) => inMap(x, y) && !blockedT.includes(st.map[y][x]);
     const solid = new Map();
@@ -313,6 +328,8 @@ texts.forEach(([where, text]) => {
         D.segment(l.hanzi || '').forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.text[${i}]: "${t.hanzi}" is not in the dictionary`); });
       });
       if (o.note) D.segment(o.note).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w} object ${o.id}.note: "${t.hanzi}" is not in the dictionary`); });
+      (o.listen || []).forEach((t) => { if (!D.syllables(t)) errors.push(`${w} object ${o.id}.listen: "${t}" has characters that are not in the dictionary`); });
+      if (o.level !== undefined && ![1, 2].includes(o.level)) errors.push(`${w} object ${o.id}: level must be 1 or 2`);
     });
     (st.scenery || []).forEach((sc, i) => {
       if (/\p{Extended_Pictographic}/u.test(sc.text || '')) errors.push(`${w} scenery[${i}]: no emoji in the game any more — sign text is Chinese only ("${sc.text}")`);

@@ -97,7 +97,8 @@ const next = async (p) => { await H.waitNext(p); await p.click('#w-next'); await
 
   console.log('— offers');
   ok('offer is 8 cards from tier 1', await p.evaluate(() => { const o = MSC.writing.makeOffer(); return o.chars.length === 8 && o.chars.every((c) => MSC.writing.info(c).tier === 1); }));
-  ok('one reshuffle, then none', await p.evaluate(() => { MSC.writing.makeOffer(); const a = MSC.writing.reshuffle(); const b2 = MSC.writing.reshuffle(); return a === true && b2 === false; }));
+  ok('reshuffle is unlimited', await p.evaluate(() => { MSC.writing.makeOffer(); let n = 0; for (let i = 0; i < 6; i++) if (MSC.writing.reshuffle()) n++; return n === 6; }));
+  ok('leaving a lesson drops it and offers new characters', await p.evaluate(() => { const o = MSC.writing.makeOffer(); MSC.writing.startLesson(o.chars.slice(0, 4)); const left = MSC.writing.abandonLesson(); return left && !MSC.writing.hasLesson() && MSC.writing.offer().chars.length === 8; }));
   ok('all of tier 1 learned → offer moves on to tier 2', await p.evaluate(() => {
     MSC.data.writing.pool.filter((c) => c.tier === 1).forEach((c) => { MSC.state.writing.mastered[c.char] = { last: 1 }; });
     const o = MSC.writing.makeOffer(); return o.chars.length === 8 && o.chars.every((c) => MSC.writing.info(c).tier >= 2) && o.chars.filter((c) => MSC.writing.info(c).tier === 2).length === 8; }));

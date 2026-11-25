@@ -22,7 +22,6 @@
   MSC.data.writing = {
     lessonSize: 4,
     offerSize: 8,
-    reshuffles: 1,
 
     rules: [
       { id: 'hv', title: 'Horizontal before vertical', hanzi: '先横后竖', tip: 'When strokes cross, write the horizontal one before the vertical one.', example: '十' },

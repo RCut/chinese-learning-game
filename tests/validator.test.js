@@ -45,7 +45,7 @@ expectError('tier with fewer than 4 characters (could not fill a lesson)', () =>
 
 expectError('HSK word whose character cannot be learned at Master Wang', () => edit('data/writing.js', (s) => s.replace(/\n\s*\{ char: '爸',[^\n]*\},/, '')), /HSK word 爸爸: character 爸 cannot be learned at Master Wang/);
 
-expectError('fewer than 200 HSK words', () => edit('data/dictionary.js', (s) => s.replace("{ hanzi: '爸爸', pinyin: 'bàba', pinyinNum: 'ba4 ba5', english: 'dad', pos: 'noun', category: 'Family & Friends', hsk: 1,", "{ hanzi: '爸爸', pinyin: 'bàba', pinyinNum: 'ba4 ba5', english: 'dad', pos: 'noun', category: 'Family & Friends',")), /only 199 HSK 1–2 words/);
+expectError('HSK word missing from the dictionary', () => edit('data/dictionary.js', (s) => s.replace(/\n\s*\{ hanzi: '爸爸',[^\n]*\},/, '')), /HSK 1 word 爸爸 is missing from the dictionary/);
 
 if (fails) { console.log(`${fails} FAILED`); process.exit(1); }
 console.log('validator: every content problem in the ticket is flagged');

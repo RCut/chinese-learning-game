@@ -1,0 +1,130 @@
+/* VOCABULARY — HSK 1 words (revised HSK 3.0 list) not covered by the stage vocab. Same entry format as data/dictionary.js. */
+(function (MSC) {
+  const P = 'Pronouns & People', V = 'Verbs', F = 'Food & Drink', N = 'Numbers & Measures', D = 'Directions & Places', T = 'Time & Adjectives',
+    E = 'Everyday Phrases', L = 'Language & Learning', B = 'Body & Nature', C = 'Particles & Connectors', FF = 'Family & Friends', S = 'School & Work',
+    DL = 'Daily Life', A = 'Around Town';
+  MSC.data.dictionary.push(
+    // ── Pronouns & people ──
+    { hanzi: '大家', pinyin: 'dàjiā', pinyinNum: 'da4 jia1', english: 'everyone', pos: 'pronoun', category: P, note: '大家好！= "Hello, everyone!"' },
+    { hanzi: '你们', pinyin: 'nǐmen', pinyinNum: 'ni3 men5', english: 'you (plural)', pos: 'pronoun', category: P, related: ['你', '我们', '他们'] },
+    { hanzi: '她们', pinyin: 'tāmen', pinyinNum: 'ta1 men5', english: 'they / them (female)', pos: 'pronoun', category: P, related: ['她', '他们'] },
+    { hanzi: '它', pinyin: 'tā', pinyinNum: 'ta1', english: 'it', pos: 'pronoun', category: P, related: ['他', '她'], note: 'Used for animals and things. 他, 她 and 它 all sound the same.' },
+    { hanzi: '它们', pinyin: 'tāmen', pinyinNum: 'ta1 men5', english: 'they / them (animals, things)', pos: 'pronoun', category: P, related: ['它', '他们'] },
+    { hanzi: '哪', pinyin: 'nǎ', pinyinNum: 'na3', english: 'which', pos: 'pronoun', category: P, related: ['那', '哪儿'], note: '哪 (nǎ, 3rd tone) asks "which"; 那 (nà, 4th tone) means "that".' },
+    { hanzi: '哪些', pinyin: 'nǎxiē', pinyinNum: 'na3 xie1', english: 'which ones', pos: 'pronoun', category: P, related: ['哪', '这些', '那些'] },
+    { hanzi: '这些', pinyin: 'zhèxiē', pinyinNum: 'zhe4 xie1', english: 'these', pos: 'pronoun', category: P, related: ['这', '那些'] },
+    { hanzi: '那些', pinyin: 'nàxiē', pinyinNum: 'na4 xie1', english: 'those', pos: 'pronoun', category: P, related: ['那', '这些'] },
+    { hanzi: '有的', pinyin: 'yǒude', pinyinNum: 'you3 de5', english: 'some (of them)', pos: 'pronoun', category: P, related: ['有些'], note: '有的人喜欢茶，有的人喜欢咖啡。' },
+    { hanzi: '有些', pinyin: 'yǒuxiē', pinyinNum: 'you3 xie1', english: 'some', pos: 'pronoun', category: P, related: ['有的', '一些'] },
+    { hanzi: '男', pinyin: 'nán', pinyinNum: 'nan2', english: 'male', pos: 'adj', category: P, related: ['女'] },
+    { hanzi: '女士', pinyin: 'nǚshì', pinyinNum: 'nv3 shi4', english: 'Ms. / lady', pos: 'noun', category: P, related: ['先生'] },
+    { hanzi: '孩子', pinyin: 'háizi', pinyinNum: 'hai2 zi5', english: 'child', pos: 'noun', category: FF, related: ['小朋友'] },
+    { hanzi: '小朋友', pinyin: 'xiǎopéngyǒu', pinyinNum: 'xiao3 peng2 you3', english: 'child / kid', pos: 'noun', category: FF, related: ['孩子', '朋友'], note: 'Also a friendly way to address a child.' },
+    { hanzi: '弟弟', pinyin: 'dìdi', pinyinNum: 'di4 di5', english: 'younger brother', pos: 'noun', category: FF, related: ['哥哥', '妹妹'] },
+    { hanzi: '妹妹', pinyin: 'mèimei', pinyinNum: 'mei4 mei5', english: 'younger sister', pos: 'noun', category: FF, related: ['姐姐', '弟弟'] },
+    { hanzi: '家人', pinyin: 'jiārén', pinyinNum: 'jia1 ren2', english: 'family member(s)', pos: 'noun', category: FF, related: ['家'] },
+    { hanzi: '男朋友', pinyin: 'nánpéngyou', pinyinNum: 'nan2 peng2 you5', english: 'boyfriend', pos: 'noun', category: FF, related: ['女朋友', '朋友'] },
+    { hanzi: '女朋友', pinyin: 'nǚpéngyou', pinyinNum: 'nv3 peng2 you5', english: 'girlfriend', pos: 'noun', category: FF, related: ['男朋友', '朋友'] },
+
+    // ── Verbs ──
+    { hanzi: '唱', pinyin: 'chàng', pinyinNum: 'chang4', english: 'to sing', pos: 'verb', category: V, related: ['唱歌', '歌'] },
+    { hanzi: '穿', pinyin: 'chuān', pinyinNum: 'chuan1', english: 'to wear / to put on', pos: 'verb', category: V, related: ['衣服'] },
+    { hanzi: '到', pinyin: 'dào', pinyinNum: 'dao4', english: 'to arrive / to reach; until', pos: 'verb', category: V, related: ['找到'], note: 'After a verb it shows the result was reached: 找到 = "find".' },
+    { hanzi: '读', pinyin: 'dú', pinyinNum: 'du2', english: 'to read (aloud)', pos: 'verb', category: V, related: ['读书', '书'] },
+    { hanzi: '见', pinyin: 'jiàn', pinyinNum: 'jian4', english: 'to see / to meet', pos: 'verb', category: V, related: ['看见', '听见', '再见'] },
+    { hanzi: '看见', pinyin: 'kànjiàn', pinyinNum: 'kan4 jian4', english: 'to see (catch sight of)', pos: 'verb', category: V, related: ['看', '听见'], note: '看 is "to look"; 看见 is "to actually see".' },
+    { hanzi: '听见', pinyin: 'tīngjiàn', pinyinNum: 'ting1 jian4', english: 'to hear', pos: 'verb', category: V, related: ['听', '看见'] },
+    { hanzi: '觉得', pinyin: 'juéde', pinyinNum: 'jue2 de5', english: 'to think / to feel', pos: 'verb', category: V, related: ['想'], note: '我觉得很好 = "I think it\'s good".' },
+    { hanzi: '睡', pinyin: 'shuì', pinyinNum: 'shui4', english: 'to sleep', pos: 'verb', category: V, related: ['睡觉'] },
+    { hanzi: '说话', pinyin: 'shuōhuà', pinyinNum: 'shuo1 hua4', english: 'to speak / to talk', pos: 'verb', category: V, related: ['说'] },
+    { hanzi: '学', pinyin: 'xué', pinyinNum: 'xue2', english: 'to learn / to study', pos: 'verb', category: L, related: ['学习', '教'] },
+    { hanzi: '读书', pinyin: 'dúshū', pinyinNum: 'du2 shu1', english: 'to read books / to study', pos: 'verb', category: L, related: ['读', '书', '上学'] },
+    { hanzi: '开车', pinyin: 'kāichē', pinyinNum: 'kai1 che1', english: 'to drive (a car)', pos: 'verb', category: A, related: ['开', '车'] },
+    { hanzi: '做饭', pinyin: 'zuòfàn', pinyinNum: 'zuo4 fan4', english: 'to cook (a meal)', pos: 'verb', category: DL, related: ['做', '饭'] },
+
+    // ── School & work ──
+    { hanzi: '课', pinyin: 'kè', pinyinNum: 'ke4', english: 'class / lesson', pos: 'noun', category: S, related: ['上课', '下课'] },
+    { hanzi: '上课', pinyin: 'shàngkè', pinyinNum: 'shang4 ke4', english: 'to have class / to start class', pos: 'verb', category: S, related: ['下课', '课'] },
+    { hanzi: '下课', pinyin: 'xiàkè', pinyinNum: 'xia4 ke4', english: 'to finish class', pos: 'verb', category: S, related: ['上课', '课'] },
+    { hanzi: '上学', pinyin: 'shàngxué', pinyinNum: 'shang4 xue2', english: 'to go to school', pos: 'verb', category: S, related: ['学校', '上课'] },
+    { hanzi: '上班', pinyin: 'shàngbān', pinyinNum: 'shang4 ban1', english: 'to go to work', pos: 'verb', category: S, related: ['下班', '工作'] },
+    { hanzi: '下班', pinyin: 'xiàbān', pinyinNum: 'xia4 ban1', english: 'to finish work', pos: 'verb', category: S, related: ['上班'] },
+    { hanzi: '公司', pinyin: 'gōngsī', pinyinNum: 'gong1 si1', english: 'company', pos: 'noun', category: S, related: ['工作', '上班'] },
+    { hanzi: '小学', pinyin: 'xiǎoxué', pinyinNum: 'xiao3 xue2', english: 'primary school', pos: 'place', category: S, related: ['中学', '大学', '小学生'] },
+    { hanzi: '中学', pinyin: 'zhōngxué', pinyinNum: 'zhong1 xue2', english: 'middle school / high school', pos: 'place', category: S, related: ['小学', '大学', '中学生'] },
+    { hanzi: '大学', pinyin: 'dàxué', pinyinNum: 'da4 xue2', english: 'university', pos: 'place', category: S, related: ['小学', '中学', '大学生'] },
+    { hanzi: '小学生', pinyin: 'xiǎoxuéshēng', pinyinNum: 'xiao3 xue2 sheng1', english: 'primary school pupil', pos: 'noun', category: S, related: ['小学', '学生'] },
+    { hanzi: '中学生', pinyin: 'zhōngxuéshēng', pinyinNum: 'zhong1 xue2 sheng1', english: 'middle / high school student', pos: 'noun', category: S, related: ['中学', '学生'] },
+    { hanzi: '大学生', pinyin: 'dàxuéshēng', pinyinNum: 'da4 xue2 sheng1', english: 'university student', pos: 'noun', category: S, related: ['大学', '学生'] },
+    { hanzi: '汉语', pinyin: 'Hànyǔ', pinyinNum: 'han4 yu3', english: 'Chinese (language)', pos: 'noun', category: L, related: ['中文', '汉字'] },
+    { hanzi: '汉字', pinyin: 'hànzì', pinyinNum: 'han4 zi4', english: 'Chinese character', pos: 'noun', category: L, related: ['字', '汉语', '写字'] },
+
+    // ── Numbers & measures ──
+    { hanzi: '零', pinyin: 'líng', pinyinNum: 'ling2', english: 'zero', pos: 'number', category: N, related: ['一'] },
+    { hanzi: '百', pinyin: 'bǎi', pinyinNum: 'bai3', english: 'hundred', pos: 'number', category: N, related: ['十', '千'] },
+    { hanzi: '千', pinyin: 'qiān', pinyinNum: 'qian1', english: 'thousand', pos: 'number', category: N, related: ['百', '万'] },
+    { hanzi: '半', pinyin: 'bàn', pinyinNum: 'ban4', english: 'half', pos: 'number', category: N, related: ['一半'], note: '三点半 = "half past three"; 一个半 = "one and a half".' },
+    { hanzi: '一半', pinyin: 'yībàn', pinyinNum: 'yi1 ban4', english: 'half (of it)', pos: 'number', category: N, related: ['半'] },
+    { hanzi: '本', pinyin: 'běn', pinyinNum: 'ben3', english: 'measure word for books', pos: 'measure', category: N, related: ['书'], note: '一本书 = "a book".' },
+    { hanzi: '些', pinyin: 'xiē', pinyinNum: 'xie1', english: 'some (measure word)', pos: 'measure', category: N, related: ['一些', '这些', '那些'] },
+    { hanzi: '一些', pinyin: 'yīxiē', pinyinNum: 'yi1 xie1', english: 'some / a few', pos: 'number', category: N, related: ['些', '有些'] },
+    { hanzi: '一点儿', pinyin: 'yīdiǎnr', pinyinNum: 'yi1 dian3 r5', english: 'a little', pos: 'adv', category: N, related: ['一点', '有点儿'], note: 'Northern (erhua) form of 一点. Goes after a verb or adjective: 喝一点儿水.' },
+    { hanzi: '有点儿', pinyin: 'yǒudiǎnr', pinyinNum: 'you3 dian3 r5', english: 'a bit, somewhat (before adjectives)', pos: 'adv', category: N, related: ['有一点', '一点儿'], note: 'Usually for negative feelings: 有点儿累 = "a bit tired".' },
+    { hanzi: '分', pinyin: 'fēn', pinyinNum: 'fen1', english: 'minute; cent; point', pos: 'measure', category: N, related: ['分钟', '块'], note: 'Time: 三点十分 = 3:10. Money: 1/100 of a 元.' },
+    { hanzi: '号', pinyin: 'hào', pinyinNum: 'hao4', english: 'number; day of the month', pos: 'noun', category: N, related: ['月'], note: '五月一号 = "May 1st"; 几号? = "what date?"' },
+    { hanzi: '小时', pinyin: 'xiǎoshí', pinyinNum: 'xiao3 shi2', english: 'hour', pos: 'noun', category: T, related: ['分钟'], note: '一个小时 = "one hour".' },
+
+    // ── Time ──
+    { hanzi: '天', pinyin: 'tiān', pinyinNum: 'tian1', english: 'day; sky', pos: 'noun', category: T, related: ['今天', '明天', '昨天'], note: '三天 = "three days" (no measure word).' },
+    { hanzi: '年', pinyin: 'nián', pinyinNum: 'nian2', english: 'year', pos: 'noun', category: T, related: ['今年', '明年', '去年'] },
+    { hanzi: '今年', pinyin: 'jīnnián', pinyinNum: 'jin1 nian2', english: 'this year', pos: 'time', category: T, related: ['去年', '明年', '今天'] },
+    { hanzi: '明年', pinyin: 'míngnián', pinyinNum: 'ming2 nian2', english: 'next year', pos: 'time', category: T, related: ['今年', '去年', '明天'] },
+    { hanzi: '去年', pinyin: 'qùnián', pinyinNum: 'qu4 nian2', english: 'last year', pos: 'time', category: T, related: ['今年', '明年'] },
+    { hanzi: '白天', pinyin: 'báitiān', pinyinNum: 'bai2 tian1', english: 'daytime', pos: 'time', category: T, related: ['晚上'] },
+    { hanzi: '中午', pinyin: 'zhōngwǔ', pinyinNum: 'zhong1 wu3', english: 'noon', pos: 'time', category: T, related: ['上午', '下午', '午饭'] },
+    { hanzi: '星期日', pinyin: 'xīngqīrì', pinyinNum: 'xing1 qi1 ri4', english: 'Sunday', pos: 'time', category: T, related: ['星期天', '星期'] },
+    { hanzi: '星期天', pinyin: 'xīngqītiān', pinyinNum: 'xing1 qi1 tian1', english: 'Sunday', pos: 'time', category: T, related: ['星期日', '星期'], note: 'More colloquial than 星期日.' },
+    { hanzi: '晚', pinyin: 'wǎn', pinyinNum: 'wan3', english: 'late; evening', pos: 'adj', category: T, related: ['早', '晚上'] },
+    { hanzi: '早', pinyin: 'zǎo', pinyinNum: 'zao3', english: 'early; good morning', pos: 'adj', category: T, related: ['晚', '早上'], note: 'On its own, 早！ is a casual "Morning!"' },
+    { hanzi: '正在', pinyin: 'zhèngzài', pinyinNum: 'zheng4 zai4', english: 'in the middle of (doing)', pos: 'adv', category: C, related: ['在', '呢'], note: '我正在吃饭 = "I\'m eating right now".' },
+    { hanzi: '不要', pinyin: 'búyào', pinyinNum: 'bu2 yao4', english: 'don\'t; not want', pos: 'adv', category: C, related: ['别', '要'], note: '不要说话！ = "Don\'t talk!"' },
+
+    // ── Adjectives ──
+    { hanzi: '好看', pinyin: 'hǎokàn', pinyinNum: 'hao3 kan4', english: 'good-looking; nice to watch', pos: 'adj', category: T, related: ['漂亮', '好听', '好吃'] },
+    { hanzi: '好听', pinyin: 'hǎotīng', pinyinNum: 'hao3 ting1', english: 'nice to listen to', pos: 'adj', category: T, related: ['好看', '听'] },
+    { hanzi: '好玩儿', pinyin: 'hǎowánr', pinyinNum: 'hao3 wan2 r5', english: 'fun', pos: 'adj', category: T, related: ['玩', '好看'] },
+
+    // ── Places & directions ──
+    { hanzi: '前', pinyin: 'qián', pinyinNum: 'qian2', english: 'front; before', pos: 'direction', category: D, related: ['前面', '后'] },
+    { hanzi: '里', pinyin: 'lǐ', pinyinNum: 'li3', english: 'inside', pos: 'direction', category: D, related: ['外'], note: 'Goes after the noun: 家里 = "at home", 店里 = "in the shop".' },
+    { hanzi: '外', pinyin: 'wài', pinyinNum: 'wai4', english: 'outside', pos: 'direction', category: D, related: ['里', '外边', '外面'] },
+    { hanzi: '外边', pinyin: 'wàibian', pinyinNum: 'wai4 bian5', english: 'outside', pos: 'direction', category: D, related: ['外面', '外'] },
+    { hanzi: '这边', pinyin: 'zhèbian', pinyinNum: 'zhe4 bian5', english: 'this side / over here', pos: 'pronoun', category: D, related: ['那边', '这里'] },
+    { hanzi: '那边', pinyin: 'nàbian', pinyinNum: 'na4 bian5', english: 'that side / over there', pos: 'pronoun', category: D, related: ['这边', '那里'] },
+    { hanzi: '那里', pinyin: 'nàli', pinyinNum: 'na4 li5', english: 'there', pos: 'pronoun', category: D, related: ['这里', '哪里', '那儿'] },
+    { hanzi: '那儿', pinyin: 'nàr', pinyinNum: 'na4 r5', english: 'there', pos: 'pronoun', category: D, related: ['这儿', '哪儿', '那里'] },
+    { hanzi: '国', pinyin: 'guó', pinyinNum: 'guo2', english: 'country', pos: 'noun', category: D, related: ['中国'] },
+    { hanzi: '超市', pinyin: 'chāoshì', pinyinNum: 'chao1 shi4', english: 'supermarket', pos: 'place', category: A, related: ['商店', '买'] },
+    { hanzi: '电影院', pinyin: 'diànyǐngyuàn', pinyinNum: 'dian4 ying3 yuan4', english: 'cinema', pos: 'place', category: A, related: ['电影'] },
+    { hanzi: '车', pinyin: 'chē', pinyinNum: 'che1', english: 'vehicle / car', pos: 'noun', category: A, related: ['汽车', '开车', '火车'] },
+    { hanzi: '飞机', pinyin: 'fēijī', pinyinNum: 'fei1 ji1', english: 'airplane', pos: 'noun', category: A, related: ['火车'] },
+
+    // ── Food & drink ──
+    { hanzi: '早饭', pinyin: 'zǎofàn', pinyinNum: 'zao3 fan4', english: 'breakfast', pos: 'noun', category: F, related: ['午饭', '晚饭', '饭'] },
+    { hanzi: '午饭', pinyin: 'wǔfàn', pinyinNum: 'wu3 fan4', english: 'lunch', pos: 'noun', category: F, related: ['早饭', '晚饭', '中午'] },
+    { hanzi: '晚饭', pinyin: 'wǎnfàn', pinyinNum: 'wan3 fan4', english: 'dinner', pos: 'noun', category: F, related: ['早饭', '午饭', '晚上'] },
+    { hanzi: '面条儿', pinyin: 'miàntiáor', pinyinNum: 'mian4 tiao2 r5', english: 'noodles', pos: 'noun', category: F, related: ['面条', '面'], note: 'Northern (erhua) form of 面条.' },
+
+    // ── Daily life ──
+    { hanzi: '事', pinyin: 'shì', pinyinNum: 'shi4', english: 'matter / thing (to do)', pos: 'noun', category: DL, related: ['没关系'], note: '有事吗？ = "Is anything up?"; 没事 = "it\'s nothing".' },
+    { hanzi: '电话', pinyin: 'diànhuà', pinyinNum: 'dian4 hua4', english: 'telephone; phone call', pos: 'noun', category: DL, related: ['打电话', '手机'] },
+    { hanzi: '歌', pinyin: 'gē', pinyinNum: 'ge1', english: 'song', pos: 'noun', category: DL, related: ['唱歌', '唱'] },
+    { hanzi: '病', pinyin: 'bìng', pinyinNum: 'bing4', english: 'illness; to be ill', pos: 'noun', category: DL, related: ['生病', '看病', '医生'] },
+    { hanzi: '生病', pinyin: 'shēngbìng', pinyinNum: 'sheng1 bing4', english: 'to get ill', pos: 'verb', category: DL, related: ['病', '看病'] },
+    { hanzi: '看病', pinyin: 'kànbìng', pinyinNum: 'kan4 bing4', english: 'to see a doctor', pos: 'verb', category: DL, related: ['病', '医生', '医院'], note: 'Also used for a doctor seeing patients.' },
+
+    // ── Nature ──
+    { hanzi: '雨', pinyin: 'yǔ', pinyinNum: 'yu3', english: 'rain', pos: 'noun', category: B, related: ['下雨', '雪'] },
+    { hanzi: '雪', pinyin: 'xuě', pinyinNum: 'xue3', english: 'snow', pos: 'noun', category: B, related: ['雨', '冷'], note: '下雪 = "to snow".' },
+  );
+})(window.MSC);

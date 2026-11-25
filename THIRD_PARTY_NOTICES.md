@@ -21,3 +21,9 @@ Have the licensing terms reviewed before a public release.
 Phaser 3.80.1, MIT licence, Copyright (c) 2024 Richard Davey, Phaser Studio Inc. (`vendor/PHASER_LICENSE.md`). It draws the game board.
 
 The pixel art is original, drawn in code in this repository (`data/art`).
+
+## HSK word lists (`data/hsk.js`)
+
+The level of each word comes from **complete-hsk-vocabulary** (https://github.com/drkameleon/complete-hsk-vocabulary),
+MIT licence, Copyright (c) Yanis Zafirópulos — its "newest" (revised HSK 3.0) lists, converted by `tools/import-hsk.js`.
+Meanings, categories and everything else about the words are written in this repository.

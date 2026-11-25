@@ -46,7 +46,7 @@
       item('mk-chicken', 12, 1, '🍗', '鸡肉'),
 
       sign('mk-tofu', 14, 1, '🥢', '豆腐摊', [['豆腐', 'tofu'], ['鸡蛋', 'eggs']]),
-      item('mk-bean-curd', 15, 1, '⬜', '豆腐'),
+      item('mk-bean-curd', 15, 1, '🍥', '豆腐'),
       item('mk-egg', 16, 1, '🥚', '鸡蛋'),
 
       // ── left wall: tea and dry goods ──

@@ -36,7 +36,8 @@ const S = (p, fn) => p.evaluate(fn);
   await p.click('.offer-card:not(.on) >> nth=0');
   ok('a 5th pick is refused', (await p.$$('.offer-card.on')).length === 4);
   const vocabBefore = await S(p, () => MSC.state.vocab.length);
-  const linked = await S(p, () => [...document.querySelectorAll('.offer-card.on .oc-hz')].map((e) => MSC.writing.wordFor(e.textContent)));
+  // (a word that Wang himself says in his dialogue — 什么 in "what do you want to learn?" — is met by hearing him, which is fine)
+  const linked = await S(p, () => [...document.querySelectorAll('.offer-card.on .oc-hz')].map((e) => MSC.writing.wordFor(e.textContent)).filter((w) => !JSON.stringify(MSC.data.writing.lines).includes(w)));
   const linkedKnown = await p.evaluate((ws) => ws.map((w) => MSC.vocab.has(w)), linked);
   await p.click('[data-click="wang-start"]'); await p.waitForTimeout(300);
 

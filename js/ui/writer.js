@@ -119,7 +119,7 @@
     let intro = '';
     if (cur.k === 'watch') {
       intro = U.esc(info.mnemonic);
-      unlocked.forEach((r) => { intro += `<br><b>New rule:</b> ${U.esc(r.title)}${r.hanzi ? ` — ${UI.richText(r.hanzi)}` : ''}`; });
+      unlocked.forEach((r) => { intro += `<br><b>New rule:</b> ${U.esc(r.title)}${r.hanzi ? ` — ${UI.signHtml(r.hanzi)}` : ''}`; });
       msg(intro);
       MSC.speech.say(cur.c);
       syncControls();

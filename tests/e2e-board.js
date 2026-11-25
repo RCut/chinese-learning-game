@@ -17,6 +17,7 @@ const scan = (p) => p.evaluate(() => {
 async function run(p, label) {
   console.log(`— ${label}: Phaser draws every place`);
   ok('Phaser is loaded and the board is a canvas', await p.evaluate(() => !!window.Phaser && MSC.board.ready() && !!MSC.board.canvas()));
+  await p.evaluate(() => MSC.levels.set(2));                          // every place (the school only opens at level 2)
   const stages = await p.evaluate(() => Object.keys(MSC.data.world.stages));
   for (const id of stages) {
     await p.evaluate((s) => MSC.stage.show(s), id);

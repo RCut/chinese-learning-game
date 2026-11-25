@@ -21,6 +21,7 @@
   MSC.data = MSC.data || {};
   MSC.data.writing = {
     lessonSize: 4,
+    reviewSize: 10,       // Review mixes this many learned characters, picked at random from everything mastered
     offerSize: 8,
 
     rules: [

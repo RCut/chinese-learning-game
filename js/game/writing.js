@@ -168,9 +168,9 @@
     return summary;
   };
 
-  /** Review: the (up to) 4 mastered characters practised longest ago — only the mastery check. */
+  /** Review: a random pack of (up to) 10 characters from everything mastered, in random order — only the mastery check. */
   WR.reviewSession = () => {
-    const chars = WR.masteredChars().sort((a, b) => st().mastered[a].last - st().mastered[b].last).slice(0, D.lessonSize);
+    const chars = U.shuffle(WR.masteredChars()).slice(0, D.reviewSize);
     const queue = chars.map((c) => ({ c, k: 'check' }));
     const results = {};
     const s = {

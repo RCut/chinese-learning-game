@@ -107,7 +107,7 @@ const rects = (p) => p.evaluate(() => ['#board', '#panel', '.app-header'].map((s
   await H.goTo(p, 'friend'); await p.waitForSelector('[data-click="chat-send"]');
   ok('walking away and back starts a new random conversation', (await state(p)).dlg !== first && (await state(p)).log === 0);
   ok('words from the chat reach the notebook', await p.evaluate(() => MSC.state.vocab.length) > 50);
-  ok('notebook counts HSK progress', /HSK 1–2 words discovered/.test(await p.evaluate(() => (MSC.actions.tab('notebook'), document.getElementById('hsk-progress').innerText))));
+  ok('notebook counts HSK progress', /HSK 1[\s\S]*learned[\s\S]*met/.test(await p.evaluate(() => (MSC.actions.tab('notebook'), document.getElementById('hsk-progress').innerText))));
 
   console.log('— the market shopkeeper has his own conversations');
   await p.evaluate(() => MSC.actions.tab('stage'));

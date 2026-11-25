@@ -250,6 +250,7 @@
     }
     if (!user.length) { MSC.log.say(S.inputMode === 'recall' ? 'Type your answer first.' : 'Tap some word tiles first.'); return; }
     const res = B.check(step, user, S.inputMode === 'recall');
+    if (res.ok && res.first) MSC.mastery.useText(step.targetHanzi, { hint: st.hint, mistakes: st.attempts, tiles: S.inputMode === 'tiles' }, 'cafe');
     MSC.speech.say(st.reaction.hanzi);
     if (res.ok && res.first) {
       MSC.addXP(25, step.goal.replace(/\.$/, ''));

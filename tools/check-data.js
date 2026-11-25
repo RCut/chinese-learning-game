@@ -188,6 +188,34 @@ function checkChat(C, who) {
 const chatCoverage = checkChat(MSC.data.chat, 'Xiao Li');
 Object.entries(MSC.data.chats || {}).forEach(([id, set]) => { if (set !== MSC.data.chat) checkChat(set, id); });
 
+// ── phrases (data/phrases.js) ──
+(function checkPhrases() {
+  const P = MSC.data.phrases, D = MSC.dict;
+  if (!P) { errors.push('data/phrases.js is missing'); return; }
+  const chapters = new Set(P.chapters.map((c) => c.id)), ids = new Set();
+  let withExtras = 0;
+  const per = {};
+  P.chapters.forEach((c) => { if (!c.id || !c.title) errors.push(`phrase chapter ${c.id}: id and title are required`); });
+  P.list.forEach((p) => {
+    const w = `phrase ${p.id}`;
+    if (!p.id || !/^[a-z0-9-]+$/.test(p.id)) errors.push(`${w}: id must be lowercase-with-dashes`);
+    if (ids.has(p.id)) errors.push(`${w}: duplicate id`); ids.add(p.id);
+    if (!p.hanzi || !p.english) errors.push(`${w}: hanzi and english are required`);
+    if (!chapters.has(p.chapter)) errors.push(`${w}: unknown chapter "${p.chapter}"`);
+    if (/[㐀-鿿]/.test(p.english || '')) errors.push(`${w}: english must not contain Chinese`);
+    const toks = D.segment(p.hanzi || '');
+    toks.forEach((t) => { if (t.kind === 'unknown') errors.push(`${w}: "${t.hanzi}" is not in the dictionary (in "${p.hanzi}")`); });
+    const ws = toks.filter((t) => t.kind === 'word').map((t) => t.hanzi);
+    if (!ws.length) errors.push(`${w}: has no words`);
+    if (ws.some((x) => !D.level(x) && !/^[，。？！、]$/.test(x))) withExtras++;
+    if (p.note) D.segment(p.note).forEach((t) => { if (t.kind === 'unknown') errors.push(`${w}.note: "${t.hanzi}" is not in the dictionary`); });
+    const lvl = Math.max(0, ...ws.map((x) => D.level(x)));
+    per[lvl] = (per[lvl] || 0) + 1;
+  });
+  if (P.list.length && withExtras > P.list.length * 0.2) warn.push(`phrases: ${withExtras} of ${P.list.length} use non-HSK words (target ≤ 20%)`);
+  console.log(`phrases: ${P.list.length} in ${P.chapters.length} chapters (${Object.entries(per).map(([l, n]) => `${l === '0' ? 'no HSK word' : `HSK ${l}`} ${n}`).join(', ')}; ${withExtras} use extra words)`);
+})();
+
 // ── coverage: where can each HSK word be met (seen) and used (said by the player)? — a report, not an error ──
 (function coverage() {
   const D = MSC.dict, PT = MSC.pattern;

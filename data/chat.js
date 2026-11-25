@@ -1026,7 +1026,7 @@
             replies: [{ say: ['没关系，请坐', '没关系'], en: "Never mind — please sit down.", next: 'n2' }] },
           n2: { npc: { hanzi: '桌子上有很多杯子。这些都是你的吗？', english: 'There are lots of cups on the table. Are these all yours?' }, goal: 'Say that they are all yours — or that some are yours and some are your little sister’s.', tip: '都 = all. 有些 … 有些 … = some … others …',
             replies: [
-              { say: ['(对，)都是我的', '桌子上的杯子都是我的'], en: "Yes, they're all mine.", label: 'All mine', next: 'n3' },
+              { say: ['都是我的', '桌子上的都是我的'], en: "Yes, they're all mine.", label: 'All mine', next: 'n3' },
               { say: ['有些是我的，有些是我妹妹的'], en: "Some are mine, some are my sister's.", label: 'Some', next: 'n3' },
             ] },
           n3: { npc: { hanzi: '今天很热。我能喝一点儿水吗？', english: "It's hot today. Could I have a little water?" }, goal: 'Say of course, and give Xiao Li a cup — or say sorry, there is no water left.', tip: '能 / 可以 = can. 给你 = here you are. 没有水了 = the water is gone.',

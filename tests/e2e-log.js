@@ -72,7 +72,7 @@ async function run(p, label) {
   await p.evaluate(() => MSC.log.clear());
   await H.goTo(p, 'friend');
   await p.evaluate(() => MSC.addXP(8, 'a test'));
-  ok('XP messages are in the log', /\+8 XP/.test(await p.$eval('#log-latest', (e) => e.textContent)));
+  ok('XP messages are in the log', /\+8 XP/.test(await p.$eval('#log-list', (e) => e.textContent)));
   ok('…and nothing floats over the board', !(await p.$('.toast, #toasts')));
   ok('the stage is not covered while the log is collapsed', !(await isOpen(p)));
   const geo = await p.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));

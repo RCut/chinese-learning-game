@@ -23,24 +23,15 @@
           <div class="chip chip-xp" title="Experience"><span>⭐</span><span id="xp-val" class="num">0 XP</span></div>
           <button type="button" class="chip chip-level" id="level-chip" data-click="overview" title="Your level — open the journey">Lv 1</button>
         </div>
-        <nav class="seg dark">
-          <button id="tab-stage" class="on" data-click="tab" data-arg="stage">🗺️ Stage</button>
-          <button id="tab-notebook" data-click="tab" data-arg="notebook">📒 <span id="vocab-count" class="num">0</span> Words</button>
-        </nav>
+        <div class="hdr-nav">
+          <nav class="seg dark">
+            <button id="tab-stage" class="on" data-click="tab" data-arg="stage">🗺️ Stage</button>
+            <button id="tab-notebook" data-click="tab" data-arg="notebook">📒 <span id="vocab-count" class="num">0</span> Words</button>
+          </nav>
+          <button type="button" id="tab-settings" class="gear" data-click="settings" aria-label="Settings" title="Settings">⚙️</button>
+        </div>
       </div>
 
-      <div class="hdr-mid">
-        <div class="seg" id="tier-seg">
-          <button data-click="tier" data-arg="1">Pinyin</button>
-          <button data-click="tier" data-arg="2">Hybrid</button>
-          <button data-click="tier" data-arg="3">Hanzi</button>
-        </div>
-        <div class="voice">
-          <select id="voice-select" aria-label="Chinese voice"><option>Loading voices…</option></select>
-          <button id="rate-btn" class="num" data-click="rate" title="Speech speed">0.85×</button>
-          <button data-click="test-voice">Test</button>
-        </div>
-      </div>
     </div>
   </header>
 
@@ -83,6 +74,39 @@
           <div id="vgrid" class="vgrid"></div>
         </div>
         <aside id="word-pane" class="word-pane"></aside>
+      </div>
+    </section>
+    <section id="view-settings" class="hidden">
+      <div class="card settings-card">
+        <div class="settings-head"><h2>⚙️ Settings</h2><button type="button" class="btn btn-ghost btn-sm" data-click="settings">Done</button></div>
+
+        <div class="set-sec">
+          <h3>How Chinese is shown</h3>
+          <div class="sub">Everywhere: conversations, tiles, name tags, the notebook.</div>
+          <div class="opt-grid" id="tier-seg">
+            <button type="button" data-click="tier" data-arg="1"><b>Pinyin</b><span class="ex">nǐ hǎo</span><small>sounds only</small></button>
+            <button type="button" data-click="tier" data-arg="2"><b>Hybrid</b><span class="ex"><span class="ex-hz hz">你好</span><span class="ex-py">nǐ hǎo</span></span><small>characters + pinyin</small></button>
+            <button type="button" data-click="tier" data-arg="3"><b>Hanzi</b><span class="ex"><span class="ex-hz hz">你好</span></span><small>characters only</small></button>
+          </div>
+        </div>
+
+        <div class="set-sec">
+          <h3>Voice</h3>
+          <div class="sub">Used for the spoken words and sentences.</div>
+          <div class="set-row"><label for="voice-select">Chinese voice</label><select id="voice-select" aria-label="Chinese voice"><option>Loading voices…</option></select></div>
+          <div class="set-row"><label>Speed</label>
+            <div class="seg" id="rate-seg">
+              <button type="button" data-click="rate" data-arg="1">Fast</button>
+              <button type="button" data-click="rate" data-arg="0.85">Normal</button>
+              <button type="button" data-click="rate" data-arg="0.65">Slow</button>
+            </div></div>
+          <div class="set-row"><span></span><button type="button" class="btn btn-ghost btn-sm" data-click="test-voice">🔊 Test the voice</button></div>
+        </div>
+
+        <div class="set-sec">
+          <h3>Sound</h3>
+          <label class="toggle set-toggle"><input type="checkbox" id="sfx-on" checked> Sounds when you go through a door</label>
+        </div>
       </div>
     </section>
   </main>

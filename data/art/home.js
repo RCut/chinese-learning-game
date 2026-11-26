@@ -352,4 +352,67 @@
     g.line(11, 7, 14, 4, '#f2cf4a').px(14, 4, '#f472b6');                                  // pencil
     g.rect(1, 10, 2, 6, '#8a5a30').rect(13, 10, 2, 6, '#8a5a30').rect(3, 10, 10, 3, '#a9743f');
   });
+
+  // ───────────── HSK 2 things ─────────────
+  // bed: the foot of the bed seen over the tile — patchwork quilt, footboard and a teddy bear
+  A.draw('hm-bed', (g) => {
+    g.rect(1, 0, 14, 12, '#e8826a');
+    for (let y = 0; y < 12; y += 4) for (let x = 1; x < 15; x += 4) if ((x + y) % 8 === 1) g.rect(x, y, 4, 4, '#f4b860');
+    g.vline(1, 0, 12, '#c9634e').vline(14, 0, 12, '#c9634e');
+    g.rect(1, 12, 14, 3, '#8a5a30').hline(1, 12, 14, '#a9743f').hline(1, 15, 14, '#6e4727');
+    g.disc(7.5, 4.5, 2.4, '#b9854f').disc(5.5, 2.5, 1, '#b9854f').disc(9.5, 2.5, 1, '#b9854f');   // teddy head + ears
+    g.rect(5, 6, 5, 4, '#c9965c').px(6, 4, '#2b2b2b').px(9, 4, '#2b2b2b').px(7, 5, '#5a3a1f').px(8, 5, '#5a3a1f');
+    g.rect(4, 7, 1, 2, '#b9854f').rect(10, 7, 1, 2, '#b9854f').px(6, 7, '#d9322b').px(8, 7, '#d9322b');
+  }, { outline: false, shadow: false });
+  // wristwatch lying on a little bedside table
+  A.draw('hm-watch', (g) => {
+    g.rect(2, 8, 12, 2, '#c98f58').hline(2, 8, 12, '#e0ad74').rect(3, 10, 10, 5, '#a9743f').hline(3, 12, 10, '#8a5a30').px(8, 13, '#f2cf4a');
+    g.rect(5, 3, 6, 2, '#3b4f7a').rect(5, 8, 6, 0, '#3b4f7a');                                // strap (top)
+    g.rect(5, 6, 6, 2, '#3b4f7a');                                                          // strap (bottom)
+    g.disc(7.5, 5.5, 2.6, '#d9d2c0').disc(7.5, 5.5, 1.9, '#fbfbf4');
+    g.px(7, 4, '#2b2b2b').px(7, 5, '#2b2b2b').px(8, 6, '#2b2b2b').px(9, 6, '#2b2b2b');       // hands
+  });
+  // poster: a friendly face (big eye) and a waving hand, "my body"
+  A.draw('hm-poster', (g) => {
+    g.rect(1, 1, 14, 14, '#f4e6b8').frame(1, 1, 14, 14, '#c9a063');
+    g.ellipse(5.5, 5, 3, 2, '#ffffff').disc(5.5, 5, 1.3, '#4f7fa8').px(5, 5, '#2b2b2b').px(6, 4, '#ffffff');
+    g.hline(3, 2, 5, '#5a3a1f');                                                            // eyebrow
+    g.rect(9, 8, 4, 4, '#f2c49d').rect(9, 5, 1, 4, '#f2c49d').rect(10, 4, 1, 4, '#f2c49d').rect(11, 4, 1, 4, '#f2c49d').rect(12, 5, 1, 4, '#f2c49d').rect(8, 9, 1, 2, '#f2c49d');
+    g.px(10, 11, '#d99a6c').px(11, 11, '#d99a6c');
+    g.rect(3, 10, 4, 3, '#e8826a').px(4, 11, '#ffffff').px(5, 11, '#ffffff');
+  });
+  // family photo on the wall: grandpa, grandma, a boy and a girl
+  A.draw('hm-photo', (g) => {
+    g.rect(1, 2, 14, 12, '#8a5a30').frame(1, 2, 14, 12, '#a9743f').rect(2, 3, 12, 10, '#d9e8f0');
+    const face = (x, hair, shirt, grey) => { g.disc(x, 7, 1.6, '#f2c49d'); g.hline(x - 1, 5, 3, hair).px(x - 2, 6, hair); g.px(x + 1, 6, hair).rect(x - 1, 9, 3, 3, shirt); if (grey) g.px(x - 2, 7, hair).px(x + 2, 7, hair); };
+    face(4, '#c9c9c9', '#7a5bb0', true);       // grandpa
+    face(7, '#d8d8d8', '#cf6b84', true);       // grandma
+    g.px(6, 5, '#d8d8d8').px(8, 5, '#d8d8d8');
+    face(10, '#2a1d14', '#4f7fa8', false);     // boy
+    g.rect(11, 6, 1, 3, '#141218').px(12, 7, '#141218');                                   // girl's long hair…
+    g.disc(12.5, 8, 1.2, '#f2c49d').hline(11, 6, 3, '#141218').rect(12, 10, 2, 2, '#e8826a');
+    g.rect(2, 13, 12, 0, '#8a5a30');
+  });
+  // washing machine: white front-loader with a round blue window and bubbles
+  A.draw('hm-washer', (g) => {
+    g.rect(2, 1, 12, 14, '#e8edf0').hline(2, 1, 12, '#ffffff').vline(2, 1, 14, '#ffffff').vline(13, 1, 14, '#c4ccd2').hline(2, 14, 12, '#b0bac2');
+    g.rect(3, 2, 10, 3, '#d3dae0').px(4, 3, '#e8564a').px(6, 3, '#6fae58').rect(9, 3, 3, 1, '#9aa6b2');
+    g.disc(7.5, 9.5, 3.8, '#9aa6b2').disc(7.5, 9.5, 3, '#5aa9e6').px(6, 8, '#cfe9fa').px(7, 8, '#cfe9fa').px(9, 11, '#3a82c0').px(8, 11, '#3a82c0');
+    g.px(6, 10, '#ffffff').px(9, 9, '#ffffff').px(7, 11, '#ffffff');
+  });
+  // colour pencils: an open box of pencils in all colours
+  A.draw('hm-crayons', (g) => {
+    g.rect(1, 8, 14, 6, '#8a5a30').hline(1, 8, 14, '#a9743f').rect(2, 9, 12, 4, '#6e4727');
+    const cols = ['#2b2b2b', '#ffffff', '#4f9a45', '#d9322b', '#5aa9e6', '#f2cf4a'];
+    cols.forEach((c, i) => { const x = 2 + i * 2; g.rect(x, 3 + (i % 2), 2, 6 - (i % 2), c).px(x, 3 + (i % 2), '#e0bb8a').px(x + 1, 2 + (i % 2), '#e0bb8a').px(x, 2 + (i % 2), '#e0bb8a'); });
+    g.hline(1, 13, 14, '#6e4727');
+  });
+  // cabinet: something on top, a toy inside, shoes underneath
+  A.draw('hm-shelf', (g) => {
+    g.rect(1, 6, 14, 18, '#a9743f').rect(2, 8, 12, 7, '#5e3a1b').hline(1, 6, 14, '#c98f58').hline(1, 15, 14, '#8a5a30');
+    g.rect(2, 17, 12, 5, '#8a5a30').frame(2, 17, 12, 5, '#c98f58').px(8, 19, '#f2cf4a');
+    g.rect(4, 1, 8, 5, '#e8826a').hline(4, 1, 8, '#f3a28c').rect(7, 2, 2, 3, '#f2cf4a');       // a gift box on top
+    g.disc(6, 12, 2, '#b9854f').px(5, 11, '#2b2b2b').px(7, 11, '#2b2b2b').rect(9, 10, 3, 4, '#5aa9e6');   // teddy + toy block inside
+    g.rect(2, 22, 3, 2, '#d9322b').rect(5, 22, 3, 2, '#d9322b').rect(10, 22, 3, 2, '#3b4f7a');
+  }, { w: 16, h: 24 });
 })(window.MSC = window.MSC || {});

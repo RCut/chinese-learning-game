@@ -129,15 +129,6 @@
     g.disc(6, 5.5, 4, '#5cae5f'); g.disc(5, 4.5, 2, '#86c96c'); g.px(10, 12, '#2f7a3d').px(11, 9, '#2f7a3d').px(7, 13, '#2f7a3d').px(4, 12, '#2f7a3d');
   }, { w: 16, h: 24 });
 
-  A.draw('st-mailbox', (g) => {
-    g.rect(3, 13, 2, 3, '#4d4944'); g.rect(11, 13, 2, 3, '#4d4944');
-    g.rect(3, 4, 10, 10, '#2f8a4a'); g.ellipse(7.5, 4.5, 5, 3, '#2f8a4a'); g.rect(3, 4, 10, 2, '#2f8a4a');
-    g.vline(3, 3, 11, '#58b36c').px(4, 2, '#58b36c').px(5, 1, '#58b36c'); g.vline(12, 5, 9, '#216b37');
-    g.rect(5, 6, 6, 1, INK); g.rect(5, 6, 6, 1, '#16301c');                                                                       // slot
-    g.rect(4, 9, 8, 2, '#f2c230'); g.hline(4, 9, 8, '#fbe27a'); g.px(8, 10, '#d9482b').px(7, 10, '#d9482b');                       // yellow band
-    g.hline(3, 13, 10, '#216b37');
-  });
-
   A.draw('st-lamp', (g) => {
     g.rect(7, 7, 2, 17, '#3d4a55'); g.vline(7, 7, 17, '#5a6b79'); g.rect(5, 21, 6, 3, '#3d4a55'); g.hline(5, 21, 6, '#5a6b79');
     g.rect(4, 1, 8, 2, '#3d4a55'); g.rect(5, 0, 6, 1, '#3d4a55');
@@ -145,27 +136,12 @@
     g.rect(6, 7, 4, 1, '#3d4a55');
   }, { w: 16, h: 24 });
 
-  A.draw('st-bin', (g) => {
-    g.rect(3, 3, 10, 2, '#2f7a5a'); g.hline(3, 3, 10, '#58b38c'); g.rect(6, 2, 4, 1, '#2f7a5a');
-    g.rect(4, 5, 8, 10, '#3f9a72'); g.px(3, 5, null); g.vline(4, 5, 10, '#6bc99a');
-    for (const x of [6, 8, 10]) g.vline(x, 6, 8, '#2f7a5a');
-    g.vline(11, 5, 10, '#2f7a5a'); g.hline(4, 14, 8, '#2a6b4d');
-    g.rect(7, 8, 2, 2, '#e9e3d3'); g.px(9, 9, '#c9bfa8');                                                                        // a crumpled paper
-    g.px(10, 1, '#e9e3d3').px(11, 2, '#e9e3d3');
-  });
-
   A.draw('st-bus-stop', (g) => {
     g.rect(7, 9, 2, 15, '#5a6b79'); g.vline(7, 9, 15, '#8aa0b2'); g.rect(5, 22, 6, 2, '#4d5a66');
     g.rect(2, 1, 12, 9, '#2f6fa8'); g.frame(2, 1, 12, 9, '#ffffff');
     g.rect(4, 3, 8, 4, '#ffffff'); g.rect(5, 4, 2, 1, '#2f6fa8').rect(8, 4, 2, 1, '#2f6fa8').rect(11, 4, 1, 1, '#2f6fa8'); g.hline(4, 6, 8, '#d9482b');   // a tiny bus on the plate
     g.px(5, 7, '#1b1b1b').px(10, 7, '#1b1b1b').hline(4, 8, 8, '#cfe3f2');
   }, { w: 16, h: 24 });
-
-  A.draw('st-bench', (g) => {
-    g.rect(2, 3, 12, 2, '#c98a50'); g.rect(2, 6, 12, 2, '#c98a50'); g.hline(2, 3, 12, '#e0a96c'); g.hline(2, 6, 12, '#e0a96c'); g.hline(2, 5, 12, '#8f5f33'); g.hline(2, 8, 12, '#8f5f33');
-    g.rect(2, 10, 12, 2, '#b9854f'); g.hline(2, 10, 12, '#d9a066'); g.hline(2, 12, 12, '#8a5a33');
-    g.rect(2, 3, 1, 10, '#6b6f78'); g.rect(13, 3, 1, 10, '#6b6f78'); g.rect(3, 12, 1, 3, '#6b6f78'); g.rect(12, 12, 1, 3, '#6b6f78'); g.rect(2, 14, 2, 1, '#4d5058'); g.rect(12, 14, 2, 1, '#4d5058');
-  });
 
   const wheel = (g, x, y) => { g.disc(x, y, 2, '#2a2a30'); g.px(x, y, '#9aa3ab'); };
 
@@ -191,14 +167,6 @@
     for (let x = 0; x < 16; x += 2) g.px(x, 10, INK);                                                                              // checker band
     g.hline(0, 12, 16, '#b8901a'); g.px(15, 9, '#fff6c8').px(0, 9, '#d9482b');
     wheel(g, 4, 13); wheel(g, 12, 13);
-  });
-
-  A.draw('st-moto', (g) => {
-    ring(g, 3.5, 12, 2.6, '#2a2a30'); ring(g, 12.5, 12, 2.6, '#2a2a30'); g.px(3, 12, '#9aa3ab').px(12, 12, '#9aa3ab');
-    g.rect(4, 8, 7, 3, '#4a4f58'); g.rect(5, 6, 5, 3, '#c8472f'); g.hline(5, 6, 5, '#f27a5a');                                     // engine + tank
-    g.rect(2, 7, 4, 1, '#2a2a30');                                                                                                // seat
-    g.line(11, 6, 13, 10, '#9aa3ab'); g.hline(10, 5, 4, '#2a2a30'); g.rect(13, 6, 2, 2, '#fbe07a');                                // fork, bars, headlight
-    g.hline(3, 10, 3, '#9aa3ab'); g.px(1, 9, '#d9482b');
   });
 
   A.draw('st-bike', (g) => {
@@ -271,7 +239,7 @@
     g.rect(5, 15, 6, 1, '#d9a066');                                                                                                // door mat
   }, { shadow: false });
 
-  A.draw('st-school', (g) => {                                     // school: pale wall, flag on a pole, clock, an iron gate
+  A.draw('door-school', (g) => {                                   // school gate: pale wall, flag on a pole, clock, an iron gate
     front(g, '#f1e6c8', '#cdb98f');
     g.rect(0, 0, 16, 2, '#4a7ab0'); g.hline(0, 2, 16, '#2f5a85');
     g.vline(2, 3, 7, '#6b6f78'); g.rect(3, 3, 4, 3, '#d9482b'); g.px(4, 4, '#f2c230');                                            // flag
@@ -343,4 +311,64 @@
     g.hline(3, 12, 10, '#4d5a66');
     g.rect(11, 3, 2, 7, '#e6eef2'); g.rect(11, 7, 2, 3, '#4aa0e0'); g.px(12, 10, '#4aa0e0');                                         // thermometer (cold)
   }, { w: 16, h: 24 });
+  // ───────────── level-2 facade fronts (16×16, not walkable) ─────────────
+  A.draw('st-hotel', (g) => {                                      // hotel: tall cream front, rows of lit windows, a canopy over a glass door
+    front(g, '#e9dcc0', '#c9b58a');
+    g.rect(0, 0, 16, 2, '#7a4a8c'); g.hline(0, 2, 16, '#4f2f5c');
+    for (const y of [4, 7]) for (const x of [2, 6, 10]) { g.rect(x, y, 3, 2, '#f2d27a'); g.frame(x - 1, y - 1, 5, 4, '#a89268'); }
+    g.rect(2, 10, 12, 2, '#7a4a8c'); g.hline(2, 12, 12, '#4f2f5c'); g.rect(5, 12, 6, 4, '#7fb8c8'); g.vline(8, 12, 4, '#cfd3d6'); g.px(6, 13, '#e6f6fa');
+  }, { shadow: false });
+
+  A.draw('st-flats', (g) => {                                      // block of flats: grey-blue storeys, balconies with washing, a door
+    front(g, '#b9c4d4', '#8f9db3');
+    g.rect(0, 0, 16, 2, '#6b7a92'); g.hline(0, 2, 16, '#44506a');
+    for (const y of [3, 7]) for (const x of [2, 9]) { g.rect(x, y, 5, 3, '#8fcfe6'); g.frame(x, y, 5, 3, '#5d6c85'); g.hline(x - 1, y + 3, 7, '#5d6c85'); }
+    g.rect(10, 8, 2, 2, '#e8564a'); g.rect(3, 4, 2, 2, '#f2c230');
+    g.rect(6, 11, 4, 5, '#6e4727'); g.px(9, 13, '#f2c230');
+  }, { shadow: false });
+
+  A.draw('st-tickets', (g) => {                                    // ticket office: green kiosk, a little window with a counter, tickets hanging
+    front(g, '#efe3cc', '#d8c7a6');
+    g.rect(0, 0, 16, 3, '#2f8a6a'); g.hline(0, 3, 16, '#1d5a45');
+    g.rect(2, 5, 12, 9, '#3f6fb0'); g.rect(4, 6, 8, 5, '#a9dbe6'); g.frame(4, 6, 8, 5, '#f3e9d2'); g.rect(3, 11, 10, 2, '#c58b55'); g.hline(3, 11, 10, '#e0b57c');
+    g.rect(5, 12, 3, 1, '#ffffff').rect(9, 12, 2, 1, '#f2c230'); g.px(5, 7, '#e6f6fa').px(6, 8, '#e6f6fa');
+    g.rect(13, 0, 2, 3, '#f2c230'); g.hline(13, 1, 2, '#c8961d');
+  }, { shadow: false });
+
+  A.draw('st-watchshop', (g) => {                                  // watch shop: dark navy front, a big watch face above, small watches in the window
+    front(g, '#2f3a5a', '#1d2640');
+    g.rect(0, 0, 16, 2, '#c9a227'); g.hline(0, 2, 16, '#8a6c12');
+    g.rect(6, 3, 4, 1, '#8a5a33'); g.rect(6, 9, 4, 1, '#8a5a33'); g.rect(5, 4, 6, 5, '#8a5a33');
+    g.disc(8, 6, 2.5, '#fdfdfb'); g.px(8, 5, INK).px(8, 6, INK).px(9, 6, INK);
+    g.rect(2, 11, 12, 5, '#a9dbe6'); g.frame(2, 11, 12, 5, '#c9a227');
+    for (const x of [4, 8, 11]) { g.rect(x, 12, 2, 2, '#fdfdfb'); g.hline(x, 14, 2, '#8a5a33'); g.px(x, 12, '#c9a227'); }
+  }, { shadow: false });
+
+  A.draw('st-noodles', (g) => {                                    // small restaurant: warm orange front, a hanging bowl sign, steaming bowl in the window
+    front(g, '#f0d6a8', '#d2b078');
+    g.rect(0, 0, 16, 3, '#d9742a'); g.hline(0, 3, 16, '#8f4a16');
+    g.rect(5, 4, 6, 4, '#f8f8f4'); g.hline(5, 4, 6, '#4f7ab5'); g.ellipse(7.5, 5.5, 2, 1, '#f2d98a'); g.vline(8, 2, 2, '#6e4727');
+    g.rect(1, 9, 14, 7, '#8a5a33'); g.rect(2, 10, 12, 5, '#a9dbe6');
+    g.rect(5, 12, 6, 3, '#f8f8f4'); g.hline(5, 12, 6, '#4f7ab5'); g.rect(6, 11, 4, 1, '#f2d98a'); g.px(6, 9, '#ffffff').px(9, 9, '#ffffff');
+  }, { shadow: false });
+
+  // ───────────── things on the pavement ─────────────
+  A.draw('st-metro', (g) => {                                      // metro entrance: stairs going down under a blue roof, a round M-less sign
+    g.rect(1, 2, 14, 2, '#2f6fb0'); g.hline(1, 2, 14, '#6fa2d8'); g.rect(2, 4, 1, 11, '#5d6c85'); g.rect(13, 4, 1, 11, '#5d6c85');
+    g.rect(3, 4, 10, 11, '#2a2d38');
+    for (let i = 0; i < 5; i++) { g.hline(3 + i, 6 + i * 2, 10 - i * 2, '#8d93a0'); g.hline(3 + i, 7 + i * 2, 10 - i * 2, '#555b68'); }
+    g.disc(8, 0.5, 1.5, '#2f6fb0'); g.px(8, 0, '#ffffff');
+    g.rect(2, 14, 12, 2, '#d9d1c2');
+  }, { h: 16 });
+
+  const arrowSign = (key, dir) => A.draw(key, (g) => {             // a street sign on a post with a big arrow
+    g.rect(7, 8, 2, 8, '#6b6f78'); g.vline(7, 8, 8, '#8d93a0'); g.rect(5, 14, 6, 2, '#8c8274');
+    g.rect(1, 1, 14, 8, '#2f6fb0'); g.frame(1, 1, 14, 8, '#fdfdfb');
+    const a = dir < 0 ? [12, 3, 3, 5, 5, 5] : [3, 3, 12, 5, 10, 5];
+    g.rect(4, 4, 8, 2, '#fdfdfb');
+    if (dir < 0) { g.line(5, 5, 8, 2, '#fdfdfb').line(5, 4, 8, 7, '#fdfdfb').vline(4, 4, 2, '#fdfdfb'); }
+    else { g.line(10, 2, 12, 4, '#fdfdfb').line(10, 7, 12, 5, '#fdfdfb'); }
+  });
+  arrowSign('st-left', -1);
+  arrowSign('st-right', 1);
 })(window.MSC = window.MSC || {});

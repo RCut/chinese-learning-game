@@ -84,7 +84,7 @@
     const cards = D.rules.map((r) => {
       const open = st().rules.includes(r.id);
       return open
-        ? `<div class="rule-card"><div class="rc-ex hz">${U.esc(r.example)}</div><div><b>${U.esc(r.title)}</b>${r.hanzi ? ` <span class="hz">${UI.richText(r.hanzi)}</span>` : ''}<div class="box-sm">${U.esc(r.tip)}</div></div></div>`
+        ? `<div class="rule-card"><div class="rc-ex hz">${U.esc(r.example)}</div><div><b>${U.esc(r.title)}</b>${r.hanzi ? ` <span class="hz">${UI.signHtml(r.hanzi)}</span>` : ''}<div class="box-sm">${U.esc(r.tip)}</div></div></div>`
         : '<div class="rule-card locked"><div class="rc-ex">🔒</div><div><b>Not unlocked yet</b><div class="box-sm">Learn a character that uses this rule.</div></div></div>';
     }).join('');
     return `<div class="stack">${head()}<div class="row between"><h3 style="margin:0;font-size:15px">Stroke rules</h3><button class="btn btn-ghost btn-sm" data-click="wang-back">← Back</button></div>

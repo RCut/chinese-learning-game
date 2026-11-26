@@ -80,12 +80,6 @@
     g.px(7, 8, '#c9a227').px(8, 9, '#c9a227').px(7, 10, '#c9a227');
     g.hline(5, 14, 7, '#18151c');
   });
-  A.draw('sh-inkstone', (g, c) => {                            // dark slab, an ink well and a little ink
-    g.rect(1, 6, 14, 9, '#4a4650').rect(1, 6, 14, 2, '#6a6672').hline(1, 14, 14, '#26232b');
-    g.ellipse(7.5, 10, 4, 3, '#1c1a20').ellipse(7.5, 10, 3, 2, '#0e0c10');
-    g.px(5, 9, '#4a4650').px(6, 9, '#37333d');
-    g.rect(11, 9, 3, 3, '#2a272f').px(12, 10, '#5a5662');
-  });
   A.draw('sh-xuan', (g, c) => {                                // flat stack of paper sheets with a curled corner
     g.rect(1, 9, 14, 6, '#f1ebd9').hline(1, 9, 14, '#fffbea').hline(1, 11, 14, '#d9d1b8').hline(1, 13, 14, '#d9d1b8').hline(1, 14, 14, '#bdb391');
     g.rect(2, 5, 12, 5, '#fbf6e6').hline(2, 5, 12, '#ffffff').hline(2, 9, 12, '#d9d1b8');
@@ -114,15 +108,6 @@
     });
     g.vline(0, 2, 22, '#a2693d').vline(15, 2, 22, '#6e4425').hline(0, 23, 16, '#5e3a1b');
   }, { h: 24 });
-  A.draw('sh-vase', (g, c) => {                                 // blue-and-white vase
-    g.rect(6, 2, 4, 2, '#f4f1e6').rect(5, 4, 6, 1, '#f4f1e6');
-    g.ellipse(7.5, 9, 4.5, 5, '#f4f1e6');
-    g.rect(5, 14, 6, 1, '#d8d3c0').rect(6, 3, 4, 1, '#3f6fb0');
-    g.hline(4, 8, 8, '#3f6fb0').hline(4, 11, 8, '#3f6fb0');
-    g.px(7, 9, '#3f6fb0').px(8, 9, '#3f6fb0').px(6, 10, '#3f6fb0').px(9, 10, '#3f6fb0').px(7, 6, '#3f6fb0').px(8, 6, '#3f6fb0');
-    g.px(5, 7, '#ffffff').px(5, 8, '#ffffff');
-    g.vline(11, 8, 4, '#cfcab6');
-  });
   A.draw('sh-flower', (g, c) => {                               // a pink flower on a green stem
     g.vline(8, 8, 7, '#4f8a4a').vline(7, 8, 6, '#4f8a4a');
     g.rect(9, 11, 3, 1, '#6ab066').px(11, 10, '#6ab066').rect(4, 12, 3, 1, '#6ab066').px(4, 11, '#6ab066');
@@ -139,12 +124,6 @@
     g.rect(2, 20, 12, 2, '#6e4423').hline(2, 20, 12, '#a2693d').px(1, 21, '#c9a227').px(14, 21, '#c9a227');
     art(g, c);
   }, { h: 24 });
-  scroll('sh-scroll', '#f3e9cc', (g) => {                       // bamboo ink painting
-    g.vline(7, 5, 14, '#2f6b45').vline(8, 5, 14, '#3f8a58');
-    g.hline(7, 9, 2, '#1d3d2a').hline(7, 14, 2, '#1d3d2a');
-    g.line(9, 7, 12, 5, '#3f8a58').line(6, 11, 4, 9, '#3f8a58').line(9, 12, 12, 10, '#3f8a58').line(6, 16, 4, 14, '#3f8a58');
-    g.rect(10, 17, 2, 2, '#b8302a');
-  });
   const framed = (key, draw) => A.draw(key, (g, c) => {
     g.rect(1, 3, 14, 12, '#7a4a2b').frame(1, 3, 14, 12, '#c58b55');
     g.rect(3, 5, 10, 8, '#f3ead0');
@@ -182,13 +161,6 @@
     g.hline(4, 7, 8, '#e0d8bc');
     g.rect(5, 7, 6, 1, '#c8a05a');
   });
-  A.draw('sh-seal', (g, c) => {                                 // red stone stamp: carved knob on top, square body, red print on paper
-    g.rect(6, 2, 4, 3, '#d9564a').hline(6, 2, 4, '#f08a7c').vline(6, 2, 3, '#f08a7c').px(9, 4, '#8f2a20');
-    g.rect(5, 5, 6, 1, '#8f2a20');
-    g.rect(4, 6, 8, 7, '#c0392b').rect(4, 6, 8, 1, '#e0685a').vline(4, 6, 7, '#e0685a').vline(11, 7, 6, '#8f2a20');
-    g.hline(5, 9, 6, '#a02f23').vline(7, 8, 4, '#a02f23');
-    g.rect(2, 13, 12, 2, '#efe3bd').rect(5, 13, 6, 1, '#c0392b').hline(2, 14, 12, '#cfc29a');
-  });
   A.draw('sh-teaset', (g, c) => {                               // teapot with two little cups
     g.rect(4, 6, 7, 6, '#7a4f3a').rect(5, 5, 5, 1, '#7a4f3a').rect(7, 3, 2, 2, '#5a3626').px(7, 3, '#a8725a');
     g.rect(4, 6, 2, 5, '#a8725a').hline(4, 11, 7, '#4f2f20').rect(5, 12, 5, 1, '#4f2f20');
@@ -205,17 +177,24 @@
   });
 
   // ───────── floor pieces ─────────
-  A.draw('sh-screen', (g, c) => {                               // three-panel folding screen 16x24
-    [0, 5, 10].forEach((x, i) => {
-      const y0 = i === 1 ? 2 : 0;
-      g.rect(x, y0 + 2, 6, 21 - y0, '#6e4423').rect(x + 1, y0 + 3, 4, 18 - y0, i === 1 ? '#f0e2b8' : '#e8d8a8');
-      g.vline(x, y0 + 2, 21 - y0, '#a2693d');
-    });
-    g.rect(0, 22, 16, 2, '#5e3a1b').hline(0, 22, 16, '#8a5530');
-    g.line(2, 18, 4, 12, '#2f6b45').px(3, 11, '#3f8a58').px(4, 10, '#3f8a58');                    // bamboo on panel 1
-    g.vline(7, 14, 6, '#4a3a2a').disc(7.5, 11, 2.5, '#f08ab4').px(7, 10, '#fbe3ee');            // blossom on panel 2
-    g.line(11, 19, 13, 14, '#4a5a6a').line(13, 14, 14, 17, '#4a5a6a').disc(13.5, 8, 1.5, '#e8624a'); // hills + sun on panel 3
-  }, { h: 24 });
+  // ───────── paint pots: the colours (黑色 白色 绿色 红色) and a palette (颜色) ─────────
+  const pot = (key, paint, rim) => A.draw(key, (g, c) => {      // a round pot of paint with a brush resting in it
+    g.rect(3, 7, 10, 7, '#e9e2cf').rect(3, 7, 1, 7, '#fffaf0').vline(12, 8, 6, '#bdb391');
+    g.rect(2, 6, 12, 2, '#f4efe0').hline(2, 6, 12, '#ffffff');
+    g.ellipse(7.5, 6.5, 4.5, 1.5, rim || c.dk(paint, 0.35)).ellipse(7.5, 6.5, 3.8, 1, paint);
+    g.px(6, 6, c.lt(paint, 0.45));
+    g.hline(3, 14, 10, '#bdb391');
+    g.line(11, 5, 13, 1, '#8a5a33').rect(12, 0, 2, 2, '#3b2a1d');
+  });
+  pot('sh-black', '#26222b', '#4a4552');
+  pot('sh-white', '#fdfdfb', '#c9c4b2');
+  pot('sh-green', '#3f9a5a');
+  pot('sh-red', '#d0392e');
+  A.draw('sh-colours', (g, c) => {                              // a wooden palette with blobs of colour and a thumb hole
+    g.ellipse(7.5, 8.5, 7, 5.5, '#c58b55').ellipse(7.5, 8.5, 6, 4.5, '#e0b57c');
+    g.disc(10.5, 10.5, 1.4, '#c58b55');
+    [[4, 6, '#d0392e'], [7, 4, '#f2c230'], [11, 5, '#3f9a5a'], [4, 10, '#3f6fb0'], [7, 8, '#26222b']].forEach(([x, y, col]) => { g.disc(x + 0.5, y + 0.5, 1.5, col); g.px(x, y, c.lt(col, 0.4)); });
+  });
   A.draw('sh-welcome', (g, c) => {                              // small red welcome sign on a stand (no text)
     g.rect(2, 2, 12, 9, '#a8332b').frame(2, 2, 12, 9, '#e0b64a').rect(3, 3, 10, 7, '#c0392b');
     g.px(7, 5, '#e0b64a').px(8, 5, '#e0b64a').px(7, 6, '#e0b64a').px(8, 6, '#e0b64a').px(6, 7, '#e0b64a').px(9, 7, '#e0b64a').px(6, 4, '#e0b64a').px(9, 4, '#e0b64a');

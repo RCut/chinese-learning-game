@@ -12,7 +12,7 @@
   MSC.data = MSC.data || {};
   MSC.data.menu = {
     // Level 1 (HSK 1): 咖啡 (a deliberate extra — it's a café!), 茶, 水, 牛奶 · 米饭, 包子, 面包, 面条儿, 饺子.
-    // Level 2 adds 冰咖啡, 热茶, 牛肉面. The cheapest drink and food are level-1 items, so the starting money
+    // Level 2 adds 冰咖啡, 热茶, 奶茶, 牛肉面. The cheapest drink and food are level-1 items, so the starting money
     // (economy.js: one random drink + food + spare) always buys a level-1 order.
     drinks: [
       {
@@ -44,6 +44,12 @@
         qty: 1, measure: '杯', orderEnglish: 'one iced coffee', prices: [12, 14, 15],
         greeting: { hanzi: '你好！你想喝什么？热的还是冰的？', english: 'Hello! What would you like to drink? Hot or iced?' },
         grammarHint: 'Describing words go before the noun: number + measure word (一杯) + 冰 + 咖啡.',
+      },
+      {
+        id: 'naicha', hanzi: '奶茶', english: 'milk tea', menuEnglish: 'Milk tea', level: 2,
+        qty: 1, measure: '杯', orderEnglish: 'one milk tea', prices: [12, 14, 16],
+        greeting: { hanzi: '你好！今天想喝什么？我们的奶茶很好喝。', english: 'Hello! What would you like today? Our milk tea is delicious.' },
+        grammarHint: 'Drinks are counted in cups: 一杯奶茶. 奶茶 is milk tea.',
       },
       {
         id: 're_cha', hanzi: '热茶', english: 'hot tea', menuEnglish: 'Hot tea', level: 2,

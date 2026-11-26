@@ -49,6 +49,7 @@
     chatted: () => !!S.flags.chatted,
     wrote: () => !!S.flags.wrote,
     family: () => !!S.flags.family,
+    school: () => !!S.flags.school,
   };
 
   L.progress = (lv = S.level) => {

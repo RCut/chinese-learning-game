@@ -396,6 +396,142 @@
           bye2: { npc: { hanzi: '好的！你妈妈生日快乐！欢迎再来！', english: 'OK! Happy birthday to your mum! Come again!' }, end: true },
         },
       },
+
+      // ═══════════════════════ HSK 2 conversations ═══════════════════════
+      // ───────────────────────── Milk tea (奶茶, 红茶, 绿茶, 还是) ─────────────────────────
+      {
+        id: 'milktea', title: 'Milk tea or tea?',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '欢迎！今天有奶茶，也有红茶和绿茶。你要哪个？', english: 'Welcome! Today we have milk tea, and also black tea and green tea. Which one?' }, goal: 'Say which you want: milk tea, black tea or green tea.', tip: '奶茶 = milk tea (lit. "milk-tea"); 红茶 = red tea = black tea; 绿茶 = green tea. 我要…',
+            replies: [
+              { say: ['我要奶茶', '奶茶，谢谢', '给我奶茶'], en: 'I want milk tea.', label: 'Milk tea', next: 'n2a' },
+              { say: ['我要红茶', '红茶，谢谢', '给我红茶'], en: 'I want black tea.', label: 'Black tea', next: 'n2b' },
+              { say: ['我要绿茶', '绿茶，谢谢', '给我绿茶'], en: 'I want green tea.', label: 'Green tea', next: 'n2b' },
+            ] },
+          n2a: { npc: { hanzi: '好的，奶茶一杯。你要大杯还是小杯？', english: 'OK, one milk tea. Large or small?' }, goal: 'Say whether you want a large cup or a small one.', tip: '大杯 = large cup (杯 is the measure word); 小杯 = small.',
+            replies: [{ say: ['我要大杯', '大杯', '大杯，谢谢'], en: 'A large one.', label: 'Large', next: 'n3' }, { say: ['我要小杯', '小杯', '小杯，谢谢'], en: 'A small one.', label: 'Small', next: 'n3' }] },
+          n2b: { npc: { hanzi: '好的，一杯。你要热的还是冷的？', english: 'OK, one cup. Hot or cold?' }, goal: 'Say that you want it hot — or cold.', tip: '热的 = a hot one; 冷的 = a cold one.',
+            replies: [{ say: ['我要热的', '热的', '热的，谢谢'], en: 'A hot one.', label: 'Hot', next: 'n3' }, { say: ['我要冷的', '冷的', '冷的，谢谢'], en: 'A cold one.', label: 'Cold', next: 'n3' }] },
+          n3: { npc: { hanzi: '好了，给你。八块。', english: 'Here you are. Eight yuan.' }, goal: 'Say thank you and that it looks good.', tip: '不错 = not bad / good.',
+            replies: [{ say: ['谢谢，不错', '谢谢，这个不错', '谢谢'], en: 'Thanks, that looks good.', next: 'bye' }] },
+          bye: { npc: { hanzi: '不客气！欢迎再来！', english: "You're welcome! Come again!" }, end: true },
+        },
+      },
+
+      // ───────────────────────── Left behind (包, 忘, 里面, 手机) ─────────────────────────
+      {
+        id: 'leftbag', title: 'You forgot your bag',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你好！你的包忘在这儿了！', english: 'Hello! You left your bag here!' }, goal: 'Thank him, and say that you forgot it.', tip: '忘 = forget: 我忘了. 忘在这儿 = forgot it here.',
+            replies: [{ say: ['谢谢！我忘了', '谢谢，我忘在这儿了', '啊，我的包！谢谢'], en: 'Thanks! I forgot it.', next: 'n2' }] },
+          n2: { npc: { hanzi: '你看看，里面的东西都在吗？', english: 'Have a look — are all the things inside still there?' }, goal: 'Say that your phone is inside — and everything is fine.', tip: '里面 = inside; 手机 = phone; 都 = all.',
+            replies: [
+              { say: ['我的手机在里面', '都在，谢谢', '我拿出手机看看'], en: 'My phone is inside, and everything is there.', label: 'All there', next: 'bye1' },
+              { say: ['我的钱不在里面'], en: 'My money is not inside.', label: 'No money', next: 'bye2' },
+            ] },
+          bye1: { npc: { hanzi: '太好了！下次别忘了。', english: "Great! Don't forget it next time." }, end: true },
+          bye2: { npc: { hanzi: '你再看看！', english: "Look again!" }, end: true },
+        },
+      },
+
+      // ───────────────────────── Tickets (票, 门票, 周, 跟) ─────────────────────────
+      {
+        id: 'tickets', title: 'Two free tickets',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '我有两张门票，这周我没时间去。你要吗？', english: "I have two entrance tickets, but I have no time to go this week. Do you want them?" }, goal: 'Say that you do — and thank him.', tip: '要 = want; 门票 = entrance ticket; 太好了 / 谢谢.',
+            replies: [
+              { say: ['我要，谢谢', '要，太好了', '这周我有时间', '我要门票，谢谢你的票'], en: 'Yes please, thank you.', label: 'Yes', next: 'n2' },
+              { say: ['不要，谢谢', '我不要，谢谢'], en: 'No thanks.', label: 'No thanks', next: 'bye2' },
+            ] },
+          n2: { npc: { hanzi: '你跟谁去？', english: 'Who will you go with?' }, goal: 'Say that you will go with a friend — or with Mum.', tip: '跟 + person + 去.',
+            replies: [{ say: ['我跟朋友去', '我跟朋友一起去', '跟朋友去'], en: "I'll go with a friend.", label: 'A friend', next: 'bye1' }, { say: ['我跟妈妈去', '我跟妈妈一起去', '跟妈妈去'], en: "I'll go with Mum.", label: 'Mum', next: 'bye1' }] },
+          bye1: { npc: { hanzi: '好，玩得高兴！', english: 'Good — have fun!' }, end: true },
+          bye2: { npc: { hanzi: '好吧，下周我再问问别人。', english: "OK, next week I'll ask someone else." }, end: true },
+        },
+      },
+
+      // ───────────────────────── Cheaper than that stall (比, 这么, 那么, 便宜) ─────────────────────────
+      {
+        id: 'cheaper', title: 'Cheaper than the shop',
+        slots: { item: [{ hanzi: '苹果', en: 'apples' }, { hanzi: '西瓜', en: 'watermelon' }] },
+        start: 'n1',
+        nodes: {
+          n1: { goal: 'Say that the {item.en} are so expensive.', tip: '这么 + adjective = "so …": 这么贵！',
+            replies: [{ say: ['{item}这么贵', '这么贵', '这{item}这么贵'], en: 'These {item.en} are so expensive!', next: 'n2' }] },
+          n2: { npc: { hanzi: '不贵不贵！我的{item}比商店的便宜多了。', english: "Not expensive at all! My {item.en} are much cheaper than the shop's." }, goal: 'Say that the shop is not so cheap — or ask if he can go lower.', tip: '没有 A 那么 …: 商店没有这里那么便宜. 便宜一点 = a bit cheaper.',
+            replies: [
+              { say: ['商店没有这里那么便宜', '商店没有你这里便宜', '商店没有这里便宜'], en: "The shop isn't as cheap as here.", label: 'Agree', next: 'n3a' },
+              { say: ['可以便宜一点吗', '便宜一点，可以吗', '能便宜一点吗'], en: 'Can it be a little cheaper?', label: 'Ask lower', next: 'n3b' },
+            ] },
+          n3a: { npc: { hanzi: '对！你多买一点吧。', english: 'Right! Buy a bit more.' }, goal: 'Say you will take two jin.', tip: '要两斤 (two = 两).',
+            replies: [{ say: ['我要两斤', '好，我要两斤', '两斤'], en: "I'll take two jin.", next: 'bye' }] },
+          n3b: { npc: { hanzi: '好吧，那就便宜一块！', english: "OK then, one yuan off!" }, goal: 'Say thank you, he is kind.', tip: '你真好.',
+            replies: [{ say: ['谢谢，你真好', '谢谢你，你真好', '你真好'], en: "Thanks, you're kind.", next: 'bye' }] },
+          bye: { npc: { hanzi: '欢迎再来！', english: 'Come again!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── Wrong money (错, 找钱) ─────────────────────────
+      {
+        id: 'wrongmoney', title: 'Wrong change',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '你给了我二十块，找你十二块。给你。', english: 'You gave me twenty yuan, so I give you back twelve. Here.' }, goal: 'Say that there is a mistake — he gave you too little.', tip: '错 = wrong: 你找错钱了. 少 = too few.',
+            replies: [
+              { say: ['你找错钱了', '找错钱了', '你找错了'], en: 'You gave the wrong change.', label: 'Wrong change', next: 'n2a' },
+              { say: ['没错，谢谢', '对，谢谢', '没错'], en: "That's right, thanks.", label: "That's right", next: 'bye2' },
+            ] },
+          n2a: { npc: { hanzi: '哦，对不起！我错了。我给你十三块。', english: "Oh, sorry! My mistake. I'll give you thirteen." }, goal: 'Say that it is OK.', tip: '没关系.',
+            replies: [{ say: ['没关系', '没关系，谢谢'], en: "It's fine.", next: 'bye1' }] },
+          bye1: { npc: { hanzi: '谢谢你告诉我！欢迎再来。', english: 'Thank you for telling me! Come again.' }, end: true },
+          bye2: { npc: { hanzi: '好，欢迎再来！', english: 'Good, come again!' }, end: true },
+        },
+      },
+
+      // ───────────────────────── A bad melon (坏, 帮忙, 新鲜) ─────────────────────────
+      {
+        id: 'badone', title: 'A bad one',
+        slots: { fruit: [{ hanzi: '西瓜', en: 'watermelon' }, { hanzi: '梨', en: 'pears' }, { hanzi: '香蕉', en: 'bananas' }] },
+        start: 'n1',
+        nodes: {
+          n1: { goal: 'Say that you bought the {fruit.en} yesterday and one is bad.', tip: '坏了 = gone bad / broken: 这个坏了. 昨天 = yesterday.',
+            replies: [{ say: ['我昨天买的{fruit}坏了', '昨天买的{fruit}坏了', '这个{fruit}坏了'], en: 'The {fruit.en} I bought yesterday has gone bad.', next: 'n2' }] },
+          n2: { npc: { hanzi: '对不起！我的{fruit}都很新鲜的。你要我帮忙吗？', english: 'Sorry! My {fruit.en} are all fresh. Do you want me to help?' }, goal: 'Say please help — you would like a new one.', tip: '请帮忙 = please help.',
+            replies: [
+              { say: ['请帮忙，我要新的', '请你帮忙', '请帮忙'], en: 'Please help — I want a new one.', label: 'Change it', next: 'n3a' },
+              { say: ['没关系，谢谢', '没关系'], en: "It's OK, never mind.", label: 'Never mind', next: 'bye2' },
+            ] },
+          n3a: { npc: { hanzi: '好，给你一个新的！', english: 'OK, here is a fresh one!' }, goal: 'Say thank you.', tip: '谢谢.',
+            replies: [{ say: ['谢谢', '谢谢你'], en: 'Thank you.', next: 'bye1' }] },
+          bye1: { npc: { hanzi: '不客气！欢迎再来。', english: "You're welcome! Come again." }, end: true },
+          bye2: { npc: { hanzi: '谢谢你！下次会好的。', english: 'Thanks! Next time it will be good.' }, end: true },
+        },
+      },
+
+      // ───────────────────────── Fish and meat (鱼, 肉, 条) ─────────────────────────
+      {
+        id: 'fishmeat', title: 'A fish and some meat',
+        start: 'n1',
+        nodes: {
+          n1: { npc: { hanzi: '欢迎！今天的鱼很新鲜，肉也不错。你要什么？', english: 'Welcome! The fish is very fresh today and the meat is good too. What would you like?' }, goal: 'Say that you want a fish — or some meat.', tip: '条 counts fish: 一条鱼. 肉 = meat: 我要肉.',
+            replies: [
+              { say: ['我要一条鱼', '来一条鱼', '一条鱼'], en: 'I want a fish.', label: 'Fish', next: 'n2a' },
+              { say: ['我要肉', '来两斤肉', '我要两斤肉'], en: 'I want some meat.', label: 'Meat', next: 'n2b' },
+            ] },
+          n2a: { npc: { hanzi: '好的！这条大的，十八块。', english: 'OK! This big one is eighteen yuan.' }, goal: 'Say that is a bit expensive — or that you will take it.', tip: '太贵了 / 好，我要.',
+            replies: [
+              { say: ['有点贵', '太贵了'], en: "That's a bit expensive.", label: 'Expensive', next: 'bye1' },
+              { say: ['好，我要这条', '好，我要'], en: "OK, I'll take it.", label: 'Take it', next: 'bye2' },
+            ] },
+          n2b: { npc: { hanzi: '好的！两斤肉，三十块。', english: 'OK! Two jin of meat, thirty yuan.' }, goal: 'Say OK, and here is the money.', tip: '给你钱 = here is the money.',
+            replies: [{ say: ['好，给你钱', '好的，给你', '好，我拿出钱'], en: 'OK, here you are.', next: 'bye2' }] },
+          bye1: { npc: { hanzi: '那给你便宜两块！', english: 'Then two yuan off for you!' }, end: true },
+          bye2: { npc: { hanzi: '谢谢！欢迎再来！', english: 'Thank you! Come again!' }, end: true },
+        },
+      },
     ],
   };
 })(window.MSC = window.MSC || {});

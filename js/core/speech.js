@@ -28,7 +28,7 @@
     };
     populate();
     speechSynthesis.onvoiceschanged = populate;
-    select.addEventListener('change', () => { S.voiceURI = select.value; sp.say('你好'); });
+    select.addEventListener('change', () => { S.voiceURI = select.value; MSC.progress.save(); sp.say('你好'); });
   };
 
   sp.flash = (el) => {
@@ -71,10 +71,13 @@
     } catch (err) { console.warn('Speech error', err); }
   };
 
-  sp.toggleRate = () => {
-    S.rate = S.rate === 0.85 ? 0.65 : 0.85;
-    document.getElementById('rate-btn').textContent = `${S.rate}×`;
-    MSC.log.say(`Voice speed: ${S.rate}×`);
+  /** Voice speed (1 fast · 0.85 normal · 0.65 slow); saved with the settings. */
+  sp.syncRate = () => document.querySelectorAll('#rate-seg button').forEach((b) => b.classList.toggle('on', Number(b.dataset.arg) === S.rate));
+  sp.setRate = (r) => {
+    S.rate = r;
+    sp.syncRate();
+    MSC.progress.save();
+    sp.say('你好，欢迎来到中文街角！');
   };
 
   MSC.speech = sp;

@@ -41,7 +41,9 @@ Six places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a
 ## Learning features
 
 - **Words everywhere:** tap a Chinese word to hear it, press and hold for its meaning, 🔊 for the whole sentence. Translations of
-  NPC lines are blurred until tapped. The header toggle switches **Pinyin / Hybrid / Hanzi** everywhere.
+  NPC lines are blurred until tapped.
+- **⚙️ Settings** (button right of the Stage / Words toggle): **Pinyin / Hybrid / Hanzi** for the whole game, the Chinese **voice** and its speed
+  (fast / normal / slow, with a test button), and a switch for the door sounds. Everything is remembered.
 - **Notebook — Words:** every word you meet, by category; filter by HSK level, and **HSK only** hides non-HSK words. Each word shows
   its **mastery**, its characters and components, the **phrases that use it**, related words and, once learned, *How to write*.
 - **Notebook — Phrases:** the phrase book (≈130 phrases in 14 chapters: greetings, café, market, family, time…), each with its HSK
@@ -184,6 +186,7 @@ node tests/e2e-chat.js            # talking to Xiao Li and the shopkeeper: tiles
 node tests/e2e-speak.js           # speech input (mocked recogniser)
 node tests/e2e-levels.js          # level 1 shows only HSK 1 content; the phrase screen; levelling up to HSK 2
 node tests/e2e-practice.js        # notebook tabs, HSK only, mastery bars, word↔phrase links, Practice (listening never scores)
+node tests/e2e-settings.js        # the ⚙️ settings tab: display options and voice, remembered, nothing left in the top bar
 node tests/e2e-scroll.js          # phones: the dialogue pane scrolls with the page; map ⇄ dialogue navigation
 node tests/e2e-log.js             # the notification log: one row / scrollable list, clickable words, no popups left
 node tests/e2e-writing.js         # tutorial, a lesson, wall, notebook

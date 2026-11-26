@@ -17,29 +17,35 @@
   function setTier(n) {
     S.displayMode = Number(n);
     document.querySelectorAll('#tier-seg button').forEach((b) => b.classList.toggle('on', Number(b.dataset.arg) === S.displayMode));
+    MSC.progress.save();
     MSC.stage.refresh();
     MSC.panel.render(false);
     MSC.notebook.render();
   }
 
+  /** 'stage' | 'notebook' | 'settings' */
   function showTab(tab) {
-    const stage = tab === 'stage';
-    document.getElementById('view-stage').classList.toggle('hidden', !stage);
-    document.getElementById('view-notebook').classList.toggle('hidden', stage);
-    document.getElementById('tab-stage').classList.toggle('on', stage);
-    document.getElementById('tab-notebook').classList.toggle('on', !stage);
-    if (!stage) MSC.notebook.render();
+    if (tab !== 'settings') S.lastTab = tab;
+    document.getElementById('view-stage').classList.toggle('hidden', tab !== 'stage');
+    document.getElementById('view-notebook').classList.toggle('hidden', tab !== 'notebook');
+    document.getElementById('view-settings').classList.toggle('hidden', tab !== 'settings');
+    document.getElementById('tab-stage').classList.toggle('on', tab === 'stage');
+    document.getElementById('tab-notebook').classList.toggle('on', tab === 'notebook');
+    document.getElementById('tab-settings').classList.toggle('on', tab === 'settings');
+    if (tab === 'notebook') MSC.notebook.render();
+    if (tab === 'settings') window.scrollTo({ top: 0 });
   }
 
   MSC.actions.tab = showTab;
   MSC.actions.tier = setTier;
-  MSC.actions.rate = () => MSC.speech.toggleRate();
+  MSC.actions.settings = () => showTab(S.lastTab && !document.getElementById('view-settings').classList.contains('hidden') ? S.lastTab : 'settings');
+  MSC.actions.rate = (v) => MSC.speech.setRate(Number(v));
   MSC.actions['test-voice'] = (a, el) => MSC.speech.say('你好，欢迎来到中文街角！', el);
 
   window.addEventListener('keydown', (e) => {
     const t = e.target;
     if (t && ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName)) return;
-    if (document.getElementById('view-stage').classList.contains('hidden')) return;
+    if (document.getElementById('view-stage').classList.contains('hidden')) return;     // arrow keys only move you on the stage
     if (MSC.writer && MSC.writer.isOpen()) return;                 // the tray owns the keyboard while it is open
     const k = e.key.toLowerCase();
     const dir = { arrowup: [0, -1], w: [0, -1], arrowdown: [0, 1], s: [0, 1], arrowleft: [-1, 0], a: [-1, 0], arrowright: [1, 0], d: [1, 0] }[k];
@@ -54,7 +60,10 @@
     MSC.gestures.setup();
     MSC.stage.build();
     updateStats();
-    setTier(2);
+    setTier(S.displayMode || 2);
+    MSC.speech.syncRate();
+    const sfx = document.getElementById('sfx-on');
+    if (sfx) { sfx.checked = !MSC.sfx.muted; sfx.addEventListener('change', () => { MSC.sfx.muted = !sfx.checked; MSC.progress.save(); if (sfx.checked) MSC.sfx.enter('home'); }); }
     showTab('stage');
   });
 })(window.MSC = window.MSC || {});

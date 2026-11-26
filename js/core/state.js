@@ -52,6 +52,12 @@
         if (saved.writing && typeof saved.writing === 'object') Object.assign(S.writing, saved.writing);
         if (saved.mastery && typeof saved.mastery === 'object') S.mastery = saved.mastery;
         if (Array.isArray(saved.phrases)) saved.phrases.forEach((id) => S.phraseSet.add(id));
+        if (saved.settings) {
+          if ([1, 2, 3].includes(saved.settings.displayMode)) S.displayMode = saved.settings.displayMode;
+          if ([1, 0.85, 0.65].includes(saved.settings.rate)) S.rate = saved.settings.rate;
+          if (typeof saved.settings.voiceURI === 'string') S.voiceURI = saved.settings.voiceURI;
+          if (MSC.sfx && typeof saved.settings.sfxMuted === 'boolean') MSC.sfx.muted = saved.settings.sfxMuted;
+        }
         if (saved.level) S.level = saved.level;
         if (saved.flags) S.flags = saved.flags;
         if (saved.levelDoneShown) S.levelDoneShown = saved.levelDoneShown;
@@ -64,7 +70,7 @@
     save() {
       try {
         const starters = new Set(MSC.dict.all().filter((e) => e.starter).map((e) => e.hanzi));
-        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)), mastery: S.mastery, phrases: [...S.phraseSet], level: S.level, flags: S.flags, levelDoneShown: S.levelDoneShown, phraseQueue: S.phraseQueue }));
+        localStorage.setItem(KEY, JSON.stringify({ xp: S.xp, tipSeen: S.tipSeen, writing: S.writing, words: S.vocab.filter((h) => !starters.has(h)), mastery: S.mastery, phrases: [...S.phraseSet], settings: { displayMode: S.displayMode, rate: S.rate, voiceURI: S.voiceURI, sfxMuted: !!(MSC.sfx && MSC.sfx.muted) }, level: S.level, flags: S.flags, levelDoneShown: S.levelDoneShown, phraseQueue: S.phraseQueue }));
       } catch (e) { /* storage unavailable: progress simply isn't kept */ }
     },
   };

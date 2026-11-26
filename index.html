@@ -107,6 +107,12 @@
           <h3>Sound</h3>
           <label class="toggle set-toggle"><input type="checkbox" id="sfx-on" checked> Sounds when you go through a door</label>
         </div>
+
+        <div class="set-sec danger-zone">
+          <h3>Progress</h3>
+          <div class="sub">Start again from the beginning. Your settings above are kept.</div>
+          <button type="button" class="btn btn-danger" id="reset-btn" data-click="reset-ask">Reset progress</button>
+        </div>
       </div>
     </section>
   </main>
@@ -118,6 +124,11 @@
   <div id="teach-backdrop" class="writer-backdrop" data-click="tc-later"></div>
   <section id="teach" class="practice" role="dialog" aria-modal="true" aria-label="New phrase"></section>
 
+  <div id="reset-dialog" class="levelup" role="alertdialog" aria-modal="true" aria-labelledby="reset-title"><div class="levelup-card">
+    <div class="levelup-burst">⚠️</div><h3 id="reset-title">Reset all progress?</h3>
+    <p>This erases your words and phrases, how well you know them, your handwriting and characters at Master Wang’s, your level, XP and everything you have unlocked. You will start again at level 1. <b>This cannot be undone.</b> Your settings (display, voice, sound) are kept.</p>
+    <div class="actions"><button type="button" class="btn btn-ghost grow" data-click="reset-cancel">Cancel</button><button type="button" class="btn btn-danger grow" data-click="reset-go">Yes, erase all</button></div>
+  </div></div>
   <div id="levelup" class="levelup" role="dialog" aria-modal="true" aria-labelledby="levelup-title"><div class="levelup-card"><div class="levelup-burst">🎉</div><h3 id="levelup-title"></h3><p id="levelup-text"></p><div id="levelup-new" class="levelup-new"></div><button type="button" class="btn btn-primary btn-block" data-click="levelup-ok">Let’s go!</button></div></div>
   <div id="tooltip"><div class="tz" id="tip-zh"></div><div class="te" id="tip-en"></div></div>
 

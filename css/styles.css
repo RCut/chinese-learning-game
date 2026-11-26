@@ -543,3 +543,9 @@ body.practice-open { overflow: hidden; }
   .gear { min-width: 34px; }
 }
 .opt-grid .ex { min-height: 48px; }
+
+.btn-danger { background: #dc2626; color: #fff; } .btn-danger:hover { background: #b91c1c; }
+.danger-zone { border-top: 1px solid #fecaca; margin-top: 8px; padding-bottom: 14px; }
+.danger-zone .btn-danger { margin-top: 12px; }
+.levelup-card .actions { display: flex; gap: 8px; }
+#reset-dialog { z-index: 80; }

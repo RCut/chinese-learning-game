@@ -67,6 +67,13 @@
         });
       } catch (e) { console.warn('Could not load progress', e); }
     },
+    /** Start again: erase everything saved except the settings (display mode, voice, speed, sound), then reload so every part of the game starts clean. */
+    reset() {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({ settings: { displayMode: S.displayMode, rate: S.rate, voiceURI: S.voiceURI, sfxMuted: !!(MSC.sfx && MSC.sfx.muted) } }));
+      } catch (e) { /* nothing was saved anyway */ }
+      window.location.reload();
+    },
     save() {
       try {
         const starters = new Set(MSC.dict.all().filter((e) => e.starter).map((e) => e.hanzi));

@@ -39,6 +39,11 @@
   MSC.actions.tab = showTab;
   MSC.actions.tier = setTier;
   MSC.actions.settings = () => showTab(S.lastTab && !document.getElementById('view-settings').classList.contains('hidden') ? S.lastTab : 'settings');
+  // Reset progress: ask first, then wipe and reload
+  MSC.actions['reset-ask'] = () => document.getElementById('reset-dialog').classList.add('show');
+  MSC.actions['reset-cancel'] = () => document.getElementById('reset-dialog').classList.remove('show');
+  MSC.actions['reset-go'] = () => { document.getElementById('reset-dialog').classList.remove('show'); MSC.progress.reset(); };
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') document.getElementById('reset-dialog').classList.remove('show'); });
   MSC.actions.rate = (v) => MSC.speech.setRate(Number(v));
   MSC.actions['test-voice'] = (a, el) => MSC.speech.say('你好，欢迎来到中文街角！', el);
 

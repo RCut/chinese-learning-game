@@ -44,6 +44,8 @@ Six places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a
   NPC lines are blurred until tapped.
 - **⚙️ Settings** (button right of the Stage / Words toggle): **Pinyin / Hybrid / Hanzi** for the whole game, the Chinese **voice** and its speed
   (fast / normal / slow, with a test button), and a switch for the door sounds. Everything is remembered.
+  At the bottom, a red **Reset progress** button (with a confirmation dialogue) erases words, phrases, mastery, handwriting, level and XP
+  and starts again at level 1 — the settings are kept.
 - **Notebook — Words:** every word you meet, by category; filter by HSK level, and **HSK only** hides non-HSK words. Each word shows
   its **mastery**, its characters and components, the **phrases that use it**, related words and, once learned, *How to write*.
 - **Notebook — Phrases:** the phrase book (≈130 phrases in 14 chapters: greetings, café, market, family, time…), each with its HSK

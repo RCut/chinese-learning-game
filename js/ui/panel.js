@@ -23,7 +23,7 @@
     <div class="pane-head">
       <div class="row"><div class="avatar">${avatar(emoji)}</div>
         <div><h3>${U.esc(title)} ${hanzi ? `<span class="hz">(${U.esc(hanzi)})</span>` : ''}</h3><div class="sub">${sub}</div></div></div>
-      <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 <span class="lbl">Quest</span></button></div>
+      <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm only-narrow" data-click="to-map" title="Back to the map">🗺️ <span class="lbl">Map</span></button><button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 <span class="lbl">Quest</span></button></div>
     </div>`;
 
   P.head = head;
@@ -212,18 +212,33 @@
     if (toFeedback) P.revealFeedback();
   };
 
-  /** Scroll only the pane (never the page) so the new feedback is in view. */
+  // On phones the dialogue pane is part of the page (single column); on wide screens it is its own scroller beside the stage.
+  const singleColumn = () => window.matchMedia('(max-width: 1023px)').matches;
+  const headerH = () => (document.querySelector('.app-header') || { offsetHeight: 0 }).offsetHeight;
+  /** Bring the bottom of `el` into view: the page scrolls on phones, the pane on wide screens. */
+  P.revealBottom = (el, pad = 12) => {
+    if (singleColumn()) {
+      const over = el.getBoundingClientRect().bottom - (window.innerHeight - pad);
+      if (over > 0) window.scrollBy({ top: over, behavior: 'smooth' });
+    } else {
+      const pane = panelEl(), over = el.getBoundingClientRect().bottom - pane.getBoundingClientRect().bottom;
+      if (over > 0) pane.scrollBy({ top: over + pad, behavior: 'smooth' });
+    }
+  };
   P.revealFeedback = () => requestAnimationFrame(() => {
-    const el = panelEl(), fb = document.getElementById('feedback');
-    if (!fb || !fb.firstElementChild) return;
-    const over = fb.getBoundingClientRect().bottom - el.getBoundingClientRect().bottom;
-    if (over > 0) el.scrollBy({ top: over + 12, behavior: 'smooth' });
+    const fb = document.getElementById('feedback');
+    if (fb && fb.firstElementChild) P.revealBottom(fb);
   });
+  /** Phones: scroll so the dialogue pane (below the stage) is under the header; the 🗺️ button scrolls back to the stage. */
+  P.showPanel = () => { if (singleColumn()) window.scrollTo({ top: Math.max(0, panelEl().getBoundingClientRect().top + window.scrollY - headerH() - 8), behavior: 'smooth' }); };
+  P.showStage = () => { if (singleColumn()) window.scrollTo({ top: Math.max(0, document.getElementById('view-stage').getBoundingClientRect().top + window.scrollY - headerH() - 8), behavior: 'smooth' }); };
+
 
   // ───────────────────────── actions ─────────────────────────
   const A = MSC.actions;
   const curState = () => (S.active === 'barista' ? B.step().state : QZ.state(S.active));
 
+  A['to-map'] = () => P.showStage();
   A.overview = () => { S.active = null; MSC.stage.refresh(); P.render(true); };
   A.hint = (arg) => {
     const st = arg === 'barista' ? B.step().state : QZ.state(arg);

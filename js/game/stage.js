@@ -245,7 +245,7 @@
     const arrive = () => {
       if (clickedDoor && S.player.x === clickedDoor.x && S.player.y === clickedDoor.y) { ST.refresh(); ST.through(clickedDoor); return; }
       const target = clicked || ST.adjacent();
-      if (target && !isDoor(target)) ST.activate(target.id, !!clicked); else ST.refresh();
+      if (target && !isDoor(target)) { ST.activate(target.id, !!clicked); if (clicked && MSC.panel.showPanel) MSC.panel.showPanel(); } else ST.refresh();
       if (after) after();
     };
     if (!path.length) { arrive(); return; }
@@ -315,7 +315,7 @@
 
   ST.interact = () => {
     const adj = ST.adjacent();
-    if (adj) ST.activate(adj.id, true);
+    if (adj) { ST.activate(adj.id, true); if (MSC.panel.showPanel) MSC.panel.showPanel(); }
     else MSC.log.say('Walk up to someone or something first.');
   };
 

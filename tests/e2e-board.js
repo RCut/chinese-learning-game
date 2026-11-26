@@ -62,10 +62,33 @@ async function run(p, label) {
   await m.waitForTimeout(500);
   const geo = await m.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, board: document.getElementById('board').getBoundingClientRect().width }));
   ok('phone: the board fits the screen', geo.sw <= geo.cw && geo.board <= geo.cw, JSON.stringify(geo));
+  // the narrowest common phone (360 px): nothing may be wider than the screen, wrap awkwardly or sit under the header
+  const n = await H.open(b, { context: { viewport: { width: 360, height: 740 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true } });
+  await n.evaluate(() => { MSC.state.xp = 123456; MSC.state.money = 9999; MSC.emit('stats'); ['你', '好', '猫', '学生'].forEach((w) => MSC.vocab.discover(w)); });
+  const wide = () => n.evaluate(() => ({ sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
+  const fits = async (what) => { const g = await wide(); ok(`360px: ${what} fits the screen`, g.sw <= g.cw, JSON.stringify(g)); };
+  await fits('the stage (header with big money and XP numbers)');
+  ok('360px: header chips and level badge stay on one line each', await n.$$eval('.chip', (c) => c.every((x) => x.getBoundingClientRect().height < 34)));
+  ok('360px: the two views are stacked and fully visible', await n.$eval('.seg.dark', (e) => { const r = e.getBoundingClientRect(); return r.right <= innerWidth && r.height > 40; }));
+  for (const id of ['street', 'cafe', 'shop', 'market', 'home']) { await n.evaluate((x) => MSC.stage.show(x), id); await n.waitForTimeout(150); await fits(`the ${id}`); }
+  ok('360px: street shop signs do not overlap', await n.evaluate(() => { MSC.stage.show('street'); const r = [...document.querySelectorAll('.scenery-sign')].map((e) => e.getBoundingClientRect()); return r.every((a, i) => r.slice(i + 1).every((c) => a.right <= c.left + 1 || c.right <= a.left + 1 || a.bottom <= c.top + 1 || c.bottom <= a.top + 1)); }));
+  await n.evaluate(() => { MSC.state.active = null; MSC.panel.render(true); });
+  await fits('the quest list');
+  ok('360px: "Go →" never wraps', await n.$$eval('.dest > b:last-child', (b) => b.length > 3 && b.every((x) => x.getBoundingClientRect().height < 24)));
+  await n.evaluate(() => { MSC.actions.tab('notebook'); MSC.actions['open-word']('学生'); }); await n.waitForTimeout(200);
+  await fits('the notebook with a word pane open');
+  await n.evaluate(() => { MSC.actions['close-pane'](); MSC.actions['nb-tab']('phrases'); }); await fits('the phrase book');
+  await n.evaluate(() => { MSC.actions['nb-tab']('words'); MSC.actions.tab('stage'); MSC.actions.practice('words'); }); await n.waitForTimeout(200);
+  await fits('Practice');
+  ok('360px: the Practice title stays on one line', await n.$eval('.pr-head b', (e) => e.getBoundingClientRect().height < 24));
+  await n.evaluate(() => MSC.practice.close());
+  await n.evaluate(() => { MSC.stage.show('street'); MSC.actions.go('friend'); }); await n.waitForTimeout(3200);
+  ok('360px: a conversation header keeps its buttons on one line', await n.$$eval('.pane-head .btn', (b) => b.length >= 2 && b.every((x) => x.getBoundingClientRect().height < 40)));
+  await fits('a conversation');
   await p.evaluate(() => MSC.stage.show('street'));
   await p.waitForTimeout(400);
   await p.screenshot({ path: 'board_street.png' });
-  for (const pg of [p, m]) ok('no page errors', pg.errors.length === 0, pg.errors.join('; '));
+  for (const pg of [p, m, n]) ok('no page errors', pg.errors.length === 0, pg.errors.join('; '));
   await b.close();
   console.log(fails ? `${fails} FAILED` : 'all passed');
   process.exit(fails ? 1 : 0);

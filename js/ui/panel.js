@@ -23,7 +23,7 @@
     <div class="pane-head">
       <div class="row"><div class="avatar">${avatar(emoji)}</div>
         <div><h3>${U.esc(title)} ${hanzi ? `<span class="hz">(${U.esc(hanzi)})</span>` : ''}</h3><div class="sub">${sub}</div></div></div>
-      <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 Quest</button></div>
+      <div class="row">${extra || ''}<button class="btn btn-ghost btn-sm" data-click="overview" title="Back to the quest overview">🧭 <span class="lbl">Quest</span></button></div>
     </div>`;
 
   P.head = head;

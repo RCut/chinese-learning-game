@@ -7,7 +7,8 @@
  *   recognition (pick the right option from a list) counts ×0.6 · listening drills ("what did you hear?") never count
  * Mastery % = a running average of the recent uses (newer ones weigh more), capped by how much evidence there is:
  *   1 use ≤ 30 % · 2 uses ≤ 50 % · 3 uses ≤ 70 % · 4+ uses ≤ 100 %, and below 85 % until it was used in 2+ different places.
- * Seen but never used = 10 %. Learned = 85 % or more. Nothing ever decays.
+ * Seen but never used = 10 %. Learned = 85 % or more. Nothing decays with time, but mistakes can pull a learned word back under
+ * 85 % ('unlearned' event, "needs review" in the notebook) — a few clean uses bring it back.
  *
  *   MSC.mastery.record(keys, quality, place)    keys: words (hanzi) or phrases ('p:<id>')
  *   MSC.mastery.score(key) → 0…100 · learned(key) · seen(key) · weakest(keys, n)
@@ -35,7 +36,8 @@
       if (r.u.length > KEEP) r.u.shift();
       if (place && !r.p.includes(place)) r.p.push(place);
       const after = M.score(k);
-      if (before < M.LEARNED && after >= M.LEARNED) MSC.emit('learned', k);
+      if (before < M.LEARNED && after >= M.LEARNED) { r.was = true; MSC.emit('learned', k); }
+      if (before >= M.LEARNED && after < M.LEARNED) { r.was = true; MSC.emit('unlearned', { key: k, score: after }); }
     });
     MSC.emit('mastery', keys);
     if (MSC.progress) MSC.progress.save();
@@ -51,6 +53,8 @@
     return Math.max(10, Math.round(Math.min(avg * 100, cap)));
   };
   M.learned = (k) => M.score(k) >= M.LEARNED;
+  /** was learned once, but mistakes have pulled it back under 85% — it needs another look */
+  M.needsReview = (k) => !!(S.mastery[k] && S.mastery[k].was) && M.score(k) < M.LEARNED;
   M.uses = (k) => (S.mastery[k] ? S.mastery[k].u.length : 0);
   M.places = (k) => (S.mastery[k] ? S.mastery[k].p.slice() : []);
   /** the n weakest of `keys` that have been seen (for Practice) */

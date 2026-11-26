@@ -21,6 +21,7 @@
     const v = M.score(key);
     return `<div class="mbar" title="Mastery ${v}%${v >= M.LEARNED ? ' — learned' : ''}"><i class="${v >= M.LEARNED ? 'ok' : ''}" style="width:${v}%"></i></div>`;
   };
+  const review = (key) => (M.needsReview(key) ? '<span class="tag review" title="You knew this, but mistakes pulled it back — use it again">review</span>' : '');
   const pct = (key) => { const v = M.score(key); return `<span class="mpct ${v >= M.LEARNED ? 'ok' : ''}">${v >= M.LEARNED ? '✓ ' : ''}${v}%</span>`; };
   const lvlTag = (l) => (l ? `<span class="tag hsk" title="HSK level ${l}">HSK${l}</span>` : '<span class="tag extra" title="Not an HSK word">extra</span>');
 
@@ -69,7 +70,8 @@
       : v >= M.LEARNED ? 'Learned.'
         : pl < 2 ? `Used ${n}× — use it somewhere else too (a different person or place) to learn it.`
           : `Used ${n}× in ${pl} places — keep using it without hints.`;
-    return `<div class="mbox"><div class="row between"><b>Mastery</b>${pct(key)}</div>${bar(key)}<div class="sub" style="margin-top:4px">${msg}</div></div>`;
+    const again = M.needsReview(key) ? 'You knew this, but recent mistakes pulled it back under 85% — a few clean uses and it is learned again.' : msg;
+    return `<div class="mbox"><div class="row between"><b>Mastery</b>${pct(key)}</div>${bar(key)}<div class="sub" style="margin-top:4px">${again}</div></div>`;
   }
   function phrasePane(p) {
     const words = p.words.filter((w) => D.get(w));
@@ -142,7 +144,7 @@
       const isNew = S.fresh.has(e.hanzi);
       return `<div class="vcard ${isNew ? 'new' : ''} ${S.selectedWord === e.hanzi ? 'sel' : ''}" ${UI.interactAttrs(e.hanzi, '', '', 'open-word', e.hanzi)}>
         <div class="row between" style="align-items:flex-start"><div>${UI.wordLabel(e.hanzi, false)}</div>
-          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}${lvlTag(D.level(e.hanzi))}${MSC.howto.has(e.hanzi) ? '<span class="tag write" title="You can write this">✍</span>' : ''}</div></div>
+          <div class="vtags">${isNew ? '<span class="tag new">New</span>' : ''}${review(e.hanzi)}${lvlTag(D.level(e.hanzi))}${MSC.howto.has(e.hanzi) ? '<span class="tag write" title="You can write this">✍</span>' : ''}</div></div>
         <div style="font-weight:700;font-size:13px">${U.esc(e.english)}</div>
         <div class="row" style="gap:6px">${bar(e.hanzi)}${pct(e.hanzi)}</div></div>`;
     }).join('') || '<div class="wp-empty" style="grid-column:1/-1">No words match.</div>';
@@ -165,7 +167,7 @@
       if (!ps.length) return '';
       const met = ps.filter((p) => PH.has(p.id) && (!q || p.english.toLowerCase().includes(q) || p.hanzi.includes(q) || D.sentencePinyin(p.hanzi).toLowerCase().includes(q)));
       const cards = met.map((p) => `<div class="pcard ${S.selectedPhrase === p.id ? 'sel' : ''}" data-click="open-phrase" data-arg="${p.id}">
-          <div class="row between" style="align-items:flex-start;gap:8px"><div class="grow">${UI.phraseLabel(p.hanzi)}</div>${lvlTag(p.level)}</div>
+          <div class="row between" style="align-items:flex-start;gap:8px"><div class="grow">${UI.phraseLabel(p.hanzi)}</div><div class="vtags">${review(p.key)}${lvlTag(p.level)}</div></div>
           <div style="font-weight:600;font-size:12.5px">${U.esc(p.english)}</div>
           <div class="row" style="gap:6px">${bar(p.key)}${pct(p.key)}</div></div>`).join('');
       return `<div class="chapter"><div class="row between"><h4>${U.esc(ch.title)}</h4><span class="sub num">${ps.filter((p) => PH.has(p.id)).length} / ${ps.length} met</span></div>
@@ -185,6 +187,16 @@
   MSC.on('writing-changed', () => NB.render(true));
   const visible = () => !document.getElementById('view-notebook').classList.contains('hidden');
   MSC.on('mastery', () => { if (visible()) NB.render(); });
+  // a learned word or phrase slipped back under 85%: say so, with a link to it
+  MSC.on('unlearned', ({ key, score }) => {
+    const isPhrase = String(key).startsWith('p:');
+    const p = isPhrase ? PH.get(key) : null, e = isPhrase ? null : D.get(key);
+    if (!p && !e) return;
+    const link = isPhrase
+      ? `<button type="button" class="log-zh hz" data-click="open-phrase" data-arg="${p.id}">${U.esc(p.hanzi)}</button>`
+      : `<button type="button" class="log-zh hz" data-click="log-open" data-arg="${U.esc(key)}">${U.esc(key)}</button>`;
+    MSC.log.html(`🔁 ${link} needs practice again <span class="log-en">(${score}%)</span> <button type="button" class="log-learn warn" data-click="practice" data-arg="${isPhrase ? 'phrases' : 'words'}">Practise</button>`, 'review');
+  });
   MSC.on('phrase', () => { if (visible()) NB.render(); });
 
   // On phones the details are a bottom sheet: swipe it down (from the handle or the title) to close it.

@@ -18,9 +18,11 @@
       </div>
 
       <div class="hdr-right">
-        <div class="chip chip-money" id="money-chip" title="Your money"><span>💰</span><span id="money-val" class="num">¥0</span></div>
-        <div class="chip chip-xp" title="Experience"><span>⭐</span><span id="xp-val" class="num">0 XP</span></div>
-        <button type="button" class="chip chip-level" id="level-chip" data-click="overview" title="Your level — open the journey">Lv 1</button>
+        <div class="hdr-chips">
+          <div class="chip chip-money" id="money-chip" title="Your money"><span>💰</span><span id="money-val" class="num">¥0</span></div>
+          <div class="chip chip-xp" title="Experience"><span>⭐</span><span id="xp-val" class="num">0 XP</span></div>
+          <button type="button" class="chip chip-level" id="level-chip" data-click="overview" title="Your level — open the journey">Lv 1</button>
+        </div>
         <nav class="seg dark">
           <button id="tab-stage" class="on" data-click="tab" data-arg="stage">🗺️ Stage</button>
           <button id="tab-notebook" data-click="tab" data-arg="notebook">📒 <span id="vocab-count" class="num">0</span> Words</button>
@@ -72,7 +74,7 @@
               <div class="sub" id="nb-hint"></div>
             </div>
             <div class="search">
-              <input id="vocab-search" class="field" type="search" placeholder="Search English, pinyin, hanzi…" />
+              <input id="vocab-search" class="field" type="search" placeholder="Search words…" />
               <button class="btn btn-ghost btn-sm" data-click="clear-search">Reset</button>
             </div>
           </div>

@@ -37,7 +37,8 @@ button:disabled { cursor: default; }
 .brand h1 { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .brand h1 span { color: var(--terra); }
 .hdr-right, .hdr-mid { display: flex; align-items: center; gap: 6px; }
-.chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px; border-radius: 12px; font-weight: 800; font-size: 12px; border: 1px solid; }
+.hdr-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.chip { display: inline-flex; align-items: center; gap: 4px; padding: 5px 9px; border-radius: 12px; font-weight: 800; font-size: 12px; border: 1px solid; white-space: nowrap; line-height: 1.2; }
 .chip-money { background: var(--green-bg); border-color: #a7f3d0; color: var(--green-tx); min-width: 64px; justify-content: center; }
 .chip-xp { background: var(--amber-bg); border-color: #fde68a; color: var(--amber-tx); min-width: 66px; justify-content: center; }
 .chip-money.bump { animation: bump .6s ease; }
@@ -53,6 +54,15 @@ button:disabled { cursor: default; }
 .voice button { padding: 3px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; background: var(--soft); }
 .voice #rate-btn { background: #fef3c7; color: var(--amber-tx); min-width: 46px; }
 @media (max-width: 640px) {
+  .app-header-in { padding: 8px 12px 8px; gap: 6px; }
+  .brand { width: 100%; }
+  /* money, XP and level on the left; the two views stacked on the right */
+  .hdr-right { width: 100%; align-items: center; justify-content: space-between; gap: 8px; }
+  .hdr-chips { flex: 1; gap: 5px; }
+  .chip { padding: 4px 8px; }
+  .chip-money, .chip-xp { min-width: 0; }
+  .seg.dark { flex-direction: column; flex: none; padding: 2px; gap: 2px; }
+  .seg.dark button { text-align: left; padding: 5px 12px 5px 9px; }
   .hdr-mid { order: 3; width: 100%; justify-content: space-between; padding-top: 6px; border-top: 1px solid var(--soft); }
   .brand h1 { font-size: 14px; }
   .hdr-mid { gap: 6px; }
@@ -191,6 +201,8 @@ button:disabled { cursor: default; }
 .dest:hover { background: #fef3c7; }
 .dest.focus { background: #fef3c7; border-color: var(--amber-bd); box-shadow: 0 0 0 2px rgba(252,211,77,.5); }
 .dest b { font-size: 13px; } .dest small { display: block; font-size: 11px; color: #57534e; }
+.dest > b:last-child { flex: none; white-space: nowrap; }
+.dest > .row { min-width: 0; flex: 1; }
 .step-line { display: flex; align-items: center; gap: 8px; font-size: 13px; }
 .step-line.done span:last-child { text-decoration: line-through; color: #a8a29e; }
 .step-line.todo span:last-child { font-weight: 600; }
@@ -473,3 +485,35 @@ body.practice-open { overflow: hidden; }
 .log-learn { margin-left: 6px; padding: 1px 8px; border-radius: 999px; background: #10b981; color: #fff; font-size: 11px; font-weight: 800; }
 .to-learn { padding: 10px; border-radius: 14px; background: #fffbeb; border: 1px solid #fde68a; }
 .to-learn .pcard { background: #fff; }
+
+.tag.review { background: #ffedd5; border-color: #fdba74; color: #9a3412; }
+.log-learn.warn { background: #f59e0b; }
+
+/* ───────── polish: no awkward wraps, nothing wider than the screen ───────── */
+.pane-head > .row:first-child { min-width: 0; flex: 1; }
+.pane-head > .row:first-child > div:not(.avatar) { min-width: 0; }
+.pane-head .sub { overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.pane-head > .row:last-child { flex: none; gap: 6px; }
+.pane-head .btn { white-space: nowrap; }
+.pr-head b { white-space: nowrap; }
+.pr-head .w-slots { flex: 1; justify-content: center; min-width: 0; }
+.pr-head .w-slot { flex: 1; max-width: 26px; min-width: 8px; width: auto; }
+.step-line > span:first-child { flex: none; }
+.vtags { display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-end; }
+.tag { white-space: nowrap; }
+.lvl-name { flex: none; width: 44px; }
+.lvl-prog { min-width: 0; }
+.lvl-prog > .sub { white-space: nowrap; }
+.log.open .log-latest > * { display: none; }
+.log.open .log-latest { font-size: 0; }
+@media (max-width: 420px) {
+  .pane-head .btn .lbl { display: none; }
+  .lvl-bar { width: 80px; }
+}
+@media (max-width: 420px) {
+  .hdr-mid #tier-seg button { padding: 5px 8px; }
+  .voice { gap: 3px; padding: 3px 4px; }
+  .voice select { font-size: 11px; min-width: 64px; }
+  .voice button { padding: 3px 6px; }
+  .voice #rate-btn { min-width: 40px; }
+}

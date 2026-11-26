@@ -59,7 +59,7 @@
     const log = c.log.slice(-SHOWN).map(bubble).join('');
     const more = c.log.length > SHOWN ? '<div class="sub" style="text-align:center">…</div>' : '';
     const top = P.head(C.npc.sprite || C.npc.id, C.npc.name, C.npc.hanzi, U.esc(C.npc.blurb),
-      '<button class="btn btn-ghost btn-sm" data-click="chat-new" title="Start a different conversation">🔄 New chat</button>');
+      '<button class="btn btn-ghost btn-sm" data-click="chat-new" title="Start a different conversation">🔄 <span class="lbl">New chat</span></button>');
     const topic = `<div class="kicker">Topic · ${U.esc(c.dlg.title)}</div>`;
 
     if (c.finished) {

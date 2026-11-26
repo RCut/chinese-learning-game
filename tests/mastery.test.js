@@ -35,6 +35,18 @@ reset();
 ['a', 'b', 'c', 'd'].forEach((pl) => M.record(['水'], 1, pl));
 M.record(['水'], 0, 'e'); ok('a revealed answer lowers a learned word', !M.learned('水'), M.score('水'));
 M.record(['水'], 1, 'e'); M.record(['水'], 1, 'e'); ok('…and good uses bring it back', M.learned('水'), M.score('水'));
+// a learned word that is then used badly drops out of "learned" (and says so)
+reset();
+const events = []; MSC.emit = (e, a) => events.push([e, a]);
+['a', 'b', 'c', 'd'].forEach((pl) => M.record(['鸟'], 1, pl));
+ok('learned fires once', events.filter((e) => e[0] === 'learned').length === 1);
+ok('not "needs review" while it is simply learned', !M.needsReview('鸟'));
+M.record(['鸟'], 0, 'e');
+ok('a failed use pulls it under 85%: "unlearned" fires with the score', events.some((e) => e[0] === 'unlearned' && e[1].key === '鸟' && e[1].score < 85), JSON.stringify(events));
+ok('…and it is flagged "needs review"', M.needsReview('鸟'));
+['a', 'b', 'c'].forEach((pl) => M.record(['鸟'], 1, pl));
+ok('clean uses bring it back, and the flag clears', M.learned('鸟') && !M.needsReview('鸟'), M.score('鸟'));
+MSC.emit = () => {};
 ok('quality: mistakes ×0.6', Math.abs(M.quality({ mistakes: 1 }) - 0.6) < 1e-9);
 ok('quality: answer revealed = 0', M.quality({ hint: 3 }) === 0);
 

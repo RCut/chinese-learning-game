@@ -12,7 +12,7 @@ No build step, no backend — open `index.html` (or serve the folder, e.g. `npx 
 
 ## The world
 
-Five places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a button above it. **E** or **Talk** interacts.
+Six places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a button above it. **E** or **Talk** interacts.
 
 | Place | What is there |
 |---|---|
@@ -20,6 +20,7 @@ Five places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
 | **Café** | Barista Lin (order and pay), the café menu, 16 objects (cups, teapot, cake display…) |
 | **Master Wang's shop** | Master Wang (learn to write), 16 objects (brush, ink, scrolls, lanterns…) |
 | **Xiao Ming's home** | Your friend 小明 and his family (爸爸, 妈妈, 姐姐, 弟弟): introductions, meals, routine; a calendar, a TV forecast and a phone to listen to |
+| **School** (opens at level 2) | Xiao Hong, a high-school student, and her classroom, notice board, name list, score board and sports corner |
 | **Market** | Shopkeeper Zhang (buying conversations), the fruit stall, 7 food stalls with price boards, 22 objects |
 
 - **Doors:** step on one (or tap it, or its button). The screen fades to black and back in 0.5 s, with a short arrival sound —
@@ -31,7 +32,7 @@ Five places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or 
 - **The journey — levels:** the game's levels follow HSK: **level 1 = HSK 1**, **level 2 = HSK 2**. At level 1 the places only hold
   things, conversations, café items and characters of HSK 1 (non-HSK things appear from level 2). The quest screen and the header
   chip (Lv 1) show the journey: the next level opens when **80% of the level's HSK words are learned** and its tasks are done
-  (order lunch, finish a conversation with Xiao Li, finish a writing lesson, meet Xiao Ming's family). A pop-up announces it, with what is new where;
+  (order lunch, finish a conversation with Xiao Li, finish a writing lesson, meet Xiao Ming's family). Level 2 has one task of its own: make a friend at school (finish a chat with Xiao Hong). A pop-up announces each level, with what is new where;
   every place fills up with the next level's things, and going back to them is how you keep practising.
 - **New phrases:** when someone says a phrase you haven't learned, it is highlighted under their line (✨ New phrase — learn it).
   After the conversation a short phrase screen opens: listen & see → build it from word tiles → say or type it from memory. Then it

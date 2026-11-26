@@ -85,6 +85,8 @@ Six places. Walk with the arrow keys / WASD / on-screen pad, or tap the map or a
 - **Notification log:** nothing pops up over the game. Every message (new words, money, quest progress, tips, small errors) goes to one
   frame above the stage: collapsed it is a single row with the latest message, expanded (▾) a scrollable list of the last ~100.
   Every Chinese word or character in it is a button that opens that word in the notebook.
+- **On phones the dialogue pane is part of the page** (no fixed height, no inner scrollbar), so a swipe anywhere scrolls the page.
+  Tapping someone brings their dialogue into view under the header, and 🗺️ Map jumps back to the stage. On wide screens the pane sits beside the stage and scrolls on its own.
 - The writing tray is a bottom sheet on phones (swipe down to close) and a side panel on desktop.
 - Layout never jumps while you act: hint and feedback areas keep their slots.
 
@@ -182,6 +184,7 @@ node tests/e2e-chat.js            # talking to Xiao Li and the shopkeeper: tiles
 node tests/e2e-speak.js           # speech input (mocked recogniser)
 node tests/e2e-levels.js          # level 1 shows only HSK 1 content; the phrase screen; levelling up to HSK 2
 node tests/e2e-practice.js        # notebook tabs, HSK only, mastery bars, word↔phrase links, Practice (listening never scores)
+node tests/e2e-scroll.js          # phones: the dialogue pane scrolls with the page; map ⇄ dialogue navigation
 node tests/e2e-log.js             # the notification log: one row / scrollable list, clickable words, no popups left
 node tests/e2e-writing.js         # tutorial, a lesson, wall, notebook
 node tests/e2e-writing-rules.js   # feedback, hints, review, practice, offers, phone touch

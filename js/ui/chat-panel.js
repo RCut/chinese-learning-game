@@ -90,7 +90,7 @@
 
   const refresh = (toEnd) => {
     P.render(false);
-    if (toEnd) requestAnimationFrame(() => { const el = document.getElementById('panel'); el.scrollTop = el.scrollHeight; });
+    if (toEnd) requestAnimationFrame(() => { const el = document.getElementById('panel'); el.scrollTop = el.scrollHeight; P.revealBottom(el.lastElementChild || el, 16); });
   };
   const quietXP = (n) => { S.xp += n; MSC.progress.save(); MSC.emit('stats'); };
 

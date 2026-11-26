@@ -109,7 +109,12 @@ button:disabled { cursor: default; }
 .dpad .act { width: auto; padding: 0 14px; background: var(--terra); color: #fff; border-color: var(--terra); font-size: 12px; }
 
 /* ───────── Dialogue side pane (fixed size, scrolls inside) ───────── */
+/* Wide screens: the pane sits beside the stage and scrolls inside. Phones/tablets (single column): it is just part of the page —
+   no fixed height, no inner scrolling, so a swipe anywhere scrolls the page. */
 .side-panel { padding: 16px; height: clamp(480px, 74vh, 700px); overflow-y: auto; scrollbar-gutter: stable; overscroll-behavior: contain; }
+@media (max-width: 1023px) { .side-panel { height: auto; min-height: 220px; overflow: visible; scrollbar-gutter: auto; overscroll-behavior: auto; } }
+.only-narrow { display: none; }
+@media (max-width: 1023px) { .only-narrow { display: inline-flex; } }
 .stack { display: flex; flex-direction: column; gap: 12px; }
 .row { display: flex; align-items: center; gap: 8px; }
 .between { justify-content: space-between; }
